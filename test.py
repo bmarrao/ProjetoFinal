@@ -36,10 +36,8 @@ for i in range(0,len(df)):
 for i in age_time:
     x = age_time[i]
     age_time[i] = sum(x)/len(x)
-print(age_time)
 age = pd.DataFrame.from_dict(age_time,orient='index')
 
-print(age)
 
 
 #print(df['age'])
