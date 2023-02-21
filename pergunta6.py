@@ -10,7 +10,9 @@ from lifelines import CoxPHFitter
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
 print(df)
-
+st.write("""
+Tests
+""")
 print(df.isnull().sum())
 
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
@@ -27,6 +29,7 @@ cph.fit(df, duration_col = 'time', event_col = 'status')
 cph.print_summary()
 
 plt.subplots(figsize = (10, 6))
-cph.plot(filename='./imagem') # não consigo dar plot por erro de plugin??
+cph.plot() # não consigo dar plot por erro de plugin??
 
 
+st.pyplot(plt)
