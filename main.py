@@ -27,7 +27,7 @@ for i in age_time:
 graph1 = pd.DataFrame.from_dict(age_time,orient='index')
 
 
-st.line_chart(graph1)
+st.bar_chart(graph1)
 
 '''
 dic = {}
