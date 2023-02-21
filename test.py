@@ -24,10 +24,26 @@ with open(filename, 'r') as csvfile:
         dic [ind] = dict
         ind += 1
 df = pd.read_csv(filename)
-test = pd.DataFrame(dic)
-print(df)
-print(test)
-chart_data = pd.DataFrame(
-    np.random.randn(20, 3),
-    columns=['a', 'b', 'c'])
-print(chart_data)
+age_time = {}
+age = df['age']
+time = df['time']
+
+for i in range(0,len(df)):
+    if age[i] not in age_time:
+        age_time[age[i]] = [time[i]]
+    else:
+        age_time[age[i]].append(time[i])
+for i in age_time:
+    x = age_time[i]
+    age_time[i] = sum(x)/len(x)
+print(age_time)
+age = pd.DataFrame.from_dict(age_time,orient='index')
+
+print(age)
+
+
+#print(df['age'])
+#print(df['time'])
+
+#print(test)
+

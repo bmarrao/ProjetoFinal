@@ -8,15 +8,26 @@ import numpy as np
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
 
+
 st.write("""
 Tests
 """)
+df = pd.read_csv(filename)
+age_time = {}
+age = df['age']
+time = df['time']
+for i in range(0,len(df)):
+    if age[i] not in age_time:
+        age_time[age[i]] = [time[i]]
+    else:
+        age_time[age[i]].append(time[i])
+for i in age_time:
+    x = age_time[i]
+    age_time[i] = sum(x)/len(x)
+graph1 = pd.DataFrame.from_dict(age_time,orient='index')
 
-chart_data = pd.DataFrame(
-    np.random.randn(20, 3),
-    columns=['a', 'b', 'c'])
 
-st.line_chart(df)
+st.line_chart(graph1)
 
 '''
 dic = {}
