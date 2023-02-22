@@ -8,10 +8,9 @@ from lifelines import CoxPHFitter
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
+#print(df)
 
-
-st.title("Survivor Analysis for lung cancer data")
-
+#print(df.isnull().sum())
 
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
 df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
@@ -26,5 +25,7 @@ cph.fit(df, duration_col = 'time', event_col = 'status')
 
 plt.subplots(figsize = (10, 6))
 
-
-
+cph.plot_partial_effects_on_outcome(covariates = 'wt.loss',
+                                    values = [-40,-30,-20,-10,0,10,20,30,40,50,60,70],
+                                    cmap = 'coolwarm')
+st.pyplot(plt)
