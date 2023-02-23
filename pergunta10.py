@@ -3,7 +3,7 @@ com cancro do pulmão? E após o controle de outras covariáveis, como idade, cl
 
 import csv
 import pandas as pd
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt             ### FEITO
 import seaborn as sns
 import streamlit as st
 import numpy as np
