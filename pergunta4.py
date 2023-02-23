@@ -1,10 +1,13 @@
+'''Existe uma diferença significativa no tempo de sobrevivência entre homens e mulheres
+com cancro do pulmão? E após o controle de outras covariáveis, como idade, classificação ECOG ou pontuação de Karnofsky'''
+
 import csv
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 import numpy as np
-from lifelines import CoxPHFitter, KaplanMeierFitter
+from lifelines import CoxPHFitter
 
 
 filename = './lung-cancer-data.csv'
@@ -22,14 +25,10 @@ df["ph.ecog"] = df["ph.ecog"].astype("int64")
 
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status')
-cph.print_summary()
 
 plt.subplots(figsize = (10, 6))
 
-#Exemplo para idade
-cph.plot_partial_effects_on_outcome(['age','sex'],
-                                    values = [[50,1], [60,1], [70,1], [80,1]],
-                                     cmap = 'coolwarm')
-
-
+cph.plot_partial_effects_on_outcome(covariates = 'sex',
+                                    values = [1,2],
+                                    cmap = 'coolwarm')
 st.pyplot(plt)
