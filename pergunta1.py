@@ -1,10 +1,8 @@
 import csv
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 import streamlit as st
-import numpy as np
-from lifelines import CoxPHFitter   
+from lifelines import CoxPHFitter ,KaplanMeierFitter
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
@@ -12,7 +10,7 @@ df = pd.read_csv(filename)
 
 st.title("Survivor Analysis for lung cancer data")
 st.header("Analysis of age impact in the time that a person survives")
-
+'''
 df = pd.read_csv(filename)
 age_time = {}
 age = df['age']
@@ -28,6 +26,7 @@ for i in age_time:
 graph1 = pd.DataFrame.from_dict(age_time,orient='index')
 
 st.line_chart(graph1)
+'''
 
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
 df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
@@ -37,40 +36,81 @@ df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 
 
-T = df["time"]
-E = df["status"]
-
+#print(T)
 kmf = KaplanMeierFitter()
-kmf.fit(durations = T, event_observed = E)
-ax = plt.subplot(111)
-a1 = (df["age"] in range(30,40))
-a2 = (df["age"] in range(40,50))
-a3 = (df["age"] in range(50,60))
-a4 = (df["age"] in range(60,70))
-a5 = (df["age"] in range(70,90))
+Ta1 = {'time':[]}
+Ta2 = {'time':[]}
+Ta3 = {'time':[]}
+Ta4 = {'time':[]}
 
-kmf.fit(durations = T[a1], event_observed = E[a1], label = "30-40")
-kmf.plot_survival_function(ax = ax)
-kmf.fit(durations = T[a2], event_observed = E[a2], label = "40-50")
-kmf.plot_survival_function(ax = ax)
-kmf.fit(durations = T[a3], event_observed = E[a3], label = "50-60")
-kmf.plot_survival_function(ax = ax)
-kmf.fit(durations = T[a4], event_observed = E[a4], label = "60-70")
-kmf.plot_survival_function(ax = ax)
-kmf.fit(durations = T[a5], event_observed = E[a5], label = "70-90")
-kmf.plot_survival_function(ax = ax)
-plt.title("Survival of different ages")
-st.pyplot(ax)
+Ea1 = {'status':[]}
+Ea2 = {'status':[]}
+Ea3 = {'status':[]}
+Ea4 = {'status':[]}
+
+#Ta2 = pd.DataFrame()
+for index, row in df.iterrows():
+    if row['age'] >= 30 and row['age'] <= 50:
+        Ta1['time'].append(row['time'])
+        Ea1['status'].append(row['status'])
+    elif row['age'] >= 50 and row['age'] <= 60:
+        Ta2['time'].append(row['time'])
+        Ea2['status'].append(row['status'])
+    elif row['age'] >= 60 and row['age'] <= 70:
+        Ta3['time'].append(row['time'])
+        Ea3['status'].append(row['status'])
+    elif row['age'] >= 70 and row['age'] <= 100:
+        Ta4['time'].append(row['time'])
+        Ea4['status'].append(row['status'])
+
+
+
+       #print(row['time'], row['status'])
+Ta1 = pd.DataFrame(Ta1)
+Ea1 = pd.DataFrame(Ea1)
+Ta2 = pd.DataFrame(Ta2)
+Ea2 = pd.DataFrame(Ea2)
+Ta3 = pd.DataFrame(Ta3)
+Ea3 = pd.DataFrame(Ea3)
+Ta4 = pd.DataFrame(Ta4)
+Ea4 = pd.DataFrame(Ea4)
+
+
+ax = plt.subplot(111)
+kmf = KaplanMeierFitter()
+kmf.fit(durations = Ta1, event_observed = Ea1,label="30-50")
+kmf.survival_function_.plot(ax = ax)
+
+#kmf.plot_survival_function(ax = ax)
+
+kmf.fit(durations = Ta2, event_observed = Ea2,label="50-60")
+kmf.survival_function_.plot(ax = ax)
+
+
+#kmf.survival_function_plot(ax = ax)
+
+kmf.fit(durations = Ta3, event_observed = Ea3,label="60-70")
+kmf.survival_function_.plot(ax = ax)
+
+#kmf.plot_survival_function(ax = ax)
+
+kmf.fit(durations = Ta4, event_observed = Ea4,label="70+")
+kmf.survival_function_.plot(ax = ax)
+
+#kmf.plot_survival_function(ax = ax,at_risk_counts = True)
+st.pyplot(plt)
+
+
+
 
 cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status')
+cph.fit(df, duration_col = 'time', event_col = 'status',formula= "age + sex + ph.ecog + ph.karno")
 
 plt.subplots(figsize = (10, 6))
 
-'''
 cph.plot_partial_effects_on_outcome(covariates = 'age',
-                                    values = [50, 60, 70, 80],
+                                    values = [30,40,50, 60, 70, 80],
                                     cmap = 'coolwarm')
-                      '''
+                    
 st.pyplot(plt)
 
