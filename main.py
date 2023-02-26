@@ -272,7 +272,23 @@ cph.plot_partial_effects_on_outcome(covariates = 'meal.cal',
 st.pyplot(plt)
 
 
-st.subheader("6- Estimar o tempo de sobrevivência em pacientes com cancro do pulmão com base na sua idade, sexo, classificação ECOG e pontuação de Karnofsky")
+st.subheader("7- Existe diferença significativa no tempo de sobrevivência entre pacientes com diferentes classificações de desempenho do ECOG")
+cph = CoxPHFitter()
+cph.fit(df, duration_col = 'time', event_col = 'status',formula = "ph.ecog")
+
+#plt.subplots(figsize = (10, 6))
+
+cph.plot_partial_effects_on_outcome(covariates = 'ph.ecog',
+                                    values = [0,1,2,3,4],
+                                    cmap = 'coolwarm')
+st.pyplot(plt)
+
+st.subheader("8- Comparar a pontuação de desempenho de Karnofsky, avaliada pelo paciente, com a classificação do médico")
+
+dic = {'Paciente' : df["ph.karno"],'Medico': df["pat.karno"]}
+data = pd.DataFrame(data = dic)
+
+st.line_chart(data)
 
 st.subheader("10 -Existe uma diferença significativa no tempo de sobrevivência entre homens e mulheres com cancro do pulmão? E após o controle de outras covariáveis, como idade, classificação ECOG ou pontuação de Karnofsky")
 

@@ -18,7 +18,7 @@ df.dropna(inplace=True)
 df["ph.ecog"].fillna(df["ph.ecog"].mean(), inplace = True)
 
 cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status')
+cph.fit(df, duration_col = 'time', event_col = 'status',formula = "ph.ecog")
 
 #plt.subplots(figsize = (10, 6))
 
