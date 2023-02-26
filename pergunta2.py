@@ -5,6 +5,13 @@ import seaborn as sns
 import streamlit as st
 import numpy as np
 from lifelines import CoxPHFitter, KaplanMeierFitter
+from IPython.display import HTML
+import chart_studio as py
+import plotly.tools as tls   
+from plotly.graph_objs import *
+
+from pylab import rcParams
+rcParams['figure.figsize']=10, 5
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
@@ -13,6 +20,9 @@ df = pd.read_csv(filename)
 #print(df)
 
 #print(df.isnull().sum())
+df['status'] = df["status"]-1
+df['sex'] = df["sex"]-1
+df['wt.loss'] = df['wt.loss'] * 0.45359237
 
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
 df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
@@ -21,7 +31,6 @@ df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
-df['status'] = df["status"]-1
 
 
 #print(T)
@@ -31,40 +40,31 @@ Ta2 = {'time':[]}
 Ta3 = {'time':[]}
 Ta4 = {'time':[]}
 Ta5 = {'time':[]}
-Ta6 = {'time':[]}
-Ta7 = {'time':[]}
+
 
 Ea1 = {'status':[]}
 Ea2 = {'status':[]}
 Ea3 = {'status':[]}
 Ea4 = {'status':[]}
 Ea5 = {'status':[]}
-Ea6 = {'status':[]}
-Ea7 = {'status':[]}
 
 #Ta2 = pd.DataFrame()
 for index, row in df.iterrows():
-    if row['wt.loss'] <= -20 :
+    if row['wt.loss'] <= -10 :
         Ta1['time'].append(row['time'])
         Ea1['status'].append(row['status'])
-    elif row['wt.loss'] >= -20 and row['wt.loss'] <= -10:
+    elif row['wt.loss'] >= -10 and row['wt.loss'] <= 0:
         Ta2['time'].append(row['time'])
         Ea2['status'].append(row['status'])
-    elif row['wt.loss'] >= -10 and row['wt.loss'] <= 0:
+    elif row['wt.loss'] >= 0 and row['wt.loss'] <= 10:
         Ta3['time'].append(row['time'])
         Ea3['status'].append(row['status'])
-    elif row['wt.loss'] >= 0 and row['wt.loss'] <= 10:
+    elif row['wt.loss'] >= 10 and row['wt.loss'] <= 20:
         Ta4['time'].append(row['time'])
         Ea4['status'].append(row['status'])
-    elif row['wt.loss'] >= 10 and row['wt.loss'] <= 20:
+    elif row['wt.loss'] >= 20 :
         Ta5['time'].append(row['time'])
-        Ea5['status'].append(row['status'])
-    elif row['wt.loss'] >= 20 and row['wt.loss'] <= 30:
-        Ta6['time'].append(row['time'])
-        Ea6['status'].append(row['status'])
-    elif row['wt.loss'] >= 30 :
-        Ta7['time'].append(row['time'])
-        Ea7['status'].append(row['status'])   
+        Ea5['status'].append(row['status'])   
 
 
 
@@ -79,60 +79,72 @@ Ta4 = pd.DataFrame(Ta4)
 Ea4 = pd.DataFrame(Ea4)
 Ta5 = pd.DataFrame(Ta5)
 Ea5 = pd.DataFrame(Ea5)
-Ta6 = pd.DataFrame(Ta6)
-Ea6 = pd.DataFrame(Ea6)
-Ta7 = pd.DataFrame(Ta7)
-Ea7 = pd.DataFrame(Ea7)
 
 
-ax = plt.subplot(111)
+fig, a = plt.subplots()
 kmf = KaplanMeierFitter()
-kmf.fit(durations = Ta1, event_observed = Ea1,label="-20")
-kmf.survival_function_.plot(ax = ax)
+kmf.fit(durations = Ta1, event_observed = Ea1,label="-10")
+kmf.survival_function_.plot(ax = a)
 
 #kmf.plot_survival_function(ax = ax)
 
-kmf.fit(durations = Ta2, event_observed = Ea2,label="(-20)-(-10)")
-kmf.survival_function_.plot(ax = ax)
+kmf.fit(durations = Ta2, event_observed = Ea2,label="-10-0")
+kmf.survival_function_.plot(ax = a)
 
 
-kmf.fit(durations = Ta3, event_observed = Ea3,label="(-10)-0")
-kmf.survival_function_.plot(ax = ax)
+kmf.fit(durations = Ta3, event_observed = Ea3,label="0-10")
+kmf.survival_function_.plot(ax = a)
 
 #kmf.survival_function_plot(ax = ax)
 
 kmf.fit(durations = Ta3, event_observed = Ea3,label="(-10)-0")
-kmf.survival_function_.plot(ax = ax)
+kmf.survival_function_.plot(ax = a)
 
 #kmf.plot_survival_function(ax = ax)
 
-kmf.fit(durations = Ta4, event_observed = Ea4,label="0-10")
-kmf.survival_function_.plot(ax = ax)
+kmf.fit(durations = Ta4, event_observed = Ea4,label="10-0")
+kmf.survival_function_.plot(ax = a)
 
-kmf.fit(durations = Ta5, event_observed = Ea5,label="10-20")
-kmf.survival_function_.plot(ax = ax)
-
-
-kmf.fit(durations = Ta6, event_observed = Ea6,label="20-30")
-kmf.survival_function_.plot(ax = ax)
+kmf.fit(durations = Ta5, event_observed = Ea5,label="20+")
+kmf.survival_function_.plot(ax = a)
 
 
-kmf.fit(durations = Ta7, event_observed = Ea7,label="30+")
-kmf.survival_function_.plot(ax = ax)
+kmf2 = plt.gcf()
+
+def pyplot(fig, ci=True, legend=True):
+    # Convert mpl fig obj to plotly fig obj, resize to plotly's default
+    py_fig = tls.mpl_to_plotly(fig, resize=True)
+    
+    # Add fill property to lower limit line
+    if ci == True:
+        style1 = dict(fill='tonexty')
+        # apply style
+        py_fig['data'][2].update(style1)
+        
+        # Change color scheme to black
+        py_fig['data'].update(dict(line=Line(color='black')))
+    
+    # change the default line type to 'step'
+    py_fig['data'].update(dict(line=Line(shape='hv')))
+    # Delete misplaced legend annotations 
+    py_fig['layout'].pop('annotations', None)
+    
+    if legend == True:
+        # Add legend, place it at the top right corner of the plot
+        py_fig['layout'].update(
+            showlegend=True,
+            legend=Legend(
+                x=1.05,
+                y=1
+            )
+        )
+        
+    # Send updated figure object to Plotly, show result in notebook
+    return py.iplot(py_fig)
+
+py_fig = tls.mpl_to_plotly(kmf2, resize=True)
+
 
 #kmf.plot_survival_function(ax = ax,at_risk_counts = True)
 
-st.pyplot(plt)
-
-
-'''
-cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status',formula= "age + sex + ph.ecog + ph.karno - wt.loss")
-
-plt.subplots(figsize = (10, 6))
-
-cph.plot_partial_effects_on_outcome(covariates = 'wt.loss',
-                                    values = [-40,-30,-20,-10,0,10,20,30,40,50,60,70],
-                                    cmap = 'coolwarm')
-st.pyplot(plt)
-'''
+st.plotly_chart(py_fig)
