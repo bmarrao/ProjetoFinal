@@ -18,10 +18,14 @@ df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
 df['status'] = df["status"]-1
 df['sex'] = df["sex"]-1
+<<<<<<< HEAD
 
 
 
 
+=======
+df['wt.loss'] = df['wt.loss'] * 0,45359237
+>>>>>>> 2044b9710ca2d7a46ca3d95ea846981aff2574b9
 
 st.title("Survivor Analysis for lung cancer data")
 
