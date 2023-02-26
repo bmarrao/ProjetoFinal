@@ -17,6 +17,9 @@ df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
 df['status'] = df["status"]-1
+df['sex'] = df["sex"]-1
+
+
 
 
 
