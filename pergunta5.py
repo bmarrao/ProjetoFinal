@@ -12,7 +12,7 @@ from lifelines import CoxPHFitter
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
 #print(df)
-
+#ADICIONAR BAR CHART COM CONSUMO CALORIAS E O TEMPO MEDIO DE SOBREVIVẼNCIA DE CADA UM
 #print(df.isnull().sum())
 
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
@@ -23,7 +23,7 @@ df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 
 cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status')
+cph.fit(df, duration_col = 'time', event_col = 'status',formula = "meal.cal")
 
 plt.subplots(figsize = (10, 6))
 

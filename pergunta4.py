@@ -9,7 +9,7 @@ import streamlit as st
 import numpy as np
 from lifelines import CoxPHFitter,KaplanMeierFitter
 
-
+#ADICIONAR MAIS GRÁFICOS - BARCHART SIMPLES ?
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
 #print(df)
@@ -24,6 +24,9 @@ df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
 df['status'] = df["status"]-1
+
+fig, a = plt.subplots()
+
 
 Ta1 = {'time':[]}
 Ta2 = {'time':[]}
@@ -43,14 +46,14 @@ Ea2 = pd.DataFrame(Ea2)
 ax = plt.subplot(111)
 kmf = KaplanMeierFitter()
 kmf.fit(durations = Ta1, event_observed = Ea1,label="Homem ou mulher")
-kmf.survival_function_.plot(ax = ax)
+kmf.survival_function_.plot(ax = a)
 
 #kmf.plot_survival_function(ax = ax)
 
 kmf.fit(durations = Ta2, event_observed = Ea2,label="Homem ou mulher")
-kmf.survival_function_.plot(ax = ax)
+kmf.survival_function_.plot(ax = a)
 
-st.pyplot(plt)
+st.pyplot(fig)
 
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status')

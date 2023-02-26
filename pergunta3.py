@@ -18,7 +18,7 @@ df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
 df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
-
+#FAZER MAIS GRÁFICOS
 
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status',formula= "age + sex + ph.ecog + ph.karno")
