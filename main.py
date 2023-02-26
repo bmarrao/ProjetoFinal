@@ -17,8 +17,8 @@ df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
 df['status'] = df["status"]-1
-
-
+df['sex'] = df["sex"]-1
+df['wt.loss'] = df['wt.loss'] * 0,45359237
 
 st.title("Survivor Analysis for lung cancer data")
 
