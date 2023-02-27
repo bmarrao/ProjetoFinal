@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
 from lifelines import CoxPHFitter ,KaplanMeierFitter
+import plotly.tools as tls
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
@@ -66,6 +67,7 @@ Ea3 = pd.DataFrame(Ea3)
 Ta4 = pd.DataFrame(Ta4)
 Ea4 = pd.DataFrame(Ea4)
 
+
 ax = plt.subplot(111)
 kmf = KaplanMeierFitter()
 kmf.fit(durations = Ta1, event_observed = Ea1,label="30-50")
@@ -88,21 +90,33 @@ kmf.fit(durations = Ta4, event_observed = Ea4,label="70+")
 kmf.survival_function_.plot(ax = ax)
 
 #kmf.plot_survival_function(ax = ax,at_risk_counts = True)
-st.pyplot(plt)
+kmf2 = plt.gcf()
 
-st.caption("Efeito da idade sem o controle de outros dados")
+py_fig = tls.mpl_to_plotly(kmf2, resize=True)
+
+#kmf.plot_survival_function(ax = ax,at_risk_counts = True)
+
+
+st.plotly_chart(py_fig)
+
+
 
 
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status',formula= "age + sex + ph.ecog + ph.karno")
 
-plt.subplots(figsize = (10, 6))
+mpl_fig = plt.figure()
 
 cph.plot_partial_effects_on_outcome(covariates = 'age',
                                     values = [30,40,50, 60, 70, 80],
                                     cmap = 'coolwarm')
                     
-st.pyplot(plt)
+
+cph2 = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(cph2, resize=True)
+
+st.plotly_chart(py_fig)
 
 st.caption("Efeito da idade com ocontrole de outros fatores relevantes, como sexo, pontuação dedesempenho ECOG e pontuação de desempenho de Karnofsky?")
 
@@ -256,12 +270,19 @@ st.subheader("5 -O consumo de calorias nas refeições afeta o tempo de sobreviv
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status',formula = "meal.cal")
 
+mpl_fig = plt.figure()
+
 plt.subplots(figsize = (10, 6))
 
 cph.plot_partial_effects_on_outcome(covariates = 'meal.cal',
                                     values = [0,200,500,1000,1500,2000,2500],
                                     cmap = 'coolwarm')
-st.pyplot(plt)
+
+cph2 = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(cph2, resize=True)
+
+st.plotly_chart(py_fig)
 
 ##########################################################################################################################################
 
