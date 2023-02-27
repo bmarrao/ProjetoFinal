@@ -8,6 +8,11 @@ import seaborn as sns
 import streamlit as st
 import numpy as np
 from lifelines import CoxPHFitter,KaplanMeierFitter
+import mpld3
+import streamlit.components.v1 as components
+import chart_studio as py
+import plotly.tools as tls   
+from plotly.graph_objs import *
 
 #ADICIONAR MAIS GRÁFICOS - BARCHART SIMPLES ?
 filename = './lung-cancer-data.csv'
@@ -45,15 +50,21 @@ Ta2 = pd.DataFrame(Ta2)
 Ea2 = pd.DataFrame(Ea2)
 ax = plt.subplot(111)
 kmf = KaplanMeierFitter()
-kmf.fit(durations = Ta1, event_observed = Ea1,label="Homem ou mulher")
+kmf.fit(durations = Ta1, event_observed = Ea1,label="Homem")
 kmf.survival_function_.plot(ax = a)
 
 #kmf.plot_survival_function(ax = ax)
 
-kmf.fit(durations = Ta2, event_observed = Ea2,label="Homem ou mulher")
+kmf.fit(durations = Ta2, event_observed = Ea2,label="Mulher")
 kmf.survival_function_.plot(ax = a)
 
-st.pyplot(fig)
+kmf2 = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(kmf2, resize=True)
+
+#kmf.plot_survival_function(ax = ax,at_risk_counts = True)
+
+st.plotly_chart(py_fig)
 
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status')
