@@ -24,6 +24,8 @@ for index, row in df.iterrows():
     print(row['wt.loss'])
 st.title("Survivor Analysis for lung cancer data")
 
+##########################################################################################################################################
+
 st.subheader("1 - A idade afeta significativamente o tempo de sobrevivência em pacientes com cancro de pulmão? E após o controle de outros fatores relevantes, como sexo, pontuação dedesempenho ECOG e pontuação de desempenho de Karnofsky?")
 
 kmf = KaplanMeierFitter()
@@ -103,6 +105,8 @@ cph.plot_partial_effects_on_outcome(covariates = 'age',
 st.pyplot(plt)
 
 st.caption("Efeito da idade com ocontrole de outros fatores relevantes, como sexo, pontuação dedesempenho ECOG e pontuação de desempenho de Karnofsky?")
+
+##########################################################################################################################################
 
 st.subheader("2 -Qual é o efeito da perda de peso nos últimos seis meses no tempo de sobrevivência em pacientes com cancro de pulmão?")
 
@@ -188,7 +192,7 @@ kmf.survival_function_.plot(ax = a)
 
 st.pyplot(fig)
 
-
+##########################################################################################################################################
 
 st.subheader("3 -A pontuação de desempenho de Karnofsky, avaliada pelo médico, prediz o tempo desobrevivência em pacientes com cancro do pulmão?")
 
@@ -201,6 +205,8 @@ cph.plot_partial_effects_on_outcome(covariates = 'ph.karno',
                                     values = [0,10,20,30,40,50,60,70,80,90,100],
                                     cmap = 'coolwarm')
 st.pyplot(plt)
+
+##########################################################################################################################################
 
 st.subheader("4 -Existe uma diferença significativa no tempo de sobrevivência entre homens e mulheres com cancro do pulmão? E após o controle de outras covariáveis, como idade, classificação ECOG ou pontuação de Karnofsky")
 
@@ -243,6 +249,9 @@ kmf.fit(durations = Ta2, event_observed = Ea2,label="Homem ou mulher")
 kmf.survival_function_.plot(ax = a)
 
 st.pyplot(fig)
+
+##########################################################################################################################################
+
 st.subheader("5 -O consumo de calorias nas refeições afeta o tempo de sobrevivência em pacientes com cancro de pulmão?")
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status',formula = "meal.cal")
@@ -254,6 +263,7 @@ cph.plot_partial_effects_on_outcome(covariates = 'meal.cal',
                                     cmap = 'coolwarm')
 st.pyplot(plt)
 
+##########################################################################################################################################
 
 st.subheader("7- Existe diferença significativa no tempo de sobrevivência entre pacientes com diferentes classificações de desempenho do ECOG")
 cph = CoxPHFitter()
@@ -266,12 +276,16 @@ cph.plot_partial_effects_on_outcome(covariates = 'ph.ecog',
                                     cmap = 'coolwarm')
 st.pyplot(plt)
 
+##########################################################################################################################################
+
 st.subheader("8- Comparar a pontuação de desempenho de Karnofsky, avaliada pelo paciente, com a classificação do médico")
 
 dic = {'Paciente' : df["ph.karno"],'Medico': df["pat.karno"]}
 data = pd.DataFrame(data = dic)
 
 st.line_chart(data)
+
+##########################################################################################################################################
 
 st.subheader("10 -Existe uma diferença significativa no tempo de sobrevivência entre homens e mulheres com cancro do pulmão? E após o controle de outras covariáveis, como idade, classificação ECOG ou pontuação de Karnofsky")
 
