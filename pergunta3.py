@@ -1,12 +1,9 @@
 import csv
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 import streamlit as st
-import numpy as np
 from lifelines import CoxPHFitter
-import plotly.plotly as py
-import plotly.graph_objs as go
+import plotly.tools as tls   
 
 
 filename = './lung-cancer-data.csv'
@@ -142,8 +139,9 @@ cph.plot_partial_effects_on_outcome(covariates = 'ph.karno',
                                     cmap = 'coolwarm')
 
 
-fig_html = mpld3.fig_to_html(mpl_fig)
-components.html(fig_html,height=600)
-#unique_url = py.plot_mpl(mpl_fig)
 
-#st.plotly_chart(unique_url)
+cph2 = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(cph2, resize=True)
+
+st.plotly_chart(py_fig)

@@ -111,39 +111,7 @@ kmf.survival_function_.plot(ax = a)
 
 kmf2 = plt.gcf()
 
-def pyplot(fig, ci=True, legend=True):
-    # Convert mpl fig obj to plotly fig obj, resize to plotly's default
-    py_fig = tls.mpl_to_plotly(fig, resize=True)
-    
-    # Add fill property to lower limit line
-    if ci == True:
-        style1 = dict(fill='tonexty')
-        # apply style
-        py_fig['data'][2].update(style1)
-        
-        # Change color scheme to black
-        py_fig['data'].update(dict(line=Line(color='black')))
-    
-    # change the default line type to 'step'
-    py_fig['data'].update(dict(line=Line(shape='hv')))
-    # Delete misplaced legend annotations 
-    py_fig['layout'].pop('annotations', None)
-    
-    if legend == True:
-        # Add legend, place it at the top right corner of the plot
-        py_fig['layout'].update(
-            showlegend=True,
-            legend=Legend(
-                x=1.05,
-                y=1
-            )
-        )
-        
-    # Send updated figure object to Plotly, show result in notebook
-    return py.iplot(py_fig)
-
 py_fig = tls.mpl_to_plotly(kmf2, resize=True)
-
 
 #kmf.plot_survival_function(ax = ax,at_risk_counts = True)
 
