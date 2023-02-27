@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 from lifelines import CoxPHFitter ,KaplanMeierFitter
 import plotly.tools as tls
+import plotly.express as px
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
@@ -337,75 +338,7 @@ py_fig = tls.mpl_to_plotly(cph2, resize=True)
 
 st.plotly_chart(py_fig)
 
-##########################################################################################################################################
 
-st.subheader("4 -Existe uma diferença significativa no tempo de sobrevivência entre homens e mulheres com cancro do pulmão? E após o controle de outras covariáveis, como idade, classificação ECOG ou pontuação de Karnofsky")
-
-Ta1 = {'time':[]}
-Ta2 = {'time':[]}
-Ea1 = {'status':[]}
-Ea2 = {'status':[]}
-for index, row in df.iterrows():
-    if row['sex'] == 1 :
-        Ta1['time'].append(row['time'])
-        Ea1['status'].append(row['status'])
-    elif row['sex'] == 2:
-        Ta2['time'].append(row['time'])
-        Ea2['status'].append(row['status'])
-Ta1 = pd.DataFrame(Ta1)
-Ea1 = pd.DataFrame(Ea1)
-Ta2 = pd.DataFrame(Ta2)
-Ea2 = pd.DataFrame(Ea2)
-ax = plt.subplot(111)
-kmf = KaplanMeierFitter()
-kmf.fit(durations = Ta1, event_observed = Ea1,label="Homem")
-kmf.survival_function_.plot(ax = a)
-
-#kmf.plot_survival_function(ax = ax)
-
-kmf.fit(durations = Ta2, event_observed = Ea2,label="Mulher")
-kmf.survival_function_.plot(ax = a)
-
-kmf2 = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(kmf2, resize=True)
-
-#kmf.plot_survival_function(ax = ax,at_risk_counts = True)
-
-st.plotly_chart(py_fig)
-
-x = plt.figure()
-
-T = df["time"]
-E = df["status"]
-
-kmf = KaplanMeierFitter()
-kmf.fit(durations = T, event_observed = E)
-ax = plt.subplot(111)
-m = (df["sex"] == 1)
-f = (df["sex"] == 2)
-kmf.fit(durations = T[m], event_observed = E[m], label = "Male")
-kmf.plot_survival_function(ax = ax)
-plt.title("Survival of different gender group")
-kmf.fit(T[f], event_observed = E[f], label = "Female")
-kmf.plot_survival_function(ax = ax, at_risk_counts = True)
-
-st.pyplot(x)
-
-cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status')
-
-mpl_fig = plt.figure()
-
-cph.plot_partial_effects_on_outcome(covariates = 'sex',
-                                    values = [1,2],
-                                    cmap = 'coolwarm')
-
-cph2 = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(cph2, resize=True)
-
-st.plotly_chart(py_fig)
 
 ##########################################################################################################################################
 
@@ -457,6 +390,49 @@ st.subheader("10 -Existe uma diferença significativa no tempo de sobrevivência
 x = df['meal.cal']
 y = df['ph.karno']
 
-plt.scatter(x, y)
+z = px.scatter(x = x, y =y,opacity = .2)
+st.plotly_chart(z)
 
+##########################################################################################################################################
+
+st.subheader("4 -Existe uma diferença significativa no tempo de sobrevivência entre homens e mulheres com cancro do pulmão? E após o controle de outras covariáveis, como idade, classificação ECOG ou pontuação de Karnofsky")
+
+cph = CoxPHFitter()
+cph.fit(df, duration_col = 'time', event_col = 'status')
+
+plt.subplots(figsize = (10, 6))
+
+cph.plot_partial_effects_on_outcome(covariates = 'sex',
+                                    values = [1,2],
+                                    cmap = 'coolwarm')
 st.pyplot(plt)
+
+fig, a = plt.subplots()
+
+
+Ta1 = {'time':[]}
+Ta2 = {'time':[]}
+Ea1 = {'status':[]}
+Ea2 = {'status':[]}
+for index, row in df.iterrows():
+    if row['sex'] == 1 :
+        Ta1['time'].append(row['time'])
+        Ea1['status'].append(row['status'])
+    elif row['sex'] == 2:
+        Ta2['time'].append(row['time'])
+        Ea2['status'].append(row['status'])
+Ta1 = pd.DataFrame(Ta1)
+Ea1 = pd.DataFrame(Ea1)
+Ta2 = pd.DataFrame(Ta2)
+Ea2 = pd.DataFrame(Ea2)
+ax = plt.subplot(111)
+kmf = KaplanMeierFitter()
+kmf.fit(durations = Ta1, event_observed = Ea1,label="Homem ou mulher")
+kmf.survival_function_.plot(ax = a)
+
+#kmf.plot_survival_function(ax = ax)
+
+kmf.fit(durations = Ta2, event_observed = Ea2,label="Homem ou mulher")
+kmf.survival_function_.plot(ax = a)
+
+st.pyplot(fig)
