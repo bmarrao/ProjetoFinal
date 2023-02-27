@@ -22,104 +22,80 @@ df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
-dic_died = {'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []}
-dic_alive =  {'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []}
-dic =  {'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []}
+dic =  {'died': {'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []},'alive':{'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []},'percentage':{'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []}}
 
 for index, row in df.iterrows():
     if row['ph.karno'] >= 0 and row['ph.karno'] < 10 :
         if row['status'] == 0 :
-            dic_died ['0-10'].append(row['time'])
+            dic['died']['0-10'].append(row['time'])
         else :
-            dic_alive['0-10'].append(row['time'])
-        dic['0-10'].append(row['time'])
+            dic['alive']['0-10'].append(row['time'])
     elif row['ph.karno'] >= 10 and row['ph.karno'] < 20:
         if row['status'] == 0 :
-            dic_died ['10-20'].append(row['time'])
+            dic['died']['10-20'].append(row['time'])
         else :
-            dic_alive['10-20'].append(row['time'])
-        dic['10-20'].append(row['time'])
+            dic['alive']['10-20'].append(row['time'])
     elif row['ph.karno'] >= 20 and row['ph.karno'] <30:
         if row['status'] == 0 :
-            dic_died ['20-30'].append(row['time'])
+            dic['died']['20-30'].append(row['time'])
         else :
-            dic_alive['20-30'].append(row['time'])
-        dic['20-30'].append(row['time'])
+            dic['alive']['20-30'].append(row['time'])
     elif row['ph.karno'] >= 30 and row['ph.karno'] < 40:
         if row['status'] == 0 :
-            dic_died ['30-40'].append(row['time'])
+            dic['died'] ['30-40'].append(row['time'])
         else :
-            dic_alive['30-40'].append(row['time'])
-        dic['30-40'].append(row['time'])
-
+            dic['alive']['30-40'].append(row['time'])
     elif row['ph.karno'] >= 40 and row['ph.karno'] < 50:
         if row['status'] == 0 :
-            dic_died ['40-50'].append(row['time'])
+            dic['died'] ['40-50'].append(row['time'])
         else :
-            dic_alive['40-50'].append(row['time']) 
-        dic['40-50'].append(row['time'])
+            dic['alive']['40-50'].append(row['time']) 
     elif row['ph.karno'] >= 50 and row['ph.karno'] < 60:
         if row['status'] == 0 :
-            dic_died ['50-60'].append(row['time'])
+            dic['died'] ['50-60'].append(row['time'])
         else :
-            dic_alive['50-60'].append(row['time'])  
-        dic['50-60'].append(row['time'])
+            dic['alive']['50-60'].append(row['time'])  
     elif row['ph.karno'] >= 60 and row['ph.karno'] <70:
         if row['status'] == 0 :
-            dic_died ['60-70'].append(row['time'])
+            dic['died'] ['60-70'].append(row['time'])
         else :
-            dic_alive['60-70'].append(row['time'])
-        dic['60-70'].append(row['time'])
+            dic['alive']['60-70'].append(row['time'])
     elif row['ph.karno'] >= 70 and row['ph.karno'] < 80:
         if row['status'] == 0 :
-            dic_died ['70-80'].append(row['time'])
+            dic['died'] ['70-80'].append(row['time'])
         else :
-            dic_alive['70-80'].append(row['time']) 
-        dic['70-80'].append(row['time'])
+            dic['alive']['70-80'].append(row['time']) 
     elif row['ph.karno'] >= 80 and row['ph.karno'] <= 90:
         if row['status'] == 0 :
-            dic_died ['80-90'].append(row['time'])
+            dic['died']['80-90'].append(row['time'])
         else :
-            dic_alive['80-90'].append(row['time']) 
-        dic['80-90'].append(row['time'])
+            dic['alive']['80-90'].append(row['time']) 
     else:
         if row['status'] == 0 :
-            dic_died ['90-100'].append(row['time'])
+            dic['died'] ['90-100'].append(row['time'])
         else :
-            dic_alive['90-100'].append(row['time'])  
-        dic['90-100'].append(row['time'])
+            dic['alive']['90-100'].append(row['time'])  
 
 remove = []
-remove2 = []
-for i in dic :
-    if dic[i]:
-        dic[i] = (len(dic_died[i])  /  len(dic[i]) ) * 100
-    else :
-        remove2.append(i)
-
-for i in dic_died:
-    if dic_died[i] :
-        dic_died[i] = sum(dic_died[i])/len(dic_died[i]) 
+for i in ['0-10' , '10-20', '20-30' , '30-40' , '40-50' , '50-60' , '60-70' , '70-80' , '80-90' , '90-100'] :
+    x = len(dic['alive'][i]) + len(dic['died'][i])
+    if x:
+        dic['percentage'][i] = (len(dic['died'][i])  / x) * 100
     else :
         remove.append(i)
-for i in dic_alive:
-    if dic_alive[i] :
-        dic_alive[i] =  len(dic_alive[i])
-    else :
-        dic_alive[i] = 0
-    
-for i in remove:
-    dic_died.pop(i)
-for i in remove2:
-    dic.pop(i)
+
+for i in remove :
+     dic['died'].pop(i)
+     dic['alive'].pop(i)
+     dic['percentage'].pop(i)
 
 graph1 = pd.DataFrame.from_dict(dic,orient='index')
-graph2 = pd.DataFrame.from_dict(dic_died,orient='index')
-graph3 = pd.DataFrame.from_dict(dic_alive,orient='index')
+
+
+print(graph1)
 
 st.bar_chart(graph1)
-st.bar_chart(graph2)
-st.bar_chart(graph3)
+
 
 
 

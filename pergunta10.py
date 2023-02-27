@@ -19,7 +19,7 @@ df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
 df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
-
+print(df.to_dict())
 x = df['meal.cal']
 y = df['ph.karno']
 
