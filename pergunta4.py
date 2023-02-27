@@ -8,6 +8,7 @@ import seaborn as sns
 import streamlit as st
 import numpy as np
 from lifelines import CoxPHFitter,KaplanMeierFitter
+import mpld3
 import streamlit.components.v1 as components
 import chart_studio as py
 import plotly.tools as tls   
@@ -23,7 +24,7 @@ df = pd.read_csv(filename)
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
 df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
 df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
-df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
+df["wt.loss"]z.fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
@@ -63,28 +64,18 @@ py_fig = tls.mpl_to_plotly(kmf2, resize=True)
 
 #kmf.plot_survival_function(ax = ax,at_risk_counts = True)
 
-
 st.plotly_chart(py_fig)
 
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status')
 
-st.pyplot(plt)
-
-
-mpl_fig = plt.figure()
+plt.subplots(figsize = (10, 6))
 
 cph.plot_partial_effects_on_outcome(covariates = 'sex',
                                     values = [1,2],
                                     cmap = 'coolwarm')
+st.pyplot(plt)
 
-
-
-cph2 = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(cph2, resize=True)
-
-st.plotly_chart(py_fig)
 
 '''
 T = df["time"]
