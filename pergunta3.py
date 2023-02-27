@@ -117,10 +117,6 @@ graph1 = pd.DataFrame.from_dict(dic,orient='index')
 graph2 = pd.DataFrame.from_dict(dic_died,orient='index')
 graph3 = pd.DataFrame.from_dict(dic_alive,orient='index')
 
-print(dic_died)
-print(dic_alive)
-print(dic)
-
 st.bar_chart(graph1)
 st.bar_chart(graph2)
 st.bar_chart(graph3)
