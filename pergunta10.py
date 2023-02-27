@@ -8,7 +8,7 @@ import seaborn as sns
 import streamlit as st
 import numpy as np
 from lifelines import CoxPHFitter
-
+import plotly.express as px
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
@@ -23,9 +23,10 @@ df["ph.ecog"] = df["ph.ecog"].astype("int64")
 x = df['meal.cal']
 y = df['ph.karno']
 
-plt.scatter(x, y)
+z = px.scatter(x = x, y =y,opacity = .2)
+st.plotly_chart(z)
 
-st.pyplot(plt)
+
 '''
 fig = px.scatter(
     df,
