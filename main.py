@@ -310,7 +310,7 @@ graph2 = pd.DataFrame.from_dict(dic_died,orient='index')
 
 
 st.bar_chart(graph1)
-st.caption("Porcentagem de uma pessoa estar viva para uma detemerminada pontuação de desempenho de Karnofsky")
+st.caption("Chance de uma pessoa estar viva para uma detemerminada pontuação de desempenho de Karnofsky")
 st.bar_chart(graph2)
 st.caption("Quantidade de dias até uma pessoa morrer para uma detemerminada pontuação de desempenho de Karnofsky")
 
