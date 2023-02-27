@@ -307,15 +307,13 @@ for i in remove2:
 
 graph1 = pd.DataFrame.from_dict(dic,orient='index')
 graph2 = pd.DataFrame.from_dict(dic_died,orient='index')
-graph3 = pd.DataFrame.from_dict(dic_alive,orient='index')
 
-print(dic_died)
-print(dic_alive)
-print(dic)
 
 st.bar_chart(graph1)
+st.caption("Porcentagem de uma pessoa estar viva para uma detemerminada pontuação de desempenho de Karnofsky")
 st.bar_chart(graph2)
-st.bar_chart(graph3)
+st.caption("Quantidade de dias até uma pessoa morrer para uma detemerminada pontuação de desempenho de Karnofsky")
+
 
 
 
