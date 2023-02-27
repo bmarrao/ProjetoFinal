@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
 from lifelines import CoxPHFitter ,KaplanMeierFitter
+import plotly.tools as tls   
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
@@ -98,7 +99,14 @@ kmf.fit(durations = Ta4, event_observed = Ea4,label="70+")
 kmf.survival_function_.plot(ax = ax)
 
 #kmf.plot_survival_function(ax = ax,at_risk_counts = True)
-st.pyplot(plt)
+kmf2 = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(kmf2, resize=True)
+
+#kmf.plot_survival_function(ax = ax,at_risk_counts = True)
+
+
+st.plotly_chart(py_fig)
 
 
 
@@ -106,11 +114,16 @@ st.pyplot(plt)
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status',formula= "age + sex + ph.ecog + ph.karno")
 
-plt.subplots(figsize = (10, 6))
+mpl_fig = plt.figure()
 
 cph.plot_partial_effects_on_outcome(covariates = 'age',
                                     values = [30,40,50, 60, 70, 80],
                                     cmap = 'coolwarm')
                     
-st.pyplot(plt)
+
+cph2 = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(cph2, resize=True)
+
+st.plotly_chart(py_fig)
 
