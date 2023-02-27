@@ -8,6 +8,7 @@ import seaborn as sns
 import streamlit as st
 import numpy as np
 from lifelines import CoxPHFitter
+import plotly.tools as tls
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
@@ -25,9 +26,16 @@ df["ph.ecog"] = df["ph.ecog"].astype("int64")
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status',formula = "meal.cal")
 
+mpl_fig = plt.figure()
+
 plt.subplots(figsize = (10, 6))
 
 cph.plot_partial_effects_on_outcome(covariates = 'meal.cal',
                                     values = [0,200,500,1000,1500,2000,2500],
                                     cmap = 'coolwarm')
-st.pyplot(plt)
+
+cph2 = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(cph2, resize=True)
+
+st.plotly_chart(py_fig)

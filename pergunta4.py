@@ -99,19 +99,3 @@ cph2 = plt.gcf()
 py_fig = tls.mpl_to_plotly(cph2, resize=True)
 
 st.plotly_chart(py_fig)
-
-'''
-T = df["time"]
-E = df["status"]
-
-kmf = KaplanMeierFitter()
-kmf.fit(durations = T, event_observed = E)
-ax = plt.subplot(111)
-m = (df["sex"] == 1)
-f = (df["sex"] == 2)
-kmf.fit(durations = T[m], event_observed = E[m], label = "Male")
-kmf.plot_survival_function(ax = ax)
-plt.title("Survival of different gender group")
-kmf.fit(T[f], event_observed = E[f], label = "Female")
-kmf.plot_survival_function(ax = ax, at_risk_counts = True)
-'''
