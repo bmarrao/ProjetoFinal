@@ -125,7 +125,6 @@ st.caption("Efeito da idade com ocontrole de outros fatores relevantes, como sex
 st.subheader("2 -Qual é o efeito da perda de peso nos últimos seis meses no tempo de sobrevivência em pacientes com cancro de pulmão?")
 
 
-#print(T)
 kmf = KaplanMeierFitter()
 Ta1 = {'time':[]}
 Ta2 = {'time':[]}
@@ -201,10 +200,13 @@ kmf.fit(durations = Ta5, event_observed = Ea5,label="20+")
 kmf.survival_function_.plot(ax = a)
 
 
+kmf2 = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(kmf2, resize=True)
 
 #kmf.plot_survival_function(ax = ax,at_risk_counts = True)
 
-st.pyplot(fig)
+st.plotly_chart(py_fig)
 
 ##########################################################################################################################################
 
