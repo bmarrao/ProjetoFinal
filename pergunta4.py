@@ -86,13 +86,11 @@ st.pyplot(x)
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status')
 
-
 mpl_fig = plt.figure()
 
 cph.plot_partial_effects_on_outcome(covariates = 'sex',
                                     values = [1,2],
                                     cmap = 'coolwarm')
-st.pyplot(plt)
 
 cph2 = plt.gcf()
 
