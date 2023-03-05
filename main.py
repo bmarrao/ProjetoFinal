@@ -21,9 +21,6 @@ df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
 
-
-for index, row in df.iterrows():
-    print(row['wt.loss'])
 st.title("Survivor Analysis for lung cancer data")
 
 ##########################################################################################################################################
