@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 import numpy as np
+import plotly.tools as tls   
 
 '''
 from sklearn import set_config
@@ -61,3 +62,37 @@ rsf = RandomSurvivalForest(n_estimators=1000,
                            random_state=random_state)
                            '''
 
+
+surv = rsf.predict_survival_function(X_test, return_array=True)
+mpl_fig = plt.figure()
+
+for i, s in enumerate(surv):
+    plt.step(rsf.event_times_, s, where="post", label=str(i))
+plt.ylabel("Survival probability")
+plt.xlabel("Time in days")
+plt.legend()
+plt.grid(True)
+
+rsf2 = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(rsf2, resize=True)
+
+st.plotly_chart(py_fig)
+
+mpl_fig = plt.figure()
+
+
+surv = rsf.predict_cumulative_hazard_function(X_test, return_array=True)
+
+for i, s in enumerate(surv):
+    plt.step(rsf.event_times_, s, where="post", label=str(i))
+plt.ylabel("Cumulative hazard")
+plt.xlabel("Time in days")
+plt.legend()
+plt.grid(True)
+
+rsf2 = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(rsf2, resize=True)
+
+st.plotly_chart(py_fig)
