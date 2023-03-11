@@ -7,10 +7,16 @@ import plotly.tools as tls
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
-
-
+dic = {}
+array = [(0,0)]
 st.title("Survivor Analysis for lung cancer data")
 st.header("Analysis of age impact in the time that a person survives")
+st.sidebar.title('Navigation')
+num1 = st.sidebar.number_input('Idade superior')
+num2 = st.sidebar.number_input('Idade inferior')
+array.append((num1, num2))
+
+print(array)
 '''
 df = pd.read_csv(filename)
 age_time = {}
