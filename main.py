@@ -48,13 +48,7 @@ rsf = RandomSurvivalForest(n_estimators=1000,
 rsf.fit(X_train, y_train)
 #print(rsf.fit)
 print(rsf.score(X_test, y_test))
-'''
-rsf = RandomSurvivalForest(n_estimators=1000,
-                           min_samples_split=10,
-                           min_samples_leaf=15,
-                           n_jobs=-1,
-                           random_state=random_state)
-                           '''
+
 
 
 surv = rsf.predict_survival_function(X_test, return_array=True)
