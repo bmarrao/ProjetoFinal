@@ -6,15 +6,6 @@ import streamlit as st
 import numpy as np
 import plotly.tools as tls   
 
-'''
-from sklearn import set_config
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OrdinalEncoder
-
-from sksurv.datasets import load_gbsg2
-from sksurv.preprocessing import OneHotEncoder
-from sksurv.ensemble import RandomSurvivalForest
-'''
 from sklearn.model_selection import train_test_split
 from sksurv.ensemble import RandomSurvivalForest
 
@@ -44,7 +35,7 @@ lg_x = df.drop(["status","time"],axis=1)
 random_state = 20
 
 X_train, X_test, y_train, y_test = train_test_split(
-    lg_x, lg_y, test_size=0.25, random_state=random_state)
+    lg_x, lg_y, test_size=0.05, random_state=random_state)
 
 rsf = RandomSurvivalForest(n_estimators=1000,
                            min_samples_split=10,
@@ -54,13 +45,7 @@ rsf = RandomSurvivalForest(n_estimators=1000,
 rsf.fit(X_train, y_train)
 #print(rsf.fit)
 print(rsf.score(X_test, y_test))
-'''
-rsf = RandomSurvivalForest(n_estimators=1000,
-                           min_samples_split=10,
-                           min_samples_leaf=15,
-                           n_jobs=-1,
-                           random_state=random_state)
-                           '''
+
 
 
 surv = rsf.predict_survival_function(X_test, return_array=True)

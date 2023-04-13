@@ -38,7 +38,7 @@ lg_x = df.drop(["status","time"],axis=1)
 random_state = 20
 
 X_train, X_test, y_train, y_test = train_test_split(
-    lg_x, lg_y, test_size=0.25, random_state=random_state)
+    lg_x, lg_y, test_size=0.05, random_state=random_state)
 
 rsf = RandomSurvivalForest(n_estimators=1000,
                            min_samples_split=10,

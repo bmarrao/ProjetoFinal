@@ -17,23 +17,9 @@ num2 = st.sidebar.number_input('Idade inferior')
 array.append((num1, num2))
 
 print(array)
-'''
-df = pd.read_csv(filename)
-age_time = {}
-age = df['age']
-time = df['time']
-for i in range(0,len(df)):
-    if age[i] not in age_time:
-        age_time[age[i]] = [time[i]]
-    else:
-        age_time[age[i]].append(time[i])
-for i in age_time:
-    x = age_time[i]
-    age_time[i] = sum(x)/len(x)
-graph1 = pd.DataFrame.from_dict(age_time,orient='index')
 
-st.line_chart(graph1)
-'''
+
+
 
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
 df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
@@ -49,11 +35,14 @@ Ta1 = {'time':[]}
 Ta2 = {'time':[]}
 Ta3 = {'time':[]}
 Ta4 = {'time':[]}
+Ta5 = {'time':[]}
 
 Ea1 = {'status':[]}
 Ea2 = {'status':[]}
 Ea3 = {'status':[]}
 Ea4 = {'status':[]}
+Ea5 = {'status':[]}
+
 
 #Ta2 = pd.DataFrame()
 for index, row in df.iterrows():
@@ -70,6 +59,10 @@ for index, row in df.iterrows():
         Ta4['time'].append(row['time'])
         Ea4['status'].append(row['status'])
 
+    if row['age'] >= num1 and row['age'] <= num2:
+        Ta1['time'].append(row['time'])
+        Ea1['status'].append(row['status'])
+
 
 
        #print(row['time'], row['status'])
@@ -82,6 +75,16 @@ Ea3 = pd.DataFrame(Ea3)
 Ta4 = pd.DataFrame(Ta4)
 Ea4 = pd.DataFrame(Ea4)
 
+Ta5 = pd.DataFrame(Ta5)
+Ea5 = pd.DataFrame(Ea5)
+
+ax = plt.subplot(111)
+kmf = KaplanMeierFitter()
+kmf.fit(durations = Ta1, event_observed = Ea1,label="{num1}{num2}")
+kmf.survival_function_.plot(ax = ax)
+kmf2 = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(kmf2, resize=True)
 
 ax = plt.subplot(111)
 kmf = KaplanMeierFitter()
