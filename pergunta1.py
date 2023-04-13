@@ -15,7 +15,7 @@ st.sidebar.title('Navigation')
 num1 = st.sidebar.number_input('Idade superior')
 num2 = st.sidebar.number_input('Idade inferior')
 array.append((num1, num2))
-
+print("OI")
 print(array)
 
 

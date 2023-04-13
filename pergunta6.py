@@ -30,6 +30,7 @@ cph.print_summary()
 plt.subplots(figsize = (10, 6))
 
 #Exemplo para idade
+    
 cph.plot_partial_effects_on_outcome(['age','sex'],
                                     values = [[50,1], [60,1], [70,1], [80,1]],
                                      cmap = 'coolwarm')

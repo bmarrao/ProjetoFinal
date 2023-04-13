@@ -40,4 +40,3 @@ st.header("Modelos usados na criação dos graficos , suas explicações e suas 
 st.subheader("Estimador de Kaplan-Meier")
 
 st.text("É um modelo também conhecido como o estimador de limite de produto , usamos este modelo pois ele é capaz de calcular a probabilidade de sobrevivência para conjuntos de dados com falhas e suspensôes INFORMAÇÂO OBTIDA EM : https://support.minitab.com/pt-br/minitab/20/help-and-how-to/statistical-modeling/reliability/how-to/distribution-overview-plot-right-censoring/methods-and-formulas/nonparametric-methods-and-formulas/kaplan-meier-estimation/")
-st.la
