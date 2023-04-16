@@ -418,7 +418,54 @@ data = pd.DataFrame(data = dic)
 
 st.line_chart(data)
 #####################################################################################################################################################
+
+st.subheader("9- inst")
+
+
+dataf = {}
+
 insts = []
+
+
+
+
+for index, row in df.iterrows():
+    if row['inst'] not in insts:
+        insts.append(row['inst'])
+
+
+
+for a in insts:
+    Ta = {'time':[]}
+    Ea = {'status':[]}
+    dataf[a] = [Ta,Ea]
+
+
+
+for index, row in df.iterrows():
+    dataf[row['inst']][0]['time'].append(row['time'])
+    dataf[row['inst']][1]['status'].append(row['status'])
+
+ax = plt.subplot()
+kmf = KaplanMeierFitter()
+
+
+for a in insts:
+    dataf[a][0] = pd.DataFrame(dataf[a][0])
+    dataf[a][1] = pd.DataFrame(dataf[a][1])
+
+    
+    kmf.fit(durations = dataf[a][0], event_observed = dataf[a][1],label = "inst")
+    kmf.survival_function_.plot(ax = ax)
+
+figaux = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(figaux,resize = True)
+
+st.plotly_chart(py_fig)
+
+
+
 
 df["inst"].fillna(100.00, inplace = True)
 
