@@ -416,7 +416,10 @@ st.subheader("8- Comparar a pontuação de desempenho de Karnofsky, avaliada pel
 dic = {'Paciente' : df["ph.karno"],'Medico': df["pat.karno"]}
 data = pd.DataFrame(data = dic)
 
-st.line_chart(data)
+z = px.scatter(data,x = "Paciente", y ="Medico",trendline="ols")
+
+
+st.plotly_chart(z)
 #####################################################################################################################################################
 
 st.subheader("9- aux")
@@ -425,9 +428,6 @@ st.subheader("9- aux")
 dataf = {}
 
 insts = []
-
-
-
 
 for index, row in df.iterrows():
     if row['inst'] not in insts:
@@ -467,14 +467,8 @@ st.plotly_chart(py_fig)
 
 
 
-df["inst"].fillna(100.00, inplace = True)
-
-for index, row in df.iterrows():
-    if row['inst'] not in insts:
-        insts.append(row['inst'])
-
-cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status')
+cph2 = CoxPHFitter()
+cph2.fit(df, duration_col = 'time', event_col = 'status')
 
 fig, ax = plt.subplots()
 
@@ -483,9 +477,9 @@ cph.plot_partial_effects_on_outcome(covariates = 'inst',
                                     cmap = 'coolwarm')
 
 
-cph2 = plt.gcf()
+cph3 = plt.gcf()
 
-py_fig = tls.mpl_to_plotly(cph2, resize=True)
+py_fig = tls.mpl_to_plotly(cph3, resize=True)
 
 st.plotly_chart(py_fig)
 
