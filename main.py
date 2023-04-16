@@ -419,7 +419,7 @@ data = pd.DataFrame(data = dic)
 st.line_chart(data)
 #####################################################################################################################################################
 
-st.subheader("9- inst")
+st.subheader("9- aux")
 
 
 dataf = {}
@@ -483,8 +483,12 @@ cph.plot_partial_effects_on_outcome(covariates = 'inst',
                                     cmap = 'coolwarm')
 
 
+cph2 = plt.gcf()
 
-st.pyplot(plt)
+py_fig = tls.mpl_to_plotly(cph2, resize=True)
+
+st.plotly_chart(py_fig)
+
 
 ##########################################################################################################################################
 
