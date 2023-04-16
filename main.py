@@ -416,7 +416,7 @@ st.subheader("8- Comparar a pontuação de desempenho de Karnofsky, avaliada pel
 dic = {'Paciente' : df["ph.karno"],'Medico': df["pat.karno"]}
 data = pd.DataFrame(data = dic)
 
-z = px.scatter(data,x = "Paciente", y ="Medico",trendline="ols")
+z = px.scatter(data,x = "Paciente", y ="Medico")#,trendline="ols"
 
 
 st.plotly_chart(z)
