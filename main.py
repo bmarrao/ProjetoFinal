@@ -419,6 +419,12 @@ data = pd.DataFrame(data = dic)
 st.line_chart(data)
 #####################################################################################################################################################
 
+df["inst"].fillna(100.00, inplace = True)
+
+for index, row in df.iterrows():
+    if row['inst'] not in insts:
+        insts.append(row['inst'])
+
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status')
 
