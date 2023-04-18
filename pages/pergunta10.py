@@ -1,10 +1,8 @@
 '''Existe uma diferença significativa no tempo de sobrevivência entre homens e mulheres
 com cancro do pulmão? E após o controle de outras covariáveis, como idade, classificação ECOG ou pontuação de Karnofsky'''
 
-import csv
 import pandas as pd
 import matplotlib.pyplot as plt             ### FEITO
-import seaborn as sns
 import streamlit as st
 import numpy as np
 from lifelines import CoxPHFitter
