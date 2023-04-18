@@ -28,7 +28,7 @@ df = df.reset_index()
 
 st.session_state['dic'] = df
 st.title("Survivor Analysis for lung cancer data")
-st.sidebar.sucess("Select a page above")
+#st.sidebar.sucess("Select a page above")
 st.subheader("Survival Forests")
 
 lg_y = df[['status','time']].copy()
