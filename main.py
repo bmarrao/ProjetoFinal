@@ -54,7 +54,6 @@ rsf.fit(X_train, y_train)
 print(rsf.score(X_test, y_test))
 
 
-st.set_page_config(page_title="Survival Forest", page_icon="📈")
 
 surv = rsf.predict_survival_function(X_test, return_array=True)
 mpl_fig = plt.figure()
