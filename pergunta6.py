@@ -31,7 +31,7 @@ plt.subplots(figsize = (10, 6))
 
 #Exemplo para idade
     
-cph.plot()
+cph.predict_survival_function(X = df)
 
 
 st.pyplot(plt)
