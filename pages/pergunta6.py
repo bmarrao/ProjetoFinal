@@ -7,7 +7,7 @@ import streamlit as st
 import numpy as np
 from lifelines import CoxPHFitter, KaplanMeierFitter
 
-
+'''
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
 #print(df)
@@ -20,6 +20,9 @@ df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
 df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
+'''
+
+df = st.session_state['dic']
 
 cph = CoxPHFitter()
 cph.fit(df, duration_col = 'time', event_col = 'status', formula = "age + sex + ph.ecog + ph.karno")

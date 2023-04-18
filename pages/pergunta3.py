@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 from lifelines import CoxPHFitter
 import plotly.tools as tls   
-
+'''
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
@@ -21,6 +21,9 @@ df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
+'''
+df = st.session_state['dic']
+
 dic =  {'died': {'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []},'alive':{'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []}}
 
 for index, row in df.iterrows():

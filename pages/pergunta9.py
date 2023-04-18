@@ -6,7 +6,7 @@ import plotly.tools as tls
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
-
+'''
 df["inst"].fillna(100.00, inplace = True)
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
 df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
@@ -15,6 +15,9 @@ df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 #df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df["ph.ecog"].fillna(df["ph.ecog"].mean(), inplace = True)
+'''
+
+df = st.session_state['dic']
 
 dataf = {}
 

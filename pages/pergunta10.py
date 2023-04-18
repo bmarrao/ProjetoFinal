@@ -8,6 +8,8 @@ import numpy as np
 from lifelines import CoxPHFitter
 import plotly.express as px
 
+
+'''
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
 
@@ -18,6 +20,9 @@ df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 print(df.to_dict())
+'''
+df = st.session_state['dic']
+
 x = df['meal.cal']
 y = df['ph.karno']
 

@@ -8,6 +8,8 @@ from plotly.graph_objs import *
 from pylab import rcParams
 rcParams['figure.figsize']=10, 5
 
+'''
+
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
 
@@ -26,7 +28,9 @@ df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
+'''
 
+df = st.session_state['dic']
 
 #print(T)
 kmf = KaplanMeierFitter()
