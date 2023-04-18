@@ -4,8 +4,10 @@ import streamlit as st
 from lifelines import CoxPHFitter ,KaplanMeierFitter
 import plotly.tools as tls   
 
+'''
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
+'''
 dic = {}
 array = [(0,0)]
 st.title("Survivor Analysis for lung cancer data")
@@ -14,11 +16,10 @@ st.sidebar.title('Navigation')
 num1 = st.sidebar.number_input('Idade superior')
 num2 = st.sidebar.number_input('Idade inferior')
 array.append((num1, num2))
-print("OI")
-print(array)
 
 
 
+'''
 
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
 df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
@@ -27,7 +28,8 @@ df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 
-
+'''
+df = st.session_state['dic']
 #print(T)
 kmf = KaplanMeierFitter()
 Ta1 = {'time':[]}
