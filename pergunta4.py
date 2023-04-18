@@ -30,27 +30,46 @@ df = df.reset_index()
 df['status'] = df["status"]-1
 
 
-T = df["time"]
-E = df["status"]
-
 kmf = KaplanMeierFitter()
-kmf.fit(durations = T, event_observed = E)
-ax = plt.subplot(111)
-m = (df["sex"] == 1)
-f = (df["sex"] == 2)
-kmf.fit(durations = T[m], event_observed = E[m], label = "Male")
-kmf.plot_survival_function(ax = ax)
-plt.title("Survival of different gender group")
-kmf.fit(T[f], event_observed = E[f], label = "Female")
-kmf.plot_survival_function(ax = ax, at_risk_counts = True)
+Ta1 = {'time':[]}
+Ta2 = {'time':[]}
 
+T = {'time':[]}
+E = {'status':[]}
+
+Ea1 = {'status':[]}
+Ea2 = {'status':[]}
+
+for index, row in df.iterrows():
+    if row['sex'] == 1:
+        Ta1['time'].append(row['time'])
+        Ea1['status'].append(row['status'])
+    elif row['sex'] == 2:
+        Ta2['time'].append(row['time'])
+        Ea2['status'].append(row['status'])
+
+Ta1 = pd.DataFrame(Ta1)
+Ea1 = pd.DataFrame(Ea1)
+Ta2 = pd.DataFrame(Ta2)
+Ea2 = pd.DataFrame(Ea2)
+
+ax = plt.subplot(111)
+kmf = KaplanMeierFitter()
+kmf.fit(durations = Ta1, event_observed = Ea1,label="Homem")
+kmf.survival_function_.plot(ax = ax)
+plt.title("Survival of different gender group")
+
+ax = plt.subplot(111)
+kmf = KaplanMeierFitter()
+kmf.fit(durations = Ta2, event_observed = Ea2,label="Mulher")
+kmf.survival_function_.plot(ax = ax)
+plt.title("Survival of different gender group")
 kmf2 = plt.gcf()
 
 py_fig = tls.mpl_to_plotly(kmf2, resize=True)
 
-#kmf.plot_survival_function(ax = ax,at_risk_counts = True)
-
 st.plotly_chart(py_fig)
+
 
 
 cph = CoxPHFitter()

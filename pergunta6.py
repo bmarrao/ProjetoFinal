@@ -24,16 +24,14 @@ df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 
 cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status')
+cph.fit(df, duration_col = 'time', event_col = 'status', formula = "age + sex + ph.ecog + ph.karno")
 cph.print_summary()
 
 plt.subplots(figsize = (10, 6))
 
 #Exemplo para idade
     
-cph.plot_partial_effects_on_outcome(['age','sex'],
-                                    values = [[50,1], [60,1], [70,1], [80,1]],
-                                     cmap = 'coolwarm')
+cph.plot()
 
 
 st.pyplot(plt)
