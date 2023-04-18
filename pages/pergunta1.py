@@ -4,6 +4,8 @@ import streamlit as st
 from lifelines import CoxPHFitter ,KaplanMeierFitter
 import plotly.tools as tls   
 
+st.set_page_config(page_title = "Relação da idade com sobrevivência" )
+
 '''
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
