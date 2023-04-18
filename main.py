@@ -8,6 +8,9 @@ import plotly.express as px
 from sklearn.model_selection import train_test_split
 from sksurv.ensemble import RandomSurvivalForest
 
+st.set_page_config(page_title = "Lung cancer data analysis" )
+
+
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
 
@@ -24,7 +27,7 @@ df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
 
 st.title("Survivor Analysis for lung cancer data")
-
+st.sidebar.sucess("Select a page above")
 st.subheader("Survival Forests")
 
 lg_y = df[['status','time']].copy()
@@ -50,6 +53,7 @@ rsf.fit(X_train, y_train)
 print(rsf.score(X_test, y_test))
 
 
+st.set_page_config(page_title="Survival Forest", page_icon="📈")
 
 surv = rsf.predict_survival_function(X_test, return_array=True)
 mpl_fig = plt.figure()
