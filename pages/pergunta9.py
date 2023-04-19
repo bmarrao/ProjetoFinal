@@ -84,5 +84,9 @@ cph.plot_partial_effects_on_outcome(covariates = 'inst',
 
 
 
-st.pyplot(plt)
+figaux = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(figaux,resize = True)
+
+st.plotly_chart(py_fig)
 
