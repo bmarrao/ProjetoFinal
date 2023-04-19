@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import numpy as np
 from lifelines import CoxPHFitter, KaplanMeierFitter
+import plotly.tools as tls 
 
 '''
 filename = './lung-cancer-data.csv'
@@ -23,8 +24,8 @@ dataf = {}
 ecogs = []
 
 for index, row in df.iterrows():
-    if row['ecog'] not in insts:
-        insts.append(row['ecog'])
+    if row['ph.ecog'] not in ecogs:
+        ecogs.append(row['ph.ecog'])
 
 for a in ecogs:
     Ta = {'time':[]}
@@ -32,19 +33,20 @@ for a in ecogs:
     dataf[a] = [Ta,Ea]
 
 for index, row in df.iterrows():
-    dataf[row['ecog']][0]['time'].append(row['time'])
-    dataf[row['ecog']][1]['status'].append(row['status'])
+    dataf[row['ph.ecog']][0]['time'].append(row['time'])
+    dataf[row['ph.ecog']][1]['status'].append(row['status'])
 
 ax = plt.subplot()
 kmf = KaplanMeierFitter()
 
 
 for a in ecogs:
+    
     dataf[a][0] = pd.DataFrame(dataf[a][0])
     dataf[a][1] = pd.DataFrame(dataf[a][1])
 
     
-    kmf.fit(durations = dataf[a][0], event_observed = dataf[a][1],label = "ecog")
+    kmf.fit(durations = dataf[a][0], event_observed = dataf[a][1],label = "ecog" + str(a))
     kmf.survival_function_.plot(ax = ax)
 
 
