@@ -7,18 +7,10 @@ import plotly.tools as tls
 import plotly.express as px
 from sklearn.model_selection import train_test_split
 from sksurv.ensemble import RandomSurvivalForest
-from st_pages import Page, show_pages, add_page_title
+#from st_pages import Page, show_pages, add_page_title,show_pages_from_config
 st.set_page_config(page_title = "Lung cancer data analysis" )
-'''
-add_page_title()
 
-st.set_page_config(page_title = "Lung cancer data analysis" )
-show_pages(
-    [
-        Page("pages/pergunta1.py", "Relação da idade com sobrevivência")
-    ]
-)
-'''
+
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
@@ -34,6 +26,8 @@ df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
+
+st.session_state['pergunta1'] = [(0,0)]
 
 st.session_state['dic'] = df
 st.title("Survivor Analysis for lung cancer data")
