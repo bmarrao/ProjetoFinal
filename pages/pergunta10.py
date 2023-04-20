@@ -29,6 +29,8 @@ y = df['ph.karno']
 z = px.scatter(x = x, y =y,opacity = .2)
 st.plotly_chart(z)
 
+print(x. corr(y))
+
 
 '''
 fig = px.scatter(
