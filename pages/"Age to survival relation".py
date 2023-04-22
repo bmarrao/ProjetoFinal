@@ -15,13 +15,12 @@ filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
 '''
 dic = {}
-st.title("Survivor Analysis for lung cancer data")
 st.header("Analysis of age impact in the time that a person survives")
 st.sidebar.title('Navigation')
 df = st.session_state['dic']
 
-num1 = st.sidebar.number_input('Idade superior')
-num2 = st.sidebar.number_input('Idade inferior')
+num1 = st.sidebar.number_input('Idade inferior')
+num2 = st.sidebar.number_input('Idade superior')
 array = (num1,num2)
 #st.session_state['pergunta1'] = st.session_state['pergunta1'].append(array)
 arr = st.session_state['pergunta1']
