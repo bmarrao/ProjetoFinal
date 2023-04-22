@@ -2,7 +2,29 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
 from lifelines import CoxPHFitter
-import plotly.tools as tls   
+import plotly.tools as tls 
+
+
+
+df = st.session_state['dic']
+
+cph = CoxPHFitter()
+cph.fit(df, duration_col = 'time', event_col = 'status',formula= "age + sex + ph.ecog + ph.karno")
+
+mpl_fig = plt.figure()
+
+cph.plot_partial_effects_on_outcome(covariates = 'ph.karno',
+                                    values = [0,10,20,30,40,50,60,70,80,90,100],
+                                    cmap = 'coolwarm')
+
+
+
+cph2 = plt.gcf()
+
+py_fig = tls.mpl_to_plotly(cph2, resize=True)
+
+st.plotly_chart(py_fig)
+
 '''
 
 filename = './lung-cancer-data.csv'
@@ -21,7 +43,7 @@ df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
-'''
+
 df = st.session_state['dic']
 
 dic =  {'died': {'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []},'alive':{'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []}}
@@ -103,24 +125,5 @@ st.bar_chart(graph1)
 
 st.bar_chart(graph2)
 
+'''
 
-
-
-#FAZER MAIS GRÁFICOS
-
-cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status',formula= "age + sex + ph.ecog + ph.karno")
-
-mpl_fig = plt.figure()
-
-cph.plot_partial_effects_on_outcome(covariates = 'ph.karno',
-                                    values = [0,10,20,30,40,50,60,70,80,90,100],
-                                    cmap = 'coolwarm')
-
-
-
-cph2 = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(cph2, resize=True)
-
-st.plotly_chart(py_fig)

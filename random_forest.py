@@ -23,6 +23,20 @@ df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
 df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
+arr = st.session_state['random_forest']
+
+num1 = st.sidebar.number_input('Instituição : ')
+num2 = st.sidebar.number_input('Age : ')
+num3 = st.sidebar.number_input('Sex(0 - homem, 1 - mulher) :')
+num4 = st.sidebar.number_input('Pontuação de desempenho ECOG - Avaliado pelo médico :')
+num5 = st.sidebar.number_input('Pontuacao de desempenho Karnofsky avaliado pelo médico :')
+num6 = st.sidebar.number_input('Pontuacao de desempenho Karnofsky avaliado pelo paciente :')
+num7 = st.sidebar.number_input('Calorias consumidas nas ultimas refeicoes : ')
+num8 = st.sidebar.number_input('Perda de peso nos ultimos seis meses (em kilogramas ) : ')
+'''
+Deixar instituição e desempenho Karnofsky pelo paciente ?
+'''
+
 
 lg_y = df[['status','time']].copy()
 
@@ -47,12 +61,25 @@ rsf.fit(X_train, y_train)
 print(rsf.score(X_test, y_test))
 
 
+if st.sidebar.button('Add to graph'):
+    mpl_fig = plt.figure()
+    array = {'age' : num2 ,'inst': num1 ,'sex': num3 ,'ph.ecog' : num4 , 'ph.karno' : num5 , 'pat.karno': num6 ,
+             'meal.cal':num7,'wt.loss':num8}
+    arr.append(array)
+    test_1 = pd.DataFrame(arr)
+    st.session_state['random_forest']= arr
+    surv = rsf.predict_survival_function(test_1, return_array=True)
+    for i, s in enumerate(surv):
+        plt.step(rsf.event_times_, s, where="post", label=str(i))
+
+    
 
 surv = rsf.predict_survival_function(X_test, return_array=True)
 mpl_fig = plt.figure()
 
 for i, s in enumerate(surv):
     plt.step(rsf.event_times_, s, where="post", label=str(i))
+
 plt.ylabel("Survival probability")
 plt.xlabel("Time in days")
 plt.legend()

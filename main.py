@@ -29,12 +29,12 @@ df = df.reset_index()
 
 st.session_state['pergunta1'] = [(0,0)]
 st.session_state['pergunta2'] = [(0,0)]
+st.session_state['random_forest']= []
 
 st.session_state['dic'] = df
 st.title("Survivor Analysis for lung cancer data")
 #st.sidebar.sucess("Select a page above")
 st.subheader("Survival Forests")
-'''
 lg_y = df[['status','time']].copy()
 
 lg_y["status"] = lg_y["status"].astype("bool") 
@@ -93,6 +93,7 @@ py_fig = tls.mpl_to_plotly(rsf2, resize=True)
 
 st.plotly_chart(py_fig)
 
+'''
 
 ##########################################################################################################################################
 

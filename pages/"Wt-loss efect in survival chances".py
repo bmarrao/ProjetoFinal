@@ -22,7 +22,7 @@ if st.sidebar.button('Add to graph'):
     arr.append(array)
     st.session_state['pergunta2']= arr
     kmf = KaplanMeierFitter()
-
+    print(type(num1), type(num2))
 
 
     for (n1,n2) in arr[1:]:
@@ -32,7 +32,7 @@ if st.sidebar.button('Add to graph'):
 
     for index, row in df.iterrows():
         for (n1,n2) in arr[1:]:
-            if row['age'] >= n1 and row['age']<= n2:
+            if row['wt.loss'] >= n1 and row['wt.loss']<= n2:
                 dic[f'({n1},{n2})']['time'].append(row['time'])
                 dic[f'({n1},{n2})']['status'].append(row['status'])
         
