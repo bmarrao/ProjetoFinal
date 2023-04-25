@@ -34,23 +34,28 @@ if st.sidebar.button('Add to graph'):
     print(arr)
 
 
-    for (n1,n2) in arr[1:]:
+    for (n1,n2) in arr:
         dic[f'({n1},{n2})']= {}
         dic[f'({n1},{n2})']['status'] = []
         dic[f'({n1},{n2})']['time'] = []
         dic[f'({n1},{n2})']['status'] = []
 
     for index, row in df.iterrows():
-        for (n1,n2) in arr[1:]:
+        for (n1,n2) in arr:
             if row['age'] >= n1 and row['age']<= n2:
                 dic[f'({n1},{n2})']['time'].append(row['time'])
                 dic[f'({n1},{n2})']['status'].append(row['status'])
         
 
-    for (n1,n2) in arr[1:]:
+    for (n1,n2) in arr:
         ax = plt.subplot(111)
-        kmf.fit(durations = pd.DataFrame(dic[f'({n1},{n2})']['time']), event_observed = pd.DataFrame(dic[f'({n1},{n2})']['status']),label=f"{num1}-{num2}")
-        kmf.survival_function_.plot(ax = ax)
+        if dic[f'({n1},{n2})']['time']:
+            kmf.fit(durations = pd.DataFrame(dic[f'({n1},{n2})']['time']), event_observed = pd.DataFrame(dic[f'({n1},{n2})']['status']),label=f"{num1}-{num2}")
+            kmf.survival_function_.plot(ax = ax)
+        else :
+            st.info(f"There is no data for input {n1} - {n2}")
+            arr.remove((n1,n2))
+            st.session_state['pergunta1']= arr
 
 
     #kmf.plot_survival_function(ax = ax

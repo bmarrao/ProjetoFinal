@@ -27,8 +27,8 @@ df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
 
-st.session_state['pergunta1'] = [(0,0)]
-st.session_state['pergunta2'] = [(0,0)]
+st.session_state['pergunta1'] = []
+st.session_state['pergunta2'] = []
 st.session_state['pergunta3'] = []
 st.session_state['pergunta5'] = []
 
