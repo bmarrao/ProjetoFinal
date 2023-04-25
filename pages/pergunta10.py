@@ -1,5 +1,5 @@
-'''Existe uma diferença significativa no tempo de sobrevivência entre homens e mulheres
-com cancro do pulmão? E após o controle de outras covariáveis, como idade, classificação ECOG ou pontuação de Karnofsky'''
+'''Existe relação entre a pontuação de desempenho de Karnofsky e o número de calorias
+consumidas nas refeições?'''
 
 import pandas as pd
 import matplotlib.pyplot as plt             ### FEITO

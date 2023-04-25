@@ -21,6 +21,7 @@ df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
 df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 '''
+# Usar random_forest
 
 df = st.session_state['dic']
 

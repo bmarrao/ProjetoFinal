@@ -30,6 +30,7 @@ df = df.reset_index()
 st.session_state['pergunta1'] = [(0,0)]
 st.session_state['pergunta2'] = [(0,0)]
 st.session_state['pergunta3'] = []
+st.session_state['pergunta5'] = []
 
 st.session_state['random_forest']= []
 

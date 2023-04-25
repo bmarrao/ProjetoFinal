@@ -2,7 +2,7 @@
 com cancro do pulmão? E após o controle de outras covariáveis, como idade, classificação ECOG ou pontuação de Karnofsky'''
 
 import pandas as pd
-import matplotlib.pyplot as plt                     ### FEITO
+import matplotlib.pyplot as plt                     ### COMO APLICAR OUTRAS VARIÁVEIS NO COXPH?
 import streamlit as st
 from lifelines import CoxPHFitter,KaplanMeierFitter
 import plotly.tools as tls   
