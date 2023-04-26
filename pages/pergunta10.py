@@ -29,7 +29,7 @@ y = df['ph.karno']
 z = px.scatter(x = x, y =y,opacity = .2)
 st.plotly_chart(z)
 
-st.write(round(x. corr(y)))
+st.write(round(x. corr(y), 2))
 
 
 '''
