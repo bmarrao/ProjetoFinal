@@ -74,19 +74,20 @@ if st.sidebar.button('Add to graph'):
 
     st.plotly_chart(py_fig)
 
-cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status')
+if st.button('Show calories relation in cph model in a graph'):
+    cph = CoxPHFitter()
+    cph.fit(df, duration_col = 'time', event_col = 'status')
 
-mpl_fig = plt.figure()
+    mpl_fig = plt.figure()
 
-plt.subplots(figsize = (10, 6))
+    plt.subplots(figsize = (10, 6))
 
-cph.plot_partial_effects_on_outcome(covariates = 'meal.cal',
-                                    values = [0,200,500,1000,1500,2000,2500],
-                                    cmap = 'coolwarm')
+    cph.plot_partial_effects_on_outcome(covariates = 'meal.cal',
+                                        values = [0,200,500,1000,1500,2000,2500],
+                                        cmap = 'coolwarm')
 
-cph2 = plt.gcf()
+    cph2 = plt.gcf()
 
-py_fig = tls.mpl_to_plotly(cph2, resize=True)
+    py_fig = tls.mpl_to_plotly(cph2, resize=True)
 
-st.plotly_chart(py_fig)
+    st.plotly_chart(py_fig)
