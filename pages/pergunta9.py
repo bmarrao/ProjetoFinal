@@ -27,6 +27,8 @@ arr = st.session_state['pergunta1']
 
 dataf = {}
 
+
+
 insts = []
 
 
@@ -75,8 +77,8 @@ if st.sidebar.button('Add to graph'):
     kmf4 = KaplanMeierFitter()
 
     for a in arr:
-        dataf[a][0] = pd.DataFrame(dataf[a][0])
-        dataf[a][1] = pd.DataFrame(dataf[a][1])
+        #dataf[a][0] = pd.DataFrame(dataf[a][0])
+        #dataf[a][1] = pd.DataFrame(dataf[a][1])
 
         
         kmf4.fit(durations = dataf[a][0], event_observed = dataf[a][1],label = "inst")
