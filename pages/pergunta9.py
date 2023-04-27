@@ -72,20 +72,20 @@ st.plotly_chart(py_fig)
 if st.sidebar.button('Add to graph'):
     arr.append(array)
     st.session_state['pergunta1']= arr
-    kmf = KaplanMeierFitter()
+    kmf4 = KaplanMeierFitter()
 
     for a in arr:
         dataf[a][0] = pd.DataFrame(dataf[a][0])
         dataf[a][1] = pd.DataFrame(dataf[a][1])
 
         
-        kmf.fit(durations = dataf[a][0], event_observed = dataf[a][1],label = "inst")
-        kmf.survival_function_.plot(ax = ax)
-    figaux = plt.gcf()
+        kmf4.fit(durations = dataf[a][0], event_observed = dataf[a][1],label = "inst")
+        kmf4.survival_function_.plot(ax = ax)
+    figaux3 = plt.gcf()
 
-    py_fig = tls.mpl_to_plotly(figaux,resize = True)
+    py_fig2 = tls.mpl_to_plotly(figaux3,resize = True)
 
-    st.plotly_chart(py_fig)
+    st.plotly_chart(py_fig2)
 
 
 
