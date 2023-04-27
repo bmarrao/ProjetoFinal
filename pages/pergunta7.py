@@ -60,20 +60,20 @@ st.plotly_chart(py_fig)
 
 
 
+if st.button('Show ecog score relation in cph model graph'):
+    cph = CoxPHFitter()
+    cph.fit(df, duration_col = 'time', event_col = 'status',formula = "ph.ecog")
 
-cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status',formula = "ph.ecog")
+    #plt.subplots(figsize = (10, 6))
 
-#plt.subplots(figsize = (10, 6))
+    fig, ax = plt.subplots()
 
-fig, ax = plt.subplots()
+    cph.plot_partial_effects_on_outcome(covariates = 'ph.ecog',
+                                        values = [0,1,2,3,4],
+                                        cmap = 'coolwarm')
 
-cph.plot_partial_effects_on_outcome(covariates = 'ph.ecog',
-                                    values = [0,1,2,3,4],
-                                    cmap = 'coolwarm')
+    figaux = plt.gcf()
 
-figaux = plt.gcf()
+    py_fig = tls.mpl_to_plotly(figaux,resize = True)
 
-py_fig = tls.mpl_to_plotly(figaux,resize = True)
-
-st.plotly_chart(py_fig)
+    st.plotly_chart(py_fig)

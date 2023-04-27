@@ -19,6 +19,12 @@ df["ph.ecog"].fillna(df["ph.ecog"].mean(), inplace = True)
 
 df = st.session_state['dic']
 
+num1 = st.sidebar.number_input('Instituicao desejada')
+
+array = num1
+
+arr = st.session_state['pergunta1']
+
 dataf = {}
 
 insts = []
@@ -63,30 +69,46 @@ st.plotly_chart(py_fig)
 
 
 
+if st.sidebar.button('Add to graph'):
+    arr.append(array)
+    st.session_state['pergunta1']= arr
+    kmf = KaplanMeierFitter()
+
+    for a in arr:
+        dataf[a][0] = pd.DataFrame(dataf[a][0])
+        dataf[a][1] = pd.DataFrame(dataf[a][1])
+
+        
+        kmf.fit(durations = dataf[a][0], event_observed = dataf[a][1],label = "inst")
+        kmf.survival_function_.plot(ax = ax)
+    figaux = plt.gcf()
+
+    py_fig = tls.mpl_to_plotly(figaux,resize = True)
+
+    st.plotly_chart(py_fig)
 
 
 
 
 
 
+if st.button('Show difference of institution to survival rate using cph model'):
+    cph = CoxPHFitter()
+    cph.fit(df, duration_col = 'time', event_col = 'status')
 
+    fig, ax = plt.subplots()
 
-cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status')
-
-fig, ax = plt.subplots()
-
-cph.plot_partial_effects_on_outcome(covariates = 'inst',
-                                    values = [a for a in insts],
-                                    cmap = 'coolwarm')
-
-
+    cph.plot_partial_effects_on_outcome(covariates = 'inst',
+                                        values = [a for a in insts],
+                                        cmap = 'coolwarm')
 
 
 
-figaux = plt.gcf()
 
-py_fig = tls.mpl_to_plotly(figaux,resize = True)
 
-st.plotly_chart(py_fig)
+    figaux = plt.gcf()
+
+    py_fig = tls.mpl_to_plotly(figaux,resize = True)
+
+    st.plotly_chart(py_fig)
 
