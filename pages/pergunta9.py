@@ -17,13 +17,14 @@ df.dropna(inplace=True)
 df["ph.ecog"].fillna(df["ph.ecog"].mean(), inplace = True)
 '''
 
+
 df = st.session_state['dic']
 
 num1 = st.sidebar.number_input('Instituicao desejada')
 
 array = num1
 
-arr = st.session_state['pergunta1']
+arr = st.session_state['pergunta9']
 
 dataf = {}
 
@@ -38,6 +39,7 @@ for index, row in df.iterrows():
     if row['inst'] not in insts:
         insts.append(row['inst'])
 
+print(insts)
 
 
 for a in insts:
@@ -73,8 +75,11 @@ st.plotly_chart(py_fig)
 
 if st.sidebar.button('Add to graph'):
     arr.append(array)
-    st.session_state['pergunta1']= arr
+    st.session_state['pergunta9']= arr
+    ax2 = plt.subplot()
     kmf4 = KaplanMeierFitter()
+
+    print(arr)
 
     for a in arr:
         #dataf[a][0] = pd.DataFrame(dataf[a][0])
@@ -82,7 +87,9 @@ if st.sidebar.button('Add to graph'):
 
         
         kmf4.fit(durations = dataf[a][0], event_observed = dataf[a][1],label = "inst")
-        kmf4.survival_function_.plot(ax = ax)
+        kmf4.survival_function_.plot(ax = ax2)
+
+
     figaux3 = plt.gcf()
 
     py_fig2 = tls.mpl_to_plotly(figaux3,resize = True)

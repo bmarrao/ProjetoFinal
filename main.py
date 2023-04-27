@@ -31,6 +31,7 @@ st.session_state['pergunta1'] = []
 st.session_state['pergunta2'] = []
 st.session_state['pergunta3'] = []
 st.session_state['pergunta5'] = []
+st.session_state['pergunta9'] = []
 
 st.session_state['random_forest']= []
 
