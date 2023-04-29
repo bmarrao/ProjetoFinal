@@ -19,6 +19,32 @@ df['status'] = df["status"]-1
 df['sex'] = df["sex"]-1
 df['wt.loss'] = df['wt.loss'] * 0.45359237
 
+df['sex'] = df['sex'].replace(0, 'Men')
+df['sex'] = df['sex'].replace(1, 'Women')
+
+#Falta o comparativo dos q tavam vivo no experimento
+fig = px.histogram(df, x="sex")
+st.plotly_chart(fig)
+
+#Falta o comparativo dos q tavam vivo no experimento
+fig = px.histogram(df, x="age")
+st.plotly_chart(fig)
+
+#Falta o comparativo dos q tavam vivo no experimento
+fig = px.box(df, x="sex", y="age")
+st.plotly_chart(fig)
+
+#Falta o comparativo dos q tavam vivo no experimento
+fig = px.bar(df, x='sex', y='meal.cal')
+st.plotly_chart(fig)
+
+
+#Falta o comparativo dos q tavam vivo no experimento
+fig = px.box(df, x="ph.ecog", y="meal.cal")
+st.plotly_chart(fig)
+
+
+
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
 df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
 df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
