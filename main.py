@@ -7,6 +7,8 @@ import plotly.tools as tls
 import plotly.express as px
 from sklearn.model_selection import train_test_split
 from sksurv.ensemble import RandomSurvivalForest
+import plotly.graph_objects as go
+
 #from st_pages import Page, show_pages, add_page_title,show_pages_from_config
 st.set_page_config(page_title = "Lung cancer data analysis" )
 
@@ -19,19 +21,105 @@ df['status'] = df["status"]-1
 df['sex'] = df["sex"]-1
 df['wt.loss'] = df['wt.loss'] * 0.45359237
 
+
 df['sex'] = df['sex'].replace(0, 'Men')
 df['sex'] = df['sex'].replace(1, 'Women')
+df['status'] = df['status'].replace(0, 'Alive by the end of the experiment')
+df['status'] = df['status'].replace(1, 'Dead by the end of the experiment')
+grouped=df.groupby(df.status)
 
+df_vivo = grouped.get_group('Alive by the end of the experiment')
+df_dead = grouped.get_group('Dead by the end of the experiment')
 #Falta o comparativo dos q tavam vivo no experimento
-fig = px.histogram(df, x="sex")
+fig = px.histogram(df, x="status",color="status")
 st.plotly_chart(fig)
 
-#Falta o comparativo dos q tavam vivo no experimento
+fig = go.Figure()
+
+'''
+fig.add_trace(go.Histogram(df,x='sex'))
+fig.add_trace(go.Histogram(df_vivo, x='sex'))
+fig.add_trace(go.Histogram(df_dead, x='sex'))
+st.plotly_chart(fig)
+'''
+
+'''Men and women data'''
+fig = go.Figure()
+fig.add_trace(
+    go.Histogram(x=df['sex'],
+    name='All men and women')
+)
+fig.add_trace(go.Histogram(x=df_dead['sex'],name='Dead by the end of the experiment')
+)
+
+fig.add_trace(go.Histogram(x=df_vivo['sex'],name='Alive by the end of the experiment')
+            
+)
+fig.update_layout(barmode='overlay')
+fig.update_traces(opacity=0.75)
+st.plotly_chart(fig)
+
+
+fig = px.histogram(df, x="sex", color="sex",hover_data=df.columns)
+st.plotly_chart(fig)
+st.caption("All men and women on the experiment")
+
+fig = px.histogram(df_dead,color = 'sex', x="sex")
+st.plotly_chart(fig)
+st.caption("Women and men dead by the end of the experiment")
+
+fig = px.histogram(df_vivo,color='sex', x="sex")
+st.plotly_chart(fig)
+st.caption("Women and men alive by the end of the experiment")
+
+
+'''Age data'''
+fig = go.Figure()
+fig.add_trace(
+    go.Histogram(x=df['age'],
+    name='All men and women')
+)
+fig.add_trace(go.Histogram(x=df_dead['age'],name='Dead by the end of the experiment')
+)
+
+fig.add_trace(go.Histogram(x=df_vivo['age'],name='Alive by the end of the experiment')
+            
+)
+fig.update_layout(barmode='overlay')
+fig.update_traces(opacity=0.75)
+st.plotly_chart(fig)
+
 fig = px.histogram(df, x="age")
 st.plotly_chart(fig)
+st.caption("All people on the experiment")
 
+
+fig = px.histogram(df_vivo, x="age")
+st.plotly_chart(fig)
+st.caption("Alive by the end of the experiment")
+
+fig = px.histogram(df_dead, x="age")
+st.plotly_chart(fig)
+st.caption("Dead by the end of the experiment")
+
+fig = go.Figure()
+fig.add_trace(
+    go.Box(x=df['sex'],y=df['age'],
+    name='All men and women'))
+
+fig.add_trace(go.Box(x=df_dead['sex'],y=df_dead['age'],name='Dead by the end of the experiment'))
+
+fig.add_trace(go.Box(x=df_vivo['sex'],y=df_vivo['age'],name='Alive by the end of the experiment')
+            
+)
+fig.update_layout(
+    yaxis_title='Age',
+    boxmode='group' # group together boxes of the different traces for each value of x
+)
+
+st.plotly_chart(fig)
 #Falta o comparativo dos q tavam vivo no experimento
-fig = px.box(df, x="sex", y="age")
+fig = px.box(df, color = "sex" ,x="sex", y="age", points="all")
 st.plotly_chart(fig)
 
 #Falta o comparativo dos q tavam vivo no experimento
@@ -42,7 +130,6 @@ st.plotly_chart(fig)
 #Falta o comparativo dos q tavam vivo no experimento
 fig = px.box(df, x="ph.ecog", y="meal.cal")
 st.plotly_chart(fig)
-
 
 
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
@@ -123,508 +210,3 @@ py_fig = tls.mpl_to_plotly(rsf2, resize=True)
 
 st.plotly_chart(py_fig)
 
-'''
-
-##########################################################################################################################################
-
-st.subheader("1 - A idade afeta significativamente o tempo de sobrevivência em pacientes com cancro de pulmão? E após o controle de outros fatores relevantes, como sexo, pontuação dedesempenho ECOG e pontuação de desempenho de Karnofsky?")
-
-kmf = KaplanMeierFitter()
-Ta1 = {'time':[]}
-Ta2 = {'time':[]}
-Ta3 = {'time':[]}
-Ta4 = {'time':[]}
-
-Ea1 = {'status':[]}
-Ea2 = {'status':[]}
-Ea3 = {'status':[]}
-Ea4 = {'status':[]}
-
-#Ta2 = pd.DataFrame()
-for index, row in df.iterrows():
-    if row['age'] >= 30 and row['age'] <= 50:
-        Ta1['time'].append(row['time'])
-        Ea1['status'].append(row['status'])
-    elif row['age'] >= 50 and row['age'] <= 60:
-        Ta2['time'].append(row['time'])
-        Ea2['status'].append(row['status'])
-    elif row['age'] >= 60 and row['age'] <= 70:
-        Ta3['time'].append(row['time'])
-        Ea3['status'].append(row['status'])
-    elif row['age'] >= 70 and row['age'] <= 100:
-        Ta4['time'].append(row['time'])
-        Ea4['status'].append(row['status'])
-
-
-
-       #print(row['time'], row['status'])
-Ta1 = pd.DataFrame(Ta1)
-Ea1 = pd.DataFrame(Ea1)
-Ta2 = pd.DataFrame(Ta2)
-Ea2 = pd.DataFrame(Ea2)
-Ta3 = pd.DataFrame(Ta3)
-Ea3 = pd.DataFrame(Ea3)
-Ta4 = pd.DataFrame(Ta4)
-Ea4 = pd.DataFrame(Ea4)
-
-
-ax = plt.subplot(111)
-kmf = KaplanMeierFitter()
-kmf.fit(durations = Ta1, event_observed = Ea1,label="30-50")
-kmf.survival_function_.plot(ax = ax)
-
-#kmf.plot_survival_function(ax = ax)
-
-kmf.fit(durations = Ta2, event_observed = Ea2,label="50-60")
-kmf.survival_function_.plot(ax = ax)
-
-
-#kmf.survival_function_plot(ax = ax)
-
-kmf.fit(durations = Ta3, event_observed = Ea3,label="60-70")
-kmf.survival_function_.plot(ax = ax)
-
-#kmf.plot_survival_function(ax = ax)
-
-kmf.fit(durations = Ta4, event_observed = Ea4,label="70+")
-kmf.survival_function_.plot(ax = ax)
-
-#kmf.plot_survival_function(ax = ax,at_risk_counts = True)
-kmf2 = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(kmf2, resize=True)
-
-#kmf.plot_survival_function(ax = ax,at_risk_counts = True)
-
-
-st.plotly_chart(py_fig)
-
-
-
-
-cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status',formula= "age + sex + ph.ecog + ph.karno")
-
-mpl_fig = plt.figure()
-
-cph.plot_partial_effects_on_outcome(covariates = 'age',
-                                    values = [30,40,50, 60, 70, 80],
-                                    cmap = 'coolwarm')
-                    
-
-cph2 = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(cph2, resize=True)
-
-st.plotly_chart(py_fig)
-
-st.caption("Efeito da idade com ocontrole de outros fatores relevantes, como sexo, pontuação dedesempenho ECOG e pontuação de desempenho de Karnofsky?")
-
-##########################################################################################################################################
-
-st.subheader("2 -Qual é o efeito da perda de peso nos últimos seis meses no tempo de sobrevivência em pacientes com cancro de pulmão?")
-
-
-kmf = KaplanMeierFitter()
-Ta1 = {'time':[]}
-Ta2 = {'time':[]}
-Ta3 = {'time':[]}
-Ta4 = {'time':[]}
-Ta5 = {'time':[]}
-
-
-Ea1 = {'status':[]}
-Ea2 = {'status':[]}
-Ea3 = {'status':[]}
-Ea4 = {'status':[]}
-Ea5 = {'status':[]}
-
-#Ta2 = pd.DataFrame()
-for index, row in df.iterrows():
-    if row['wt.loss'] <= -10 :
-        Ta1['time'].append(row['time'])
-        Ea1['status'].append(row['status'])
-    elif row['wt.loss'] >= -10 and row['wt.loss'] <= 0:
-        Ta2['time'].append(row['time'])
-        Ea2['status'].append(row['status'])
-    elif row['wt.loss'] >= 0 and row['wt.loss'] <= 10:
-        Ta3['time'].append(row['time'])
-        Ea3['status'].append(row['status'])
-    elif row['wt.loss'] >= 10 and row['wt.loss'] <= 20:
-        Ta4['time'].append(row['time'])
-        Ea4['status'].append(row['status'])
-    elif row['wt.loss'] >= 20 :
-        Ta5['time'].append(row['time'])
-        Ea5['status'].append(row['status'])   
-
-
-
-       #print(row['time'], row['status'])
-Ta1 = pd.DataFrame(Ta1)
-Ea1 = pd.DataFrame(Ea1)
-Ta2 = pd.DataFrame(Ta2)
-Ea2 = pd.DataFrame(Ea2)
-Ta3 = pd.DataFrame(Ta3)
-Ea3 = pd.DataFrame(Ea3)
-Ta4 = pd.DataFrame(Ta4)
-Ea4 = pd.DataFrame(Ea4)
-Ta5 = pd.DataFrame(Ta5)
-Ea5 = pd.DataFrame(Ea5)
-
-
-fig, a = plt.subplots()
-kmf = KaplanMeierFitter()
-kmf.fit(durations = Ta1, event_observed = Ea1,label="-10")
-kmf.survival_function_.plot(ax = a)
-
-#kmf.plot_survival_function(ax = ax)
-
-kmf.fit(durations = Ta2, event_observed = Ea2,label="-10-0")
-kmf.survival_function_.plot(ax = a)
-
-
-kmf.fit(durations = Ta3, event_observed = Ea3,label="0-10")
-kmf.survival_function_.plot(ax = a)
-
-#kmf.survival_function_plot(ax = ax)
-
-kmf.fit(durations = Ta3, event_observed = Ea3,label="(-10)-0")
-kmf.survival_function_.plot(ax = a)
-
-#kmf.plot_survival_function(ax = ax)
-
-kmf.fit(durations = Ta4, event_observed = Ea4,label="10-0")
-kmf.survival_function_.plot(ax = a)
-
-kmf.fit(durations = Ta5, event_observed = Ea5,label="20+")
-kmf.survival_function_.plot(ax = a)
-
-
-kmf2 = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(kmf2, resize=True)
-
-#kmf.plot_survival_function(ax = ax,at_risk_counts = True)
-
-st.plotly_chart(py_fig)
-
-##########################################################################################################################################
-
-st.subheader("3 -A pontuação de desempenho de Karnofsky, avaliada pelo médico, prediz o tempo desobrevivência em pacientes com cancro do pulmão?")
-
-df = df.reset_index() 
-dic =  {'died': {'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []},'alive':{'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []}}
-
-for index, row in df.iterrows():
-    if row['ph.karno'] >= 0 and row['ph.karno'] < 10 :
-        if row['status'] == 1 :
-            dic['died']['0-10'].append(row['time'])
-        else :
-            dic['alive']['0-10'].append(row['time'])
-    elif row['ph.karno'] >= 10 and row['ph.karno'] < 20:
-        if row['status'] == 1 :
-            dic['died']['10-20'].append(row['time'])
-        else :
-            dic['alive']['10-20'].append(row['time'])
-    elif row['ph.karno'] >= 20 and row['ph.karno'] <30:
-        if row['status'] == 1 :
-            dic['died']['20-30'].append(row['time'])
-        else :
-            dic['alive']['20-30'].append(row['time'])
-    elif row['ph.karno'] >= 30 and row['ph.karno'] < 40:
-        if row['status'] == 1 :
-            dic['died'] ['30-40'].append(row['time'])
-        else :
-            dic['alive']['30-40'].append(row['time'])
-    elif row['ph.karno'] >= 40 and row['ph.karno'] < 50:
-        if row['status'] == 1 :
-            dic['died'] ['40-50'].append(row['time'])
-        else :
-            dic['alive']['40-50'].append(row['time']) 
-    elif row['ph.karno'] >= 50 and row['ph.karno'] < 60:
-        if row['status'] == 1 :
-            dic['died'] ['50-60'].append(row['time'])
-        else :
-            dic['alive']['50-60'].append(row['time'])  
-    elif row['ph.karno'] >= 60 and row['ph.karno'] <70:
-        if row['status'] == 1 :
-            dic['died'] ['60-70'].append(row['time'])
-        else :
-            dic['alive']['60-70'].append(row['time'])
-    elif row['ph.karno'] >= 70 and row['ph.karno'] < 80:
-        if row['status'] == 1 :
-            dic['died'] ['70-80'].append(row['time'])
-        else :
-            dic['alive']['70-80'].append(row['time']) 
-    elif row['ph.karno'] >= 80 and row['ph.karno'] <= 90:
-        if row['status'] == 1 :
-            dic['died']['80-90'].append(row['time'])
-        else :
-            dic['alive']['80-90'].append(row['time']) 
-    else:
-        if row['status'] == 1 :
-            dic['died'] ['90-100'].append(row['time'])
-        else :
-            dic['alive']['90-100'].append(row['time'])  
-
-remove = []
-porcentagem ={'0-10' : [], '10-20': [], '20-30' : [] , '30-40' : [] , '40-50' : [] , '50-60' : [], '60-70' : [] , '70-80' : [] , '80-90' : [] , '90-100' : []}
-for i in ['0-10' , '10-20', '20-30' , '30-40' , '40-50' , '50-60' , '60-70' , '70-80' , '80-90' , '90-100'] :
-    x = len(dic['alive'][i]) + len(dic['died'][i])
-    if x:
-        porcentagem[i] = (len(dic['alive'][i])  / x) * 100
-        dic['died'][i] = (sum(dic['died'][i])  / len(dic['died'][i]))
-        dic['alive'][i] = (sum(dic['alive'][i])  / len(dic['alive'][i]))
-
-
-    else :
-        remove.append(i)
-
-for i in remove :
-     dic['died'].pop(i)
-     dic['alive'].pop(i)
-     porcentagem.pop(i)
-
-graph1 = pd.DataFrame.from_dict(dic,orient='index').transpose()
-graph2 = pd.DataFrame.from_dict(porcentagem,orient='index')
-
-st.bar_chart(graph1)
-
-st.bar_chart(graph2)
-
-
-
-
-#FAZER MAIS GRÁFICOS
-
-cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status',formula= "age + sex + ph.ecog + ph.karno")
-
-mpl_fig = plt.figure()
-
-cph.plot_partial_effects_on_outcome(covariates = 'ph.karno',
-                                    values = [0,10,20,30,40,50,60,70,80,90,100],
-                                    cmap = 'coolwarm')
-
-
-
-cph2 = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(cph2, resize=True)
-
-st.plotly_chart(py_fig)
-
-
-##########################################################################################################################################
-
-st.subheader("5 -O consumo de calorias nas refeições afeta o tempo de sobrevivência em pacientes com cancro de pulmão?")
-kmf = KaplanMeierFitter()
-Ta1 = {'time':[]}
-Ta2 = {'time':[]}
-
-T = {'time':[]}
-E = {'status':[]}
-
-Ea1 = {'status':[]}
-Ea2 = {'status':[]}
-
-for index, row in df.iterrows():
-    if row['meal.cal'] >= 0 and row['meal.cal'] <= 1000:
-        Ta1['time'].append(row['time'])
-        Ea1['status'].append(row['status'])
-    elif row['meal.cal'] >= 1500 and row['meal.cal'] <= 2500:
-        Ta2['time'].append(row['time'])
-        Ea2['status'].append(row['status'])
-
-Ta1 = pd.DataFrame(Ta1)
-Ea1 = pd.DataFrame(Ea1)
-Ta2 = pd.DataFrame(Ta2)
-Ea2 = pd.DataFrame(Ea2)
-
-
-ax = plt.subplot(111)
-kmf = KaplanMeierFitter()
-kmf.fit(durations = Ta1, event_observed = Ea1,label="0-1000")
-kmf.survival_function_.plot(ax = ax)
-plt.title("Difference of calories consumed on people with cancer")
-
-ax = plt.subplot(111)
-kmf = KaplanMeierFitter()
-kmf.fit(durations = Ta2, event_observed = Ea2,label="1500-2500")
-kmf.survival_function_.plot(ax = ax)
-kmf2 = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(kmf2, resize=True)
-
-st.plotly_chart(py_fig)
-
-cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status')
-
-mpl_fig = plt.figure()
-
-plt.subplots(figsize = (10, 6))
-
-cph.plot_partial_effects_on_outcome(covariates = 'meal.cal',
-                                    values = [0,200,500,1000,1500,2000,2500],
-                                    cmap = 'coolwarm')
-
-cph2 = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(cph2, resize=True)
-
-st.plotly_chart(py_fig)
-
-##########################################################################################################################################
-
-st.subheader("7- Existe diferença significativa no tempo de sobrevivência entre pacientes com diferentes classificações de desempenho do ECOG")
-cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status',formula = "ph.ecog")
-
-#plt.subplots(figsize = (10, 6))
-
-cph.plot_partial_effects_on_outcome(covariates = 'ph.ecog',
-                                    values = [0,1,2,3,4],
-                                    cmap = 'coolwarm')
-st.pyplot(plt)
-
-##########################################################################################################################################
-
-st.subheader("8- Comparar a pontuação de desempenho de Karnofsky, avaliada pelo paciente, com a classificação do médico")
-
-dic = {'Paciente' : df["ph.karno"],'Medico': df["pat.karno"]}
-data = pd.DataFrame(data = dic)
-
-z = px.scatter(data,x = "Paciente", y ="Medico")#,trendline="ols"
-
-
-st.plotly_chart(z)
-#####################################################################################################################################################
-
-st.subheader("9- aux")
-
-
-dataf = {}
-
-insts = []
-
-for index, row in df.iterrows():
-    if row['inst'] not in insts:
-        insts.append(row['inst'])
-
-
-
-for a in insts:
-    Ta = {'time':[]}
-    Ea = {'status':[]}
-    dataf[a] = [Ta,Ea]
-
-
-
-for index, row in df.iterrows():
-    dataf[row['inst']][0]['time'].append(row['time'])
-    dataf[row['inst']][1]['status'].append(row['status'])
-
-ax = plt.subplot()
-kmf = KaplanMeierFitter()
-
-
-for a in insts:
-    dataf[a][0] = pd.DataFrame(dataf[a][0])
-    dataf[a][1] = pd.DataFrame(dataf[a][1])
-
-    
-    kmf.fit(durations = dataf[a][0], event_observed = dataf[a][1],label = "inst")
-    kmf.survival_function_.plot(ax = ax)
-
-figaux = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(figaux,resize = True)
-
-st.plotly_chart(py_fig)
-
-
-
-
-cph2 = CoxPHFitter()
-cph2.fit(df, duration_col = 'time', event_col = 'status')
-
-fig, ax = plt.subplots()
-
-cph.plot_partial_effects_on_outcome(covariates = 'inst',
-                                    values = [a for a in insts],
-                                    cmap = 'coolwarm')
-
-
-cph3 = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(cph3, resize=True)
-
-st.plotly_chart(py_fig)
-
-
-##########################################################################################################################################
-
-st.subheader("10 -Existe uma diferença significativa no tempo de sobrevivência entre homens e mulheres com cancro do pulmão? E após o controle de outras covariáveis, como idade, classificação ECOG ou pontuação de Karnofsky")
-
-
-x = df['meal.cal']
-y = df['ph.karno']
-
-z = px.scatter(x = x, y =y,opacity = .2)
-st.plotly_chart(z)
-
-##########################################################################################################################################
-
-st.subheader("4 -Existe uma diferença significativa no tempo de sobrevivência entre homens e mulheres com cancro do pulmão? E após o controle de outras covariáveis, como idade, classificação ECOG ou pontuação de Karnofsky")
-
-kmf = KaplanMeierFitter()
-Ta1 = {'time':[]}
-Ta2 = {'time':[]}
-
-
-Ea1 = {'status':[]}
-Ea2 = {'status':[]}
-
-for index, row in df.iterrows():
-    if row['sex'] == 1:
-        Ta1['time'].append(row['time'])
-        Ea1['status'].append(row['status'])
-    elif row['sex'] == 2:
-        Ta2['time'].append(row['time'])
-        Ea2['status'].append(row['status'])
-
-Ta1 = pd.DataFrame(Ta1)
-Ea1 = pd.DataFrame(Ea1)
-Ta2 = pd.DataFrame(Ta2)
-Ea2 = pd.DataFrame(Ea2)
-
-ax = plt.subplot(111)
-kmf = KaplanMeierFitter()
-kmf.fit(durations = Ta1, event_observed = Ea1,label="Homem")
-kmf.survival_function_.plot(ax = ax)
-plt.title("Survival of different gender group")
-
-# Falta mulher
-
-py_fig = tls.mpl_to_plotly(kmf2, resize=True)
-
-st.plotly_chart(py_fig)
-
-
-
-cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status')
-
-mpl_fig = plt.figure()
-
-cph.plot_partial_effects_on_outcome(covariates = 'sex',
-                                    values = [1,2],
-                                    cmap = 'coolwarm')
-
-cph2 = plt.gcf()
-
-py_fig = tls.mpl_to_plotly(cph2, resize=True)
-
-st.plotly_chart(py_fig)
-'''
