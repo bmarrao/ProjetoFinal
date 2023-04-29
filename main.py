@@ -29,8 +29,8 @@ df['status'] = df['status'].replace(1, 'Dead by the end of the experiment')
 
 grouped=df.groupby(df.status)
 
-df_vivo = grouped.get_group('0')
-df_dead = grouped.get_group('1')
+df_vivo = grouped.get_group('Alive by the end of the experiment')
+df_dead = grouped.get_group('Dead by the end of the experiment')
 #Falta o comparativo dos q tavam vivo no experimento
 fig = px.histogram(df, x="status",color="status")
 st.plotly_chart(fig)
