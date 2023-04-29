@@ -26,22 +26,17 @@ df['sex'] = df['sex'].replace(0, 'Men')
 df['sex'] = df['sex'].replace(1, 'Women')
 df['status'] = df['status'].replace(0, 'Alive by the end of the experiment')
 df['status'] = df['status'].replace(1, 'Dead by the end of the experiment')
+
 grouped=df.groupby(df.status)
 
-df_vivo = grouped.get_group('Alive by the end of the experiment')
-df_dead = grouped.get_group('Dead by the end of the experiment')
+df_vivo = grouped.get_group('0')
+df_dead = grouped.get_group('1')
 #Falta o comparativo dos q tavam vivo no experimento
 fig = px.histogram(df, x="status",color="status")
 st.plotly_chart(fig)
 
 fig = go.Figure()
 
-'''
-fig.add_trace(go.Histogram(df,x='sex'))
-fig.add_trace(go.Histogram(df_vivo, x='sex'))
-fig.add_trace(go.Histogram(df_dead, x='sex'))
-st.plotly_chart(fig)
-'''
 
 '''Men and women data'''
 fig = go.Figure()
@@ -131,6 +126,10 @@ st.plotly_chart(fig)
 fig = px.box(df, x="ph.ecog", y="meal.cal")
 st.plotly_chart(fig)
 
+df['sex'] = df['sex'].replace('Men', 0)
+df['sex'] = df['sex'].replace('Women',1)
+df['status'] = df['status'].replace('Alive by the end of the experiment',0)
+df['status'] = df['status'].replace('Dead by the end of the experiment',1)
 
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
 df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
