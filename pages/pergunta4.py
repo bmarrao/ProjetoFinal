@@ -59,7 +59,14 @@ ax = plt.subplot(111)
 kmf = KaplanMeierFitter()
 kmf.fit(durations = Ta2, event_observed = Ea2,label="Mulher")
 kmf.survival_function_.plot(ax = ax)
+T = df["time"]
+E = df["status"]
+ax = plt.subplot(111)
+kmf.fit(durations = T, event_observed =E,label=f"Baseline")
+kmf.survival_function_.plot(ax = ax)
 plt.title("Survival of different gender group")
+
+
 kmf2 = plt.gcf()
 
 py_fig = tls.mpl_to_plotly(kmf2, resize=True)

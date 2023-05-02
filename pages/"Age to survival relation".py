@@ -18,7 +18,8 @@ dic = {}
 st.header("Analysis of age impact in the time that a person survives")
 st.sidebar.title('Navigation')
 df = st.session_state['dic']
-
+df_dead = st.session_state['dic dead']
+df_alive = st.session_state['dic alive']
 num1 = st.sidebar.number_input('Idade inferior')
 num2 = st.sidebar.number_input('Idade superior')
 array = (num1,num2)
@@ -57,6 +58,11 @@ if st.sidebar.button('Add to graph'):
             arr.remove((n1,n2))
             st.session_state['pergunta1']= arr
 
+    T = df["time"]
+    E = df["status"]
+    ax = plt.subplot(111)
+    kmf.fit(durations = T, event_observed =E,label=f"Baseline")
+    kmf.survival_function_.plot(ax = ax)
 
     #kmf.plot_survival_function(ax = ax
     kmf2 = plt.gcf()

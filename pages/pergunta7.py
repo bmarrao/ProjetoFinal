@@ -49,7 +49,11 @@ for a in ecogs:
     kmf.fit(durations = dataf[a][0], event_observed = dataf[a][1],label = "ecog" + str(a))
     kmf.survival_function_.plot(ax = ax)
 
-
+T = df["time"]
+E = df["status"]
+ax = plt.subplot(111)
+kmf.fit(durations = T, event_observed =E,label=f"Baseline")
+kmf.survival_function_.plot(ax = ax)
 
 figaux = plt.gcf()
 

@@ -65,6 +65,7 @@ for a in insts:
     kmf.fit(durations = dataf[a][0], event_observed = dataf[a][1],label = "inst")
     kmf.survival_function_.plot(ax = ax)
 
+
 figaux = plt.gcf()
 
 py_fig = tls.mpl_to_plotly(figaux,resize = True)

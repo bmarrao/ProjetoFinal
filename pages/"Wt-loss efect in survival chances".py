@@ -11,7 +11,6 @@ st.header("Effect of weight loss in the last 6 months in survival chances")
 st.sidebar.title('Navigation')
 
 df = st.session_state['dic']
-
 num1 = st.sidebar.number_input('Peso inferior ')
 num2 = st.sidebar.number_input('Peso superior ')
 array = (num1,num2)
@@ -37,7 +36,6 @@ if st.sidebar.button('Add to graph'):
                 dic[f'({n1},{n2})']['status'].append(row['status'])
         
 
-    print(dic)
     for (n1,n2) in arr:
         ax = plt.subplot(111)
         if dic[f'({n1},{n2})']['time']:
@@ -48,7 +46,11 @@ if st.sidebar.button('Add to graph'):
             arr.remove((n1,n2))
             st.session_state['pergunta2']= arr
 
-
+    T = df["time"]
+    E = df["status"]
+    ax = plt.subplot(111)
+    kmf.fit(durations = T, event_observed =E,label=f"Baseline")
+    kmf.survival_function_.plot(ax = ax)
     #kmf.plot_survival_function(ax = ax
     kmf2 = plt.gcf()
 

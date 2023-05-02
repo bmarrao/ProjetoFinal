@@ -17,6 +17,8 @@ from plotly.graph_objs import *
 
 from pylab import rcParams
 dic = {}
+df_dead = st.session_state['dic dead']
+df_alive = st.session_state['dic alive']
 st.header("Effect of Karnofsky evaluation by a doctor in survival time : ")
 st.sidebar.title('Navigation')
 
@@ -56,9 +58,12 @@ if st.sidebar.button('Add to graph'):
             arr.remove((n1,n2))
             st.session_state['pergunta3']= arr
 
+    T = df["time"]
+    E = df["status"]
+    ax = plt.subplot(111)
+    kmf.fit(durations = T, event_observed =E,label=f"Baseline")
+    kmf.survival_function_.plot(ax = ax)
 
-
-    #kmf.plot_survival_function(ax = ax
     kmf2 = plt.gcf()
 
     py_fig = tls.mpl_to_plotly(kmf2, resize=True)
@@ -67,6 +72,16 @@ if st.sidebar.button('Add to graph'):
 
 
     st.plotly_chart(py_fig)
+
+
+
+    st.plotly_chart(py_fig)    
+    
+
+
+
+    #kmf.plot_survival_function(ax = ax
+   
 
 
 if st.button('Effect of Karnofsky evaluation on CPH model '):

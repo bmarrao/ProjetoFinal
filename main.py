@@ -29,7 +29,7 @@ df['status'] = df['status'].replace(1, 'Dead by the end of the experiment')
 
 grouped=df.groupby(df.status)
 
-df_vivo = grouped.get_group('Alive by the end of the experiment')
+df_alive = grouped.get_group('Alive by the end of the experiment')
 df_dead = grouped.get_group('Dead by the end of the experiment')
 #Falta o comparativo dos q tavam vivo no experimento
 fig = px.histogram(df, x="status",color="status")
@@ -47,7 +47,7 @@ fig.add_trace(
 fig.add_trace(go.Histogram(x=df_dead['sex'],name='Dead by the end of the experiment')
 )
 
-fig.add_trace(go.Histogram(x=df_vivo['sex'],name='Alive by the end of the experiment')
+fig.add_trace(go.Histogram(x=df_alive['sex'],name='Alive by the end of the experiment')
             
 )
 fig.update_layout(barmode='overlay')
@@ -65,7 +65,7 @@ fig = px.histogram(df_dead,color = 'sex', x="sex",hover_data=df_dead.columns)
 st.plotly_chart(fig)
 st.caption("Women and men dead by the end of the experiment")
 
-fig = px.histogram(df_vivo,color='sex', x="sex",hover_data=df_vivo.columns)
+fig = px.histogram(df_alive,color='sex', x="sex",hover_data=df_alive.columns)
 st.plotly_chart(fig)
 st.caption("Women and men alive by the end of the experiment")
 
@@ -79,7 +79,7 @@ fig.add_trace(
 fig.add_trace(go.Histogram(x=df_dead['age'],name='Dead by the end of the experiment')
 )
 
-fig.add_trace(go.Histogram(x=df_vivo['age'],name='Alive by the end of the experiment')
+fig.add_trace(go.Histogram(x=df_alive['age'],name='Alive by the end of the experiment')
             
 )
 fig.update_layout(barmode='overlay')
@@ -91,7 +91,7 @@ st.plotly_chart(fig)
 st.caption("All people on the experiment")
 
 
-fig = px.histogram(df_vivo, x="age",hover_data=df_vivo.columns)
+fig = px.histogram(df_alive, x="age",hover_data=df_alive.columns)
 st.plotly_chart(fig)
 st.caption("Alive by the end of the experiment")
 
@@ -105,7 +105,7 @@ fig.add_trace(
     name='All men and women'))
 
 fig.add_trace(go.Box(x=df_dead['sex'],y=df_dead['age'],name='Dead by the end of the experiment'))
-fig.add_trace(go.Box(x=df_vivo['sex'],y=df_vivo['age'],name='Alive by the end of the experiment'))
+fig.add_trace(go.Box(x=df_alive['sex'],y=df_alive['age'],name='Alive by the end of the experiment'))
             
 fig.update_layout(
     yaxis_title='Age',
@@ -124,7 +124,7 @@ st.plotly_chart(fig)
 fig = px.box(df_dead, color = "sex" ,x="sex", y="age", points="all",hover_data=df_dead.columns)
 st.plotly_chart(fig)
 
-fig = px.box(df_vivo, color = "sex" ,x="sex", y="age", points="all",hover_data=df_vivo.columns)
+fig = px.box(df_alive, color = "sex" ,x="sex", y="age", points="all",hover_data=df_alive.columns)
 st.plotly_chart(fig)
 
 #Falta o comparativo dos q tavam vivo no experimento
@@ -153,7 +153,7 @@ st.caption("Values of the calories of meals")
 fig = px.bar(df, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss', hover_data=df.columns)
 st.plotly_chart(fig)
 
-fig = px.bar(df_vivo, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss with alive data', hover_data=df_vivo.columns)
+fig = px.bar(df_alive, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss with alive data', hover_data=df_alive.columns)
 st.plotly_chart(fig)
 
 fig = px.bar(df_dead, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss with dead data', hover_data=df_dead.columns)
@@ -166,13 +166,23 @@ fig = go.Figure()
 fig.add_trace(go.Scatter(x=df_dead['meal.cal'], y=df_dead['wt.loss'], mode = 'markers',name='Dead by the end of the experiment')
 )
 
-fig.add_trace(go.Scatter(x=df_vivo['meal.cal'], y=df_vivo['wt.loss'], mode = 'markers',name='Alive by the end of the experiment'))
+fig.add_trace(go.Scatter(x=df_alive['meal.cal'], y=df_alive['wt.loss'], mode = 'markers',name='Alive by the end of the experiment'))
 st.plotly_chart(fig)
 
 df['sex'] = df['sex'].replace('Men', 0)
 df['sex'] = df['sex'].replace('Women',1)
 df['status'] = df['status'].replace('Alive by the end of the experiment',0)
 df['status'] = df['status'].replace('Dead by the end of the experiment',1)
+
+df_dead['sex'] = df_dead['sex'].replace('Men', 0)
+df_dead['sex'] = df_dead['sex'].replace('Women',1)
+df_dead['status'] = df_dead['status'].replace('Alive by the end of the experiment',0)
+df_dead['status'] = df_dead['status'].replace('Dead by the end of the experiment',1)
+
+df_alive['sex'] = df_alive['sex'].replace('Men', 0)
+df_alive['sex'] = df_alive['sex'].replace('Women',1)
+df_alive['status'] = df_alive['status'].replace('Alive by the end of the experiment',0)
+df_alive['status'] = df_alive['status'].replace('Dead by the end of the experiment',1)
 
 df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
 df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
@@ -191,6 +201,8 @@ st.session_state['pergunta9'] = []
 st.session_state['random_forest']= []
 
 st.session_state['dic'] = df
+st.session_state['dic dead'] = df_dead
+st.session_state['dic alive'] = df_alive
 st.title("Survivor Analysis for lung cancer data")
 #st.sidebar.sucess("Select a page above")
 st.subheader("Survival Forests")
