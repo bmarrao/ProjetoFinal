@@ -55,15 +55,17 @@ fig.update_traces(opacity=0.75)
 st.plotly_chart(fig)
 
 
+
+
 fig = px.histogram(df, x="sex", color="sex",hover_data=df.columns)
 st.plotly_chart(fig)
 st.caption("All men and women on the experiment")
 
-fig = px.histogram(df_dead,color = 'sex', x="sex")
+fig = px.histogram(df_dead,color = 'sex', x="sex",hover_data=df_dead.columns)
 st.plotly_chart(fig)
 st.caption("Women and men dead by the end of the experiment")
 
-fig = px.histogram(df_vivo,color='sex', x="sex")
+fig = px.histogram(df_vivo,color='sex', x="sex",hover_data=df_vivo.columns)
 st.plotly_chart(fig)
 st.caption("Women and men alive by the end of the experiment")
 
@@ -84,16 +86,16 @@ fig.update_layout(barmode='overlay')
 fig.update_traces(opacity=0.75)
 st.plotly_chart(fig)
 
-fig = px.histogram(df, x="age")
+fig = px.histogram(df, x="age",hover_data=df.columns)
 st.plotly_chart(fig)
 st.caption("All people on the experiment")
 
 
-fig = px.histogram(df_vivo, x="age")
+fig = px.histogram(df_vivo, x="age",hover_data=df_vivo.columns)
 st.plotly_chart(fig)
 st.caption("Alive by the end of the experiment")
 
-fig = px.histogram(df_dead, x="age")
+fig = px.histogram(df_dead, x="age",hover_data=df_dead.columns)
 st.plotly_chart(fig)
 st.caption("Dead by the end of the experiment")
 
@@ -103,27 +105,68 @@ fig.add_trace(
     name='All men and women'))
 
 fig.add_trace(go.Box(x=df_dead['sex'],y=df_dead['age'],name='Dead by the end of the experiment'))
-
-fig.add_trace(go.Box(x=df_vivo['sex'],y=df_vivo['age'],name='Alive by the end of the experiment')
+fig.add_trace(go.Box(x=df_vivo['sex'],y=df_vivo['age'],name='Alive by the end of the experiment'))
             
-)
 fig.update_layout(
     yaxis_title='Age',
     boxmode='group' # group together boxes of the different traces for each value of x
 )
 
+
+fig.update_traces(legendgroup='group')
+
+
 st.plotly_chart(fig)
 #Falta o comparativo dos q tavam vivo no experimento
-fig = px.box(df, color = "sex" ,x="sex", y="age", points="all")
+fig = px.box(df, color = "sex" ,x="sex", y="age", points="all",hover_data=df.columns)
+st.plotly_chart(fig)
+
+fig = px.box(df_dead, color = "sex" ,x="sex", y="age", points="all",hover_data=df_dead.columns)
+st.plotly_chart(fig)
+
+fig = px.box(df_vivo, color = "sex" ,x="sex", y="age", points="all",hover_data=df_vivo.columns)
 st.plotly_chart(fig)
 
 #Falta o comparativo dos q tavam vivo no experimento
-fig = px.bar(df, x='sex', y='meal.cal')
+fig = px.bar(df, x='sex', y='meal.cal',hover_data=df.columns)
 st.plotly_chart(fig)
 
 
 #Falta o comparativo dos q tavam vivo no experimento
-fig = px.box(df, x="ph.ecog", y="meal.cal")
+fig = px.box(df, x="ph.ecog", y="meal.cal",points = "all" , hover_data=df.columns)
+st.plotly_chart(fig)
+
+
+
+###########################################################################################################
+
+st.title("Study of the wt.loss and meal.cal columns")
+
+fig = px.histogram(df, x="wt.loss",hover_data=df.columns)
+st.plotly_chart(fig)
+st.caption("Values of weight loss")
+
+fig = px.histogram(df, x="meal.cal",hover_data=df.columns)
+st.plotly_chart(fig)
+st.caption("Values of the calories of meals")
+
+fig = px.bar(df, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss', hover_data=df.columns)
+st.plotly_chart(fig)
+
+fig = px.bar(df_vivo, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss with alive data', hover_data=df_vivo.columns)
+st.plotly_chart(fig)
+
+fig = px.bar(df_dead, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss with dead data', hover_data=df_dead.columns)
+st.plotly_chart(fig)
+
+fig = px.scatter(df, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss', hover_data=df.columns)
+st.plotly_chart(fig)
+
+fig = go.Figure()
+fig.add_trace(go.Scatter(x=df_dead['meal.cal'], y=df_dead['wt.loss'], mode = 'markers',name='Dead by the end of the experiment')
+)
+
+fig.add_trace(go.Scatter(x=df_vivo['meal.cal'], y=df_vivo['wt.loss'], mode = 'markers',name='Alive by the end of the experiment'))
 st.plotly_chart(fig)
 
 df['sex'] = df['sex'].replace('Men', 0)
