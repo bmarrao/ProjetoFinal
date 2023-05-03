@@ -169,6 +169,15 @@ fig.add_trace(go.Scatter(x=df_dead['meal.cal'], y=df_dead['wt.loss'], mode = 'ma
 fig.add_trace(go.Scatter(x=df_alive['meal.cal'], y=df_alive['wt.loss'], mode = 'markers',name='Alive by the end of the experiment'))
 st.plotly_chart(fig)
 
+fig = px.pie(df, values='meal.cal', names='ph.karno', title='Medic Evaluation')
+st.plotly_chart(fig)
+
+fig = px.pie(df, values='meal.cal', names='pat.karno', title='Patient Evaluation')
+st.plotly_chart(fig)
+
+fig = px.box(df, x='ph.karno', y='pat.karno', points = "all", hover_data=df.columns, title='Difference from Patient to Medic')
+st.plotly_chart(fig)
+
 df['sex'] = df['sex'].replace('Men', 0)
 df['sex'] = df['sex'].replace('Women',1)
 df['status'] = df['status'].replace('Alive by the end of the experiment',0)
