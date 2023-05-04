@@ -32,6 +32,7 @@ grouped=df.groupby(df.status)
 df_alive = grouped.get_group('Alive by the end of the experiment')
 df_dead = grouped.get_group('Dead by the end of the experiment')
 
+st.dataframe(df)
 #st.table(df)
 
 st.download_button(
@@ -41,16 +42,19 @@ st.download_button(
     mime='text/csv',
 )
 
+st.dataframe(df_dead)
+
 st.download_button(
     label="Download all the data of people that died before the end of the experiment as CSV",
     data=df_dead.to_csv().encode('utf-8'),
     file_name='large_df.csv',
     mime='text/csv',
 )
+st.dataframe(df_alive)
 
 st.download_button(
     label="Download all the data of people that were alive at the end of the experiment as CSV",
-    data=df_dead.to_csv().encode('utf-8'),
+    data=df_alive.to_csv().encode('utf-8'),
     file_name='large_df.csv',
     mime='text/csv',
 )
