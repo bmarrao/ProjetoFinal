@@ -147,7 +147,7 @@ fig = px.histogram(df, x="meal.cal",hover_data=df.columns)
 st.plotly_chart(fig)
 
 st.subheader("Difference between calories per meal of men and women across the data")
-
+'''Este gráfico está errado'''
 #Falta o comparativo dos q tavam vivo no experimento
 fig = go.Figure()
 fig.add_trace(
@@ -252,20 +252,18 @@ st.plotly_chart(fig)
 
 ###########################################################################################################
 
-st.subheader("Study of the wt.loss and meal.cal columns")
 
-
-
-fig = px.bar(df, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss', hover_data=df.columns)
+st.subheader("Influence of meal.cal on weight loss")
+fig = px.bar(df, x='meal.cal', y='wt.loss', hover_data=df.columns)
 st.plotly_chart(fig)
 
-fig = px.bar(df_alive, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss with alive data', hover_data=df_alive.columns)
+fig = px.bar(df_alive, x='meal.cal', y='wt.loss', hover_data=df_alive.columns)
 st.plotly_chart(fig)
 
-fig = px.bar(df_dead, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss with dead data', hover_data=df_dead.columns)
+fig = px.bar(df_dead, x='meal.cal', y='wt.loss', hover_data=df_dead.columns)
 st.plotly_chart(fig)
 
-fig = px.scatter(df, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss', hover_data=df.columns)
+fig = px.scatter(df, x='meal.cal', y='wt.loss', hover_data=df.columns)
 st.plotly_chart(fig)
 
 fig = go.Figure()
