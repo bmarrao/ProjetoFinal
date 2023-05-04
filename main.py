@@ -128,7 +128,35 @@ fig = px.box(df_alive, color = "sex" ,x="sex", y="age", points="all",hover_data=
 st.plotly_chart(fig)
 
 #Falta o comparativo dos q tavam vivo no experimento
-fig = px.bar(df, x='sex', y='meal.cal',hover_data=df.columns)
+fig = px.bar(df, x='sex', y='meal.cal',color='sex',hover_data=df.columns)
+st.plotly_chart(fig)
+
+fig = px.bar(df_alive, x='sex', y='meal.cal',color='sex',hover_data=df_alive.columns)
+st.plotly_chart(fig)
+
+
+fig = px.bar(df_dead, x='sex', y='meal.cal',color='sex',hover_data=df_dead.columns)
+st.plotly_chart(fig)
+
+
+#Falta o comparativo dos q tavam vivo no experimento
+fig = px.box(df, x="ph.ecog", y="meal.cal",points = "all" , hover_data=df.columns)
+st.plotly_chart(fig)
+
+fig = go.Figure()
+fig.add_trace(
+    go.Box(x=df['ph.ecog'],y=df['meal.cal'],
+    name='All men and women'))
+
+fig.add_trace(go.Box(x=df_dead['ph.ecog'],y=df_dead['meal.cal'],name='Dead by the end of the experiment'))
+fig.add_trace(go.Box(x=df_alive['ph.ecog'],y=df_alive['meal.cal'],name='Alive by the end of the experiment'))
+            
+fig.update_layout(
+    yaxis_title='Meal.Cal',
+    xaxis_title='Ph.Ecog    ',
+
+    boxmode='group' # group together boxes of the different traces for each value of x
+)
 st.plotly_chart(fig)
 #############################################################################################
 
