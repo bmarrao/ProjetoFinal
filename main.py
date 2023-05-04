@@ -130,13 +130,32 @@ st.plotly_chart(fig)
 #Falta o comparativo dos q tavam vivo no experimento
 fig = px.bar(df, x='sex', y='meal.cal',hover_data=df.columns)
 st.plotly_chart(fig)
+#############################################################################################
 
+
+fig = px.bar(df, x = "age",y = "meal.cal" )
+st.plotly_chart(fig)
+
+fig = px.bar(df_dead, x = "age",y = "meal.cal" )
+st.plotly_chart(fig)
+
+fig = px.bar(df_alive, x = "age",y = "meal.cal" )
+st.plotly_chart(fig)
 
 #Falta o comparativo dos q tavam vivo no experimento
 fig = px.box(df, x="ph.ecog", y="meal.cal",points = "all" , hover_data=df.columns)
 st.plotly_chart(fig)
 
+fig = px.box(df_alive, x="ph.ecog", y="meal.cal",points = "all" , hover_data=df_alive.columns)
+st.plotly_chart(fig)
 
+
+fig = px.box(df_dead, x="ph.ecog", y="meal.cal",points = "all" , hover_data=df_dead.columns)
+st.plotly_chart(fig)
+
+fig = px.histogram(df, x="ph.ecog", marginal="rug", # can be `box`, `violin`
+                         hover_data=df.columns)
+fig.show()
 
 ###########################################################################################################
 
