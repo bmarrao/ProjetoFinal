@@ -128,6 +128,20 @@ fig = px.box(df_alive, color = "sex" ,x="sex", y="age", points="all",hover_data=
 st.plotly_chart(fig)
 
 #Falta o comparativo dos q tavam vivo no experimento
+fig = go.Figure()
+fig.add_trace(
+    go.Bar(x=df['sex'],y=df['meal.cal'],
+    name='All men and women'))
+fig.add_trace(go.Bar(x=df_dead['sex'],y=df_dead['meal.cal'],name='Dead by the end of the experiment'))
+fig.add_trace(go.Bar(x=df_alive['sex'],y=df_alive['meal.cal'],name='Alive by the end of the experiment'))
+fig.update_layout(
+    yaxis_title='Meal.Cal',
+    xaxis_title='Sex',
+
+    boxmode='group' # group together boxes of the different traces for each value of x
+)
+st.plotly_chart(fig)
+
 fig = px.bar(df, x='sex', y='meal.cal',color='sex',hover_data=df.columns)
 st.plotly_chart(fig)
 
@@ -139,7 +153,6 @@ fig = px.bar(df_dead, x='sex', y='meal.cal',color='sex',hover_data=df_dead.colum
 st.plotly_chart(fig)
 
 
-#Falta o comparativo dos q tavam vivo no experimento
 fig = px.box(df, x="ph.ecog", y="meal.cal",points = "all" , hover_data=df.columns)
 st.plotly_chart(fig)
 
@@ -183,7 +196,7 @@ st.plotly_chart(fig)
 
 fig = px.histogram(df, x="ph.ecog", marginal="rug", # can be `box`, `violin`
                          hover_data=df.columns)
-fig.show()
+st.plotly_chart(fig)
 
 ###########################################################################################################
 
