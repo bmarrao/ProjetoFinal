@@ -12,7 +12,7 @@ import plotly.graph_objects as go
 #from st_pages import Page, show_pages, add_page_title,show_pages_from_config
 st.set_page_config(page_title = "Lung cancer data analysis" )
 
-
+st.title("Lung cancer data analysis.")
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
@@ -32,6 +32,9 @@ grouped=df.groupby(df.status)
 df_alive = grouped.get_group('Alive by the end of the experiment')
 df_dead = grouped.get_group('Dead by the end of the experiment')
 
+st.header("Tables ")
+
+st.subheader("All the data")
 st.dataframe(df)
 #st.table(df)
 
@@ -42,6 +45,8 @@ st.download_button(
     mime='text/csv',
 )
 
+st.subheader("Data from the people that died by the end of the experiment")
+
 st.dataframe(df_dead)
 
 st.download_button(
@@ -50,6 +55,8 @@ st.download_button(
     file_name='large_df.csv',
     mime='text/csv',
 )
+st.subheader("Data from the people that were alive by the end of the experiment")
+
 st.dataframe(df_alive)
 
 st.download_button(
@@ -58,17 +65,18 @@ st.download_button(
     file_name='large_df.csv',
     mime='text/csv',
 )
-#st.table(df_dead)
 
-#st.table(df_alive)
-#Falta o comparativo dos q tavam vivo no experimento
+
+st.header("Graphs")
+
+st.subheader("Censored data")
 fig = px.histogram(df, x="status",color="status")
 st.plotly_chart(fig)
 
 fig = go.Figure()
 
 
-'''Men and women data'''
+st.subheader("Men and women distribution in the data")
 fig = go.Figure()
 fig.add_trace(
     go.Histogram(x=df['sex'],
@@ -85,22 +93,9 @@ fig.update_traces(opacity=0.75)
 st.plotly_chart(fig)
 
 
+st.subheader("Age distribution across the data")
 
 
-fig = px.histogram(df, x="sex", color="sex",hover_data=df.columns)
-st.plotly_chart(fig)
-st.caption("All men and women on the experiment")
-
-fig = px.histogram(df_dead,color = 'sex', x="sex",hover_data=df_dead.columns)
-st.plotly_chart(fig)
-st.caption("Women and men dead by the end of the experiment")
-
-fig = px.histogram(df_alive,color='sex', x="sex",hover_data=df_alive.columns)
-st.plotly_chart(fig)
-st.caption("Women and men alive by the end of the experiment")
-
-
-'''Age data'''
 fig = go.Figure()
 fig.add_trace(
     go.Histogram(x=df['age'],
@@ -116,18 +111,8 @@ fig.update_layout(barmode='overlay')
 fig.update_traces(opacity=0.75)
 st.plotly_chart(fig)
 
-fig = px.histogram(df, x="age",hover_data=df.columns)
-st.plotly_chart(fig)
-st.caption("All people on the experiment")
+st.subheader("Medium age for men and woman across the data")
 
-
-fig = px.histogram(df_alive, x="age",hover_data=df_alive.columns)
-st.plotly_chart(fig)
-st.caption("Alive by the end of the experiment")
-
-fig = px.histogram(df_dead, x="age",hover_data=df_dead.columns)
-st.plotly_chart(fig)
-st.caption("Dead by the end of the experiment")
 
 fig = go.Figure()
 fig.add_trace(
@@ -157,11 +142,17 @@ st.plotly_chart(fig)
 fig = px.box(df_alive, color = "sex" ,x="sex", y="age", points="all",hover_data=df_alive.columns)
 st.plotly_chart(fig)
 
+st.subheader("Calories per meal across the data")
+fig = px.histogram(df, x="meal.cal",hover_data=df.columns)
+st.plotly_chart(fig)
+
+st.subheader("Difference between calories per meal of men and women across the data")
+
 #Falta o comparativo dos q tavam vivo no experimento
 fig = go.Figure()
 fig.add_trace(
     go.Bar(x=df['sex'],y=df['meal.cal'],
-    name='All men and women'))
+    name='All data'))
 fig.add_trace(go.Bar(x=df_dead['sex'],y=df_dead['meal.cal'],name='Dead by the end of the experiment'))
 fig.add_trace(go.Bar(x=df_alive['sex'],y=df_alive['meal.cal'],name='Alive by the end of the experiment'))
 fig.update_layout(
@@ -182,6 +173,13 @@ st.plotly_chart(fig)
 fig = px.bar(df_dead, x='sex', y='meal.cal',color='sex',hover_data=df_dead.columns)
 st.plotly_chart(fig)
 
+st.subheader("Histogram of patiences with different ecog evaluations")
+
+fig = px.histogram(df, x="ph.ecog", marginal="rug", # can be `box`, `violin`
+                         hover_data=df.columns)
+st.plotly_chart(fig)
+
+st.subheader("Medium calories per meal for a ecog evaluation across the data")
 
 fig = px.box(df, x="ph.ecog", y="meal.cal",points = "all" , hover_data=df.columns)
 st.plotly_chart(fig)
@@ -214,17 +212,20 @@ fig = px.bar(df_alive, x = "age",y = "meal.cal" )
 st.plotly_chart(fig)
 
 #Falta o comparativo dos q tavam vivo no experimento
-fig = px.box(df, x="ph.ecog", y="meal.cal",points = "all" , hover_data=df.columns)
+fig = px.box(df, x="ph.ecog", y="wt.loss",points = "all" , hover_data=df.columns)
 st.plotly_chart(fig)
 
-fig = px.box(df_alive, x="ph.ecog", y="meal.cal",points = "all" , hover_data=df_alive.columns)
+fig = px.box(df_alive, x="ph.ecog", y="wt.loss",points = "all" , hover_data=df_alive.columns)
 st.plotly_chart(fig)
 
 
-fig = px.box(df_dead, x="ph.ecog", y="meal.cal",points = "all" , hover_data=df_dead.columns)
+fig = px.box(df_dead, x="ph.ecog", y="wt.loss",points = "all" , hover_data=df_dead.columns)
 st.plotly_chart(fig)
 
-fig = px.histogram(df, x="ph.ecog", marginal="rug", # can be `box`, `violin`
+
+
+#Falta fazer alive e dead
+fig = px.histogram(df, x="pat.karno", marginal="rug", # can be box, violin
                          hover_data=df.columns)
 st.plotly_chart(fig)
 
@@ -236,9 +237,7 @@ fig = px.histogram(df, x="wt.loss",hover_data=df.columns)
 st.plotly_chart(fig)
 st.caption("Values of weight loss")
 
-fig = px.histogram(df, x="meal.cal",hover_data=df.columns)
-st.plotly_chart(fig)
-st.caption("Values of the calories of meals")
+
 
 fig = px.bar(df, x='meal.cal', y='wt.loss', title='Influence of meal.cal on weight loss', hover_data=df.columns)
 st.plotly_chart(fig)
