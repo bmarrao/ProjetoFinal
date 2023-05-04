@@ -31,6 +31,32 @@ grouped=df.groupby(df.status)
 
 df_alive = grouped.get_group('Alive by the end of the experiment')
 df_dead = grouped.get_group('Dead by the end of the experiment')
+
+#st.table(df)
+
+st.download_button(
+    label="Download all the data as CSV",
+    data=df.to_csv().encode('utf-8'),
+    file_name='large_df.csv',
+    mime='text/csv',
+)
+
+st.download_button(
+    label="Download all the data of people that died before the end of the experiment as CSV",
+    data=df_dead.to_csv().encode('utf-8'),
+    file_name='large_df.csv',
+    mime='text/csv',
+)
+
+st.download_button(
+    label="Download all the data of people that were alive at the end of the experiment as CSV",
+    data=df_dead.to_csv().encode('utf-8'),
+    file_name='large_df.csv',
+    mime='text/csv',
+)
+#st.table(df_dead)
+
+#st.table(df_alive)
 #Falta o comparativo dos q tavam vivo no experimento
 fig = px.histogram(df, x="status",color="status")
 st.plotly_chart(fig)
