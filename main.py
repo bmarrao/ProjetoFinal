@@ -8,6 +8,7 @@ import plotly.express as px
 from sklearn.model_selection import train_test_split
 from sksurv.ensemble import RandomSurvivalForest
 import plotly.graph_objects as go
+import numpy as np
 
 #from st_pages import Page, show_pages, add_page_title,show_pages_from_config
 st.set_page_config(page_title = "Lung cancer data analysis" )
@@ -26,11 +27,15 @@ df['sex'] = df['sex'].replace(0, 'Men')
 df['sex'] = df['sex'].replace(1, 'Women')
 df['status'] = df['status'].replace(0, 'Alive by the end of the experiment')
 df['status'] = df['status'].replace(1, 'Dead by the end of the experiment')
+"inst","time","status","age","sex","ph.ecog","ph.karno","pat.karno","meal.cal","wt.loss"
 
 grouped=df.groupby(df.status)
-
+customdata = np.stack((df['age'], df['sex'],df['status'],df['wt.loss'],df['meal.cal'],df['ph.ecog'],df['ph.karno'],df['pat.karno']), axis=-1)
 df_alive = grouped.get_group('Alive by the end of the experiment')
 df_dead = grouped.get_group('Dead by the end of the experiment')
+hovertemplate='<b>Age</b>: %{customdata[0]}<br>' + '<b>Sex</b>: %{customdata[1]}<br>' + '<b>Status</b>: %{customdata[2]}<br>' +'<b>Weight Loss</b>: %{customdata[3]}<br>'  +'<b>Calories per Meal</b>: %{customdata[4]}<br>' + '<b>ph.ecog</b>: %{customdata[5]}<br>' + '<b>ph.karno</b>: %{customdata[6]}<br>'+'<b>pat.karno</b>: %{customdata[7]}<br>' 
+
+
 
 st.header("Tables ")
 
@@ -88,8 +93,6 @@ fig.add_trace(go.Histogram(x=df_dead['sex'],name='Dead by the end of the experim
 fig.add_trace(go.Histogram(x=df_alive['sex'],name='Alive by the end of the experiment')
             
 )
-fig.update_layout(barmode='overlay')
-fig.update_traces(opacity=0.75)
 st.plotly_chart(fig)
 
 
@@ -107,8 +110,7 @@ fig.add_trace(go.Histogram(x=df_dead['age'],name='Dead by the end of the experim
 fig.add_trace(go.Histogram(x=df_alive['age'],name='Alive by the end of the experiment')
             
 )
-fig.update_layout(barmode='overlay')
-fig.update_traces(opacity=0.75)
+
 st.plotly_chart(fig)
 
 st.subheader("Medium age for men and woman across the data")
@@ -118,6 +120,7 @@ fig = go.Figure()
 fig.add_trace(
     go.Box(x=df['sex'],y=df['age'],
     name='All men and women'))
+                         
 
 fig.add_trace(go.Box(x=df_dead['sex'],y=df_dead['age'],name='Dead by the end of the experiment'))
 fig.add_trace(go.Box(x=df_alive['sex'],y=df_alive['age'],name='Alive by the end of the experiment'))
@@ -150,11 +153,9 @@ st.subheader("Difference between calories per meal of men and women across the d
 '''Este gráfico está errado'''
 #Falta o comparativo dos q tavam vivo no experimento
 fig = go.Figure()
-fig.add_trace(
-    go.Bar(x=df['sex'],y=df['meal.cal'],
-    name='All data'))
-fig.add_trace(go.Bar(x=df_dead['sex'],y=df_dead['meal.cal'],name='Dead by the end of the experiment'))
-fig.add_trace(go.Bar(x=df_alive['sex'],y=df_alive['meal.cal'],name='Alive by the end of the experiment'))
+fig.add_trace(go.Bar(x=df['sex'],y=df['meal.cal'],customdata =customdata ,hovertemplate = hovertemplate ,name='All data'))
+fig.add_trace(go.Bar(x=df_dead['sex'],y=df_dead['meal.cal'],customdata =customdata ,hovertemplate = hovertemplate ,name='Dead by the end of the experiment'))
+fig.add_trace(go.Bar(x=df_alive['sex'],y=df_alive['meal.cal'],customdata =customdata ,hovertemplate = hovertemplate ,name='Alive by the end of the experiment'))
 fig.update_layout(
     yaxis_title='Meal.Cal',
     xaxis_title='Sex',
@@ -163,15 +164,6 @@ fig.update_layout(
 )
 st.plotly_chart(fig)
 
-fig = px.bar(df, x='sex', y='meal.cal',color='sex',hover_data=df.columns)
-st.plotly_chart(fig)
-
-fig = px.bar(df_alive, x='sex', y='meal.cal',color='sex',hover_data=df_alive.columns)
-st.plotly_chart(fig)
-
-
-fig = px.bar(df_dead, x='sex', y='meal.cal',color='sex',hover_data=df_dead.columns)
-st.plotly_chart(fig)
 
 st.subheader("Histogram of patients with different ecog evaluations")
 
@@ -209,7 +201,10 @@ fig.add_trace(
     go.Box(x=df['ph.ecog'],y=df['meal.cal'],
     name='All men and women'))
 
-fig.add_trace(go.Box(x=df_dead['ph.ecog'],y=df_dead['meal.cal'],name='Dead by the end of the experiment'))
+fig.add_trace(go.Box(x=df_dead['ph.ecog'],
+                     y=df_dead['meal.cal'],
+                     text = df.values,
+                     name='Dead by the end of the experiment'))
 fig.add_trace(go.Box(x=df_alive['ph.ecog'],y=df_alive['meal.cal'],name='Alive by the end of the experiment'))
             
 fig.update_layout(
@@ -267,10 +262,10 @@ fig = px.scatter(df, x='meal.cal', y='wt.loss', hover_data=df.columns)
 st.plotly_chart(fig)
 
 fig = go.Figure()
-fig.add_trace(go.Scatter(x=df_dead['meal.cal'], y=df_dead['wt.loss'], mode = 'markers',name='Dead by the end of the experiment')
+fig.add_trace(go.Scatter(x=df_dead['meal.cal'], y=df_dead['wt.loss'],customdata =customdata ,hovertemplate = hovertemplate , mode = 'markers',name='Dead by the end of the experiment')
 )
 
-fig.add_trace(go.Scatter(x=df_alive['meal.cal'], y=df_alive['wt.loss'], mode = 'markers',name='Alive by the end of the experiment'))
+fig.add_trace(go.Scatter(x=df_alive['meal.cal'], y=df_alive['wt.loss'], customdata =customdata ,hovertemplate = hovertemplate ,mode = 'markers',name='Alive by the end of the experiment'))
 st.plotly_chart(fig)
 
 fig = px.pie(df, values='meal.cal', names='ph.karno', title='Medic Evaluation')
