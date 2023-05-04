@@ -173,11 +173,31 @@ st.plotly_chart(fig)
 fig = px.bar(df_dead, x='sex', y='meal.cal',color='sex',hover_data=df_dead.columns)
 st.plotly_chart(fig)
 
-st.subheader("Histogram of patiences with different ecog evaluations")
+st.subheader("Histogram of patients with different ecog evaluations")
 
 fig = px.histogram(df, x="ph.ecog", marginal="rug", # can be `box`, `violin`
                          hover_data=df.columns)
 st.plotly_chart(fig)
+
+st.subheader("Histogram of patients own evaluation of karnovisky evaluation")
+
+fig = px.histogram(df, x="pat.karno", marginal="rug", # can be box, violin
+                         hover_data=df.columns)
+st.plotly_chart(fig)
+
+fig = px.histogram(df_alive, x="pat.karno", marginal="rug", # can be box, violin
+                         hover_data=df.columns)
+st.plotly_chart(fig)
+
+fig = px.histogram(df_dead, x="pat.karno", marginal="rug", # can be box, violin
+                         hover_data=df.columns)
+st.plotly_chart(fig)
+
+st.subheader("Weight loss across the patients")
+
+fig = px.histogram(df, x="wt.loss",hover_data=df.columns)
+st.plotly_chart(fig)
+
 
 st.subheader("Medium calories per meal for a ecog evaluation across the data")
 
@@ -201,6 +221,7 @@ fig.update_layout(
 st.plotly_chart(fig)
 #############################################################################################
 
+st.header("Difference of calories consumed groupped by age")
 
 fig = px.bar(df, x = "age",y = "meal.cal" )
 st.plotly_chart(fig)
@@ -212,6 +233,8 @@ fig = px.bar(df_alive, x = "age",y = "meal.cal" )
 st.plotly_chart(fig)
 
 #Falta o comparativo dos q tavam vivo no experimento
+st.header("Box plots of each ecog evaluation and respectives wieght loss")
+
 fig = px.box(df, x="ph.ecog", y="wt.loss",points = "all" , hover_data=df.columns)
 st.plotly_chart(fig)
 
@@ -225,17 +248,11 @@ st.plotly_chart(fig)
 
 
 #Falta fazer alive e dead
-fig = px.histogram(df, x="pat.karno", marginal="rug", # can be box, violin
-                         hover_data=df.columns)
-st.plotly_chart(fig)
+
 
 ###########################################################################################################
 
-st.title("Study of the wt.loss and meal.cal columns")
-
-fig = px.histogram(df, x="wt.loss",hover_data=df.columns)
-st.plotly_chart(fig)
-st.caption("Values of weight loss")
+st.subheader("Study of the wt.loss and meal.cal columns")
 
 
 
@@ -282,13 +299,7 @@ df_alive['sex'] = df_alive['sex'].replace('Women',1)
 df_alive['status'] = df_alive['status'].replace('Alive by the end of the experiment',0)
 df_alive['status'] = df_alive['status'].replace('Dead by the end of the experiment',1)
 
-df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
-df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
-df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
-df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
-df.dropna(inplace=True)
-df["ph.ecog"] = df["ph.ecog"].astype("int64")
-df = df.reset_index() 
+
 
 st.session_state['pergunta1'] = []
 st.session_state['pergunta2'] = []

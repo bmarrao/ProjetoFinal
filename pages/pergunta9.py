@@ -6,17 +6,6 @@ import plotly.tools as tls
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
-'''
-df["inst"].fillna(100.00, inplace = True)
-df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
-df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
-df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
-df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
-df.dropna(inplace=True)
-#df["ph.ecog"] = df["ph.ecog"].astype("int64")
-df["ph.ecog"].fillna(df["ph.ecog"].mean(), inplace = True)
-'''
-
 
 df = st.session_state['dic']
 
@@ -99,26 +88,4 @@ if st.sidebar.button('Add to graph'):
 
 
 
-
-
-
-if st.button('Show difference of institution to survival rate using cph model'):
-    cph = CoxPHFitter()
-    cph.fit(df, duration_col = 'time', event_col = 'status')
-
-    fig, ax = plt.subplots()
-
-    cph.plot_partial_effects_on_outcome(covariates = 'inst',
-                                        values = [a for a in insts],
-                                        cmap = 'coolwarm')
-
-
-
-
-
-    figaux = plt.gcf()
-
-    py_fig = tls.mpl_to_plotly(figaux,resize = True)
-
-    st.plotly_chart(py_fig)
-
+S

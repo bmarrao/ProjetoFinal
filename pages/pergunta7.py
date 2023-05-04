@@ -5,18 +5,7 @@ import numpy as np
 from lifelines import CoxPHFitter, KaplanMeierFitter
 import plotly.tools as tls 
 
-'''
-filename = './lung-cancer-data.csv'
-df = pd.read_csv(filename)
 
-df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
-df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
-df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
-df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
-df.dropna(inplace=True)
-#df["ph.ecog"] = df["ph.ecog"].astype("int64")
-df["ph.ecog"].fillna(df["ph.ecog"].mean(), inplace = True)
-'''
 df = st.session_state['dic']
 
 dataf = {}
@@ -65,6 +54,13 @@ st.plotly_chart(py_fig)
 
 
 if st.button('Show ecog score relation in cph model graph'):
+    df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
+    df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
+    df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
+    df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
+    df.dropna(inplace=True)
+    df["ph.ecog"] = df["ph.ecog"].astype("int64")
+    df = df.reset_index() 
     cph = CoxPHFitter()
     cph.fit(df, duration_col = 'time', event_col = 'status',formula = "ph.ecog")
 
