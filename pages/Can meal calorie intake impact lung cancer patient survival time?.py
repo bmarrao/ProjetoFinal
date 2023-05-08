@@ -8,24 +8,16 @@ import numpy as np
 from lifelines import CoxPHFitter, KaplanMeierFitter
 import plotly.tools as tls
 
-'''filename = './lung-cancer-data.csv'
-df = pd.read_csv(filename)'''
+
 #print(df)
 #ADICIONAR BAR CHART COM CONSUMO CALORIAS E O TEMPO MEDIO DE SOBREVIVẼNCIA DE CADA UM
 #print(df.isnull().sum())
 
-'''
-df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
-df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
-df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
-df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
-df.dropna(inplace=True)
-df["ph.ecog"] = df["ph.ecog"].astype("int64")
-'''
 dic = {}
 st.header("Analysis of calories impact in the time that a person survives")
 st.sidebar.title('Navigation')
 df = st.session_state['dic']
+df_na = st.session_state['dic_noNa']
 
 num1 = st.sidebar.number_input('Calorias inferior') 
 num2 = st.sidebar.number_input('Calorias superior')
@@ -80,17 +72,10 @@ if st.sidebar.button('Add to graph'):
     st.plotly_chart(py_fig)
 
 if st.button('Show calories relation in cph model in a graph'):
-    
-    df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
-    df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
-    df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
-    df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
-    df.dropna(inplace=True)
-    df["ph.ecog"] = df["ph.ecog"].astype("int64")
-    df = df.reset_index()
+
 
     cph = CoxPHFitter()
-    cph.fit(df, duration_col = 'time', event_col = 'status')
+    cph.fit(df_na, duration_col = 'time', event_col = 'status')
 
     mpl_fig = plt.figure()
 

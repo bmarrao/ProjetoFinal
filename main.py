@@ -102,12 +102,12 @@ st.subheader("Age distribution across the data")
 fig = go.Figure()
 fig.add_trace(
     go.Histogram(x=df['age'],
-    name='All men and women')
+    name='All men and women',customdata =customdata ,hovertemplate = hovertemplate ),
 )
-fig.add_trace(go.Histogram(x=df_dead['age'],name='Dead by the end of the experiment')
+fig.add_trace(go.Histogram(x=df_dead['age'],name='Dead by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
 )
 
-fig.add_trace(go.Histogram(x=df_alive['age'],name='Alive by the end of the experiment')
+fig.add_trace(go.Histogram(x=df_alive['age'],name='Alive by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
             
 )
 
@@ -139,11 +139,6 @@ st.plotly_chart(fig)
 fig = px.box(df, color = "sex" ,x="sex", y="age", points="all",hover_data=df.columns)
 st.plotly_chart(fig)
 
-fig = px.box(df_dead, color = "sex" ,x="sex", y="age", points="all",hover_data=df_dead.columns)
-st.plotly_chart(fig)
-
-fig = px.box(df_alive, color = "sex" ,x="sex", y="age", points="all",hover_data=df_alive.columns)
-st.plotly_chart(fig)
 
 st.subheader("Calories per meal across the data")
 fig = px.histogram(df, x="meal.cal",hover_data=df.columns)
@@ -154,14 +149,11 @@ st.subheader("Difference between calories per meal of men and women across the d
 #Falta o comparativo dos q tavam vivo no experimento
 fig = go.Figure()
 fig.add_trace(go.Bar(x=df['sex'],y=df['meal.cal'],customdata =customdata ,hovertemplate = hovertemplate ,name='All data'))
-fig.add_trace(go.Bar(x=df_dead['sex'],y=df_dead['meal.cal'],customdata =customdata ,hovertemplate = hovertemplate ,name='Dead by the end of the experiment'))
 fig.add_trace(go.Bar(x=df_alive['sex'],y=df_alive['meal.cal'],customdata =customdata ,hovertemplate = hovertemplate ,name='Alive by the end of the experiment'))
+fig.add_trace(go.Bar(x=df_dead['sex'],y=df_dead['meal.cal'],customdata =customdata ,hovertemplate = hovertemplate ,name='Dead by the end of the experiment'))
 fig.update_layout(
     yaxis_title='Meal.Cal',
-    xaxis_title='Sex',
-
-    boxmode='group' # group together boxes of the different traces for each value of x
-)
+    xaxis_title='Sex')
 st.plotly_chart(fig)
 
 
@@ -333,19 +325,23 @@ st.session_state['pergunta9'] = []
 
 st.session_state['random_forest']= []
 
+df_na = df.copy()
+df_na.dropna(inplace=True)
+df_na = df_na.reset_index() 
+df_na["ph.ecog"] = df_na["ph.ecog"].astype("int64")
+
+st.session_state['dic_noNa'] = df_na
 st.session_state['dic'] = df
-st.session_state['dic dead'] = df_dead
-st.session_state['dic alive'] = df_alive
 st.title("Survivor Analysis for lung cancer data")
 #st.sidebar.sucess("Select a page above")
 st.subheader("Survival Forests")
-lg_y = df[['status','time']].copy()
+lg_y = df_na[['status','time']].copy()
 
 lg_y["status"] = lg_y["status"].astype("bool") 
 
 lg_y = lg_y.to_records(index=False)
 
-lg_x = df.drop(["status","time"],axis=1)
+lg_x = df_na.drop(["status","time"],axis=1)
 
 random_state = 20
 
@@ -358,7 +354,6 @@ rsf = RandomSurvivalForest(n_estimators=1000,
                            n_jobs=-1,
                            random_state=random_state)
 rsf.fit(X_train, y_train)
-#print(rsf.fit)
 print(rsf.score(X_test, y_test))
 
 

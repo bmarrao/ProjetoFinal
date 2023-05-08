@@ -4,6 +4,7 @@ import streamlit as st
 from lifelines import CoxPHFitter
 import plotly.tools as tls 
 
+df_na = st.session_state['dic_noNa']
 
 
 df = st.session_state['dic']
@@ -17,8 +18,8 @@ from plotly.graph_objs import *
 
 from pylab import rcParams
 dic = {}
-df_dead = st.session_state['dic dead']
-df_alive = st.session_state['dic alive']
+
+
 st.header("Effect of Karnofsky evaluation by a doctor in survival time : ")
 st.sidebar.title('Navigation')
 
@@ -86,15 +87,8 @@ if st.sidebar.button('Add to graph'):
 
 if st.button('Effect of Karnofsky evaluation on CPH model '):
 
-    df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
-    df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
-    df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
-    df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
-    df.dropna(inplace=True)
-    df["ph.ecog"] = df["ph.ecog"].astype("int64")
-    df = df.reset_index() 
     cph = CoxPHFitter()
-    cph.fit(df, duration_col = 'time', event_col = 'status',formula= "ph.karno")
+    cph.fit(df_na, duration_col = 'time', event_col = 'status',formula= "ph.karno")
 
     mpl_fig = plt.figure()
 

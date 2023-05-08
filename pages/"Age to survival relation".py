@@ -18,8 +18,8 @@ dic = {}
 st.header("Analysis of age impact in the time that a person survives")
 st.sidebar.title('Navigation')
 df = st.session_state['dic']
-df_dead = st.session_state['dic dead']
-df_alive = st.session_state['dic alive']
+df_na = st.session_state['dic_noNa']
+
 num1 = st.sidebar.number_input('Idade inferior')
 num2 = st.sidebar.number_input('Idade superior')
 array = (num1,num2)
@@ -28,6 +28,7 @@ arr = st.session_state['pergunta1']
 
 
 if st.sidebar.button('Add to graph'):
+    print(df)
     arr.append(array)
     st.session_state['pergunta1']= arr
     kmf = KaplanMeierFitter()
@@ -78,15 +79,8 @@ if st.sidebar.button('Add to graph'):
 
 
 if st.button('Show age relation in cph model in a graph'):
-    df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
-    df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
-    df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
-    df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
-    df.dropna(inplace=True)
-    df["ph.ecog"] = df["ph.ecog"].astype("int64")
-    df = df.reset_index() 
     cph = CoxPHFitter()
-    cph.fit(df, duration_col = 'time', event_col = 'status',formula= "age + sex + ph.ecog + ph.karno")
+    cph.fit(df_na, duration_col = 'time', event_col = 'status',formula= "age + sex + ph.ecog + ph.karno")
 
     mpl_fig = plt.figure()
 

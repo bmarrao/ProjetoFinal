@@ -11,6 +11,7 @@ st.header("Effect of weight loss in the last 6 months in survival chances")
 st.sidebar.title('Navigation')
 
 df = st.session_state['dic']
+
 num1 = st.sidebar.number_input('Peso inferior ')
 num2 = st.sidebar.number_input('Peso superior ')
 array = (num1,num2)

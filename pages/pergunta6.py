@@ -10,23 +10,17 @@ from lifelines import CoxPHFitter, KaplanMeierFitter
 
 # Usar random_forest
 
-df = st.session_state['dic']
-df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
-df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
-df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
-df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
-df.dropna(inplace=True)
-df["ph.ecog"] = df["ph.ecog"].astype("int64")
-df = df.reset_index() 
+df_na = st.session_state['dic_noNa']
+
 cph = CoxPHFitter()
-cph.fit(df, duration_col = 'time', event_col = 'status', formula = "age + sex + ph.ecog + ph.karno")
+cph.fit(df_na, duration_col = 'time', event_col = 'status', formula = "age + sex + ph.ecog + ph.karno")
 cph.print_summary()
 
 plt.subplots(figsize = (10, 6))
 
 #Exemplo para idade
     
-cph.predict_survival_function(X = df)
+cph.predict_survival_function(X = df_na)
 
 
 st.pyplot(plt)
