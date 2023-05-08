@@ -250,12 +250,42 @@ st.plotly_chart(fig)
 
 st.subheader("Influence of meal.cal on weight loss")
 fig = px.bar(df, x='meal.cal', y='wt.loss', hover_data=df.columns)
+fig.update_layout(
+    yaxis=dict( # Here
+        range=[0, 60] # Here
+    )
+)
 st.plotly_chart(fig)
 
 fig = px.bar(df_alive, x='meal.cal', y='wt.loss', hover_data=df_alive.columns)
+fig.update_layout(
+    yaxis=dict( # Here
+        range=[0, 60] # Here
+    )
+)
 st.plotly_chart(fig)
 
 fig = px.bar(df_dead, x='meal.cal', y='wt.loss', hover_data=df_dead.columns)
+fig.update_layout(
+    yaxis=dict( # Here
+        range=[0, 60] # Here
+    )
+)
+st.plotly_chart(fig)
+
+fig = go.Figure()
+fig.add_trace(go.Bar(x=df['meal.cal'],y=df['wt.loss'],customdata =customdata ,hovertemplate = hovertemplate ,name='All data'))
+fig.add_trace(go.Bar(x=df_dead['meal.cal'],y=df_dead['wt.loss'],customdata =customdata ,hovertemplate = hovertemplate ,name='Dead by the end of the experiment'))
+fig.add_trace(go.Bar(x=df_alive['meal.cal'],y=df_alive['wt.loss'],customdata =customdata ,hovertemplate = hovertemplate ,name='Alive by the end of the experiment'))
+fig.update_layout(
+    yaxis_title='Weight Lost',
+    xaxis_title='Calories Consumed',
+
+    boxmode='group', # group together boxes of the different traces for each value of x
+    yaxis=dict( # Here
+        range=[0, 60] # Here
+    )
+)
 st.plotly_chart(fig)
 
 fig = px.scatter(df, x='meal.cal', y='wt.loss', hover_data=df.columns)
@@ -268,10 +298,11 @@ fig.add_trace(go.Scatter(x=df_dead['meal.cal'], y=df_dead['wt.loss'],customdata 
 fig.add_trace(go.Scatter(x=df_alive['meal.cal'], y=df_alive['wt.loss'], customdata =customdata ,hovertemplate = hovertemplate ,mode = 'markers',name='Alive by the end of the experiment'))
 st.plotly_chart(fig)
 
-fig = px.pie(df, values='meal.cal', names='ph.karno', title='Medic Evaluation')
+fig = px.pie(df, values='meal.cal', names='ph.karno', title='Medic Evaluation compared to calories consumed')
+fig.update_layout(legend_traceorder="normal")
 st.plotly_chart(fig)
 
-fig = px.pie(df, values='meal.cal', names='pat.karno', title='Patient Evaluation')
+fig = px.pie(df, values='meal.cal', names='pat.karno', title='Patient Evaluation compared to calories consumed')
 st.plotly_chart(fig)
 
 fig = px.box(df, x='ph.karno', y='pat.karno', points = "all", hover_data=df.columns, title='Difference from Patient to Medic')
