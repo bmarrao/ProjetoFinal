@@ -27,7 +27,18 @@ df['sex'] = df['sex'].replace(0, 'Men')
 df['sex'] = df['sex'].replace(1, 'Women')
 df['status'] = df['status'].replace(0, 'Alive by the end of the experiment')
 df['status'] = df['status'].replace(1, 'Dead by the end of the experiment')
-"inst","time","status","age","sex","ph.ecog","ph.karno","pat.karno","meal.cal","wt.loss"
+'''
+inst: código da instituição\n
+time: Tempo de sobrevivˆencia em dias\n
+status: status de censura 0 = censurado, 1 = morto\n
+age: idade em anos\n
+sex: Male=0 Female=1\n
+ph.ecog: Pontuação de desempenho ECOG conforme avaliado pelo médico. 0 = assin-tomático, 1 = sintomático, mas completamente deambulat ́orio, 2 = acamado <50% do dia,3 = acamado >50% do dia, mas n ̃ao acamado, 4 = acamado\n
+ph.karno: pontuaçãode desempenho de Karnofsky (mau = 0-bom = 100) avaliado pelo médico \n
+pat.karno: Pontuação de desempenho de Karnofsky conforme avaliado pelo paciente\n
+meal.cal: Calorias consumidas nas refeicões\n
+wt.loss: Perda de peso nos  ́ultimos seis meses (kg)\n 
+'''
 
 grouped=df.groupby(df.status)
 customdata = np.stack((df['age'], df['sex'],df['status'],df['wt.loss'],df['meal.cal'],df['ph.ecog'],df['ph.karno'],df['pat.karno']), axis=-1)
@@ -149,8 +160,6 @@ st.subheader("Difference between calories per meal of men and women across the d
 #Falta o comparativo dos q tavam vivo no experimento
 fig = go.Figure()
 fig.add_trace(go.Bar(x=df['sex'],y=df['meal.cal'],customdata =customdata ,hovertemplate = hovertemplate ,name='All data'))
-fig.add_trace(go.Bar(x=df_alive['sex'],y=df_alive['meal.cal'],customdata =customdata ,hovertemplate = hovertemplate ,name='Alive by the end of the experiment'))
-fig.add_trace(go.Bar(x=df_dead['sex'],y=df_dead['meal.cal'],customdata =customdata ,hovertemplate = hovertemplate ,name='Dead by the end of the experiment'))
 fig.update_layout(
     yaxis_title='Meal.Cal',
     xaxis_title='Sex')
