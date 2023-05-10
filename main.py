@@ -122,6 +122,10 @@ fig.add_trace(go.Histogram(x=df_alive['age'],name='Alive by the end of the exper
             
 )
 
+fig.update_layout(
+    yaxis_title='Count',
+    xaxis_title = 'Age',
+)
 st.plotly_chart(fig)
 
 st.subheader("Medium age for men and woman across the data")
