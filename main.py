@@ -159,15 +159,6 @@ st.subheader("Calories per meal across the data")
 fig = px.histogram(df, x="meal.cal",hover_data=df.columns)
 st.plotly_chart(fig)
 
-st.subheader("Difference between calories per meal of men and women across the data")
-'''Este gráfico está errado'''
-#Falta o comparativo dos q tavam vivo no experimento
-fig = go.Figure()
-fig.add_trace(go.Bar(x=df['sex'],y=df['meal.cal'],customdata =customdata ,hovertemplate = hovertemplate ,name='All data'))
-fig.update_layout(
-    yaxis_title='Meal.Cal',
-    xaxis_title='Sex')
-st.plotly_chart(fig)
 
 
 st.subheader("Histogram of patients with different ecog evaluations")
