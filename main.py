@@ -167,7 +167,7 @@ fig = px.histogram(df, x="ph.ecog", marginal="rug",
                          hover_data=df.columns)
 st.plotly_chart(fig)
 
-st.subheader("Histogram of patients own evaluation of karnovisky score")
+st.subheader("Histogram of patients own evaluation of Karnofsky score")
 
 fig = go.Figure()
 
@@ -227,7 +227,7 @@ fig = px.bar(df_alive, x = "age",y = "meal.cal" )
 st.plotly_chart(fig)
 
 #Falta o comparativo dos q tavam vivo no experimento
-st.header("Box plots of each ecog evaluation and respectives wieght loss")
+st.header("Box plots of each ecog evaluation and respectives weight loss")
 
 
 fig = go.Figure()
