@@ -168,22 +168,25 @@ st.plotly_chart(fig)
 
 st.subheader("Histogram of patients with different ecog evaluations")
 
-fig = px.histogram(df, x="ph.ecog", marginal="rug", # can be `box`, `violin`
+fig = px.histogram(df, x="ph.ecog", marginal="rug",
                          hover_data=df.columns)
 st.plotly_chart(fig)
 
-st.subheader("Histogram of patients own evaluation of karnovisky evaluation")
+st.subheader("Histogram of patients own evaluation of karnovisky score")
 
-fig = px.histogram(df, x="pat.karno", marginal="rug", # can be box, violin
-                         hover_data=df.columns)
-st.plotly_chart(fig)
+fig = go.Figure()
 
-fig = px.histogram(df_alive, x="pat.karno", marginal="rug", # can be box, violin
-                         hover_data=df.columns)
-st.plotly_chart(fig)
 
-fig = px.histogram(df_dead, x="pat.karno", marginal="rug", # can be box, violin
-                         hover_data=df.columns)
+fig.add_trace( go.Histogram( x=df["pat.karno"],name = 'All patients', 
+                         hovertemplate = hovertemplate))
+
+
+fig.add_trace( go.Histogram( x=df_dead["pat.karno"],name = 'Dead by the end of experiment', 
+                         hovertemplate = hovertemplate))
+
+
+fig.add_trace( go.Histogram( x=df_alive["pat.karno"],name = 'Alive by the end of experiment', 
+                         hovertemplate = hovertemplate))
 st.plotly_chart(fig)
 
 st.subheader("Weight loss across the patients")
@@ -231,14 +234,23 @@ st.plotly_chart(fig)
 #Falta o comparativo dos q tavam vivo no experimento
 st.header("Box plots of each ecog evaluation and respectives wieght loss")
 
-fig = px.box(df, x="ph.ecog", y="wt.loss",points = "all" , hover_data=df.columns)
-st.plotly_chart(fig)
 
-fig = px.box(df_alive, x="ph.ecog", y="wt.loss",points = "all" , hover_data=df_alive.columns)
-st.plotly_chart(fig)
+fig = go.Figure()
+
+fig.add_trace( go.Box(x=df["ph.ecog"], y=df["wt.loss"], name='All patients'))
 
 
-fig = px.box(df_dead, x="ph.ecog", y="wt.loss",points = "all" , hover_data=df_dead.columns)
+fig.add_trace( go.Box(x=df_alive["ph.ecog"], y=df_alive["wt.loss"] , name='Alive by the end of the experiment'))
+
+
+fig.add_trace( go.Box(x=df_dead["ph.ecog"], y=df_dead["wt.loss"] , name='Dead by the end of the experiment'))
+
+fig.update_layout(
+    yaxis_title='wt.loss',
+    xaxis_title='Ph.Ecog    ',
+
+    boxmode='group' # group together boxes of the different traces for each value of x
+)
 st.plotly_chart(fig)
 
 
