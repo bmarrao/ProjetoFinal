@@ -156,7 +156,16 @@ st.plotly_chart(fig)
 
 
 st.subheader("Calories per meal across the data")
-fig = px.histogram(df, x="meal.cal",hover_data=df.columns)
+fig = go.Figure()
+fig.add_trace(
+    go.Histogram(x=df['meal.cal'],
+    name='All men and women',customdata =customdata ,hovertemplate = hovertemplate ),
+)
+fig.add_trace(go.Histogram(x=df_dead['meal.cal'],name='Dead by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
+)
+
+fig.add_trace(go.Histogram(x=df_alive['meal.cal'],name='Alive by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
+)
 st.plotly_chart(fig)
 
 
@@ -186,7 +195,16 @@ st.plotly_chart(fig)
 
 st.subheader("Weight loss across the patients")
 
-fig = px.histogram(df, x="wt.loss",hover_data=df.columns)
+fig = go.Figure()
+fig.add_trace(
+    go.Histogram(x=df['wt.loss'],
+    name='All men and women',customdata =customdata ,hovertemplate = hovertemplate ),
+)
+fig.add_trace(go.Histogram(x=df_dead['wt.loss'],name='Dead by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
+)
+
+fig.add_trace(go.Histogram(x=df_alive['wt.loss'],name='Alive by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
+)
 st.plotly_chart(fig)
 
 
