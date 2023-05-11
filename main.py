@@ -166,6 +166,10 @@ fig.add_trace(go.Histogram(x=df_dead['meal.cal'],name='Dead by the end of the ex
 
 fig.add_trace(go.Histogram(x=df_alive['meal.cal'],name='Alive by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
 )
+fig.update_layout(
+    yaxis_title='Count',
+    xaxis_title = 'Calories',
+)
 st.plotly_chart(fig)
 
 
@@ -204,6 +208,10 @@ fig.add_trace(go.Histogram(x=df_dead['wt.loss'],name='Dead by the end of the exp
 )
 
 fig.add_trace(go.Histogram(x=df_alive['wt.loss'],name='Alive by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
+)
+fig.update_layout(
+    yaxis_title='Count',
+    xaxis_title = 'Weight Lost',
 )
 st.plotly_chart(fig)
 
@@ -275,6 +283,7 @@ st.plotly_chart(fig)
 
 
 st.subheader("Influence of meal.cal on weight loss")
+'''All Data'''
 fig = px.bar(df, x='meal.cal', y='wt.loss', hover_data=df.columns)
 fig.update_layout(
     yaxis=dict( # Here
@@ -282,7 +291,7 @@ fig.update_layout(
     )
 )
 st.plotly_chart(fig)
-
+'''Dead'''
 fig = px.bar(df_alive, x='meal.cal', y='wt.loss', hover_data=df_alive.columns)
 fig.update_layout(
     yaxis=dict( # Here
@@ -290,7 +299,7 @@ fig.update_layout(
     )
 )
 st.plotly_chart(fig)
-
+'''Alive'''
 fig = px.bar(df_dead, x='meal.cal', y='wt.loss', hover_data=df_dead.columns)
 fig.update_layout(
     yaxis=dict( # Here
@@ -314,14 +323,17 @@ fig.update_layout(
 )
 st.plotly_chart(fig)
 
-fig = px.scatter(df, x='meal.cal', y='wt.loss', hover_data=df.columns)
-st.plotly_chart(fig)
-
 fig = go.Figure()
+fig.add_trace(go.Scatter(x=df['meal.cal'], y=df['wt.loss'],customdata =customdata ,hovertemplate = hovertemplate , mode = 'markers',name='All Data')
+)
 fig.add_trace(go.Scatter(x=df_dead['meal.cal'], y=df_dead['wt.loss'],customdata =customdata ,hovertemplate = hovertemplate , mode = 'markers',name='Dead by the end of the experiment')
 )
 
 fig.add_trace(go.Scatter(x=df_alive['meal.cal'], y=df_alive['wt.loss'], customdata =customdata ,hovertemplate = hovertemplate ,mode = 'markers',name='Alive by the end of the experiment'))
+fig.update_layout(
+    yaxis_title='Wt.Loss',
+    xaxis_title='Meal.Cal',
+)
 st.plotly_chart(fig)
 
 fig = px.pie(df, values='meal.cal', names='ph.karno', title='Medic Evaluation compared to calories consumed')
