@@ -176,9 +176,22 @@ st.plotly_chart(fig)
 
 st.subheader("Histogram of patients with different ecog evaluations")
 
-fig = px.histogram(df, x="ph.ecog", marginal="rug",
-                         hover_data=df.columns)
-st.plotly_chart(fig)
+fig = go.Figure()
+
+fig.add_trace( go.Histogram( x=df["ph.ecog"],name = 'All patients', 
+                         hovertemplate = hovertemplate))
+
+fig.add_trace( go.Histogram( x=df_dead["ph.ecog"],name = 'Dead by the end of experiment', 
+                         hovertemplate = hovertemplate))
+
+fig.add_trace( go.Histogram( x=df_alive["ph.ecog"],name = 'Alive by the end of experiment', 
+                         hovertemplate = hovertemplate))
+
+fig.update_layout(
+    yaxis_title='count',
+    xaxis_title='Patient ecog level',
+    boxmode='group')
+
 
 st.subheader("Histogram of patients own evaluation of Karnofsky score")
 
@@ -195,6 +208,11 @@ fig.add_trace( go.Histogram( x=df_dead["pat.karno"],name = 'Dead by the end of e
 
 fig.add_trace( go.Histogram( x=df_alive["pat.karno"],name = 'Alive by the end of experiment', 
                          hovertemplate = hovertemplate))
+fig.update_layout(
+    yaxis_title='count',
+    xaxis_title='Patient karno score',
+    boxmode='group')
+
 st.plotly_chart(fig)
 
 st.subheader("Weight loss across the patients")
@@ -217,6 +235,7 @@ st.plotly_chart(fig)
 
 
 st.subheader("Medium calories per meal for a ecog evaluation across the data")
+
 
 fig = px.box(df, x="ph.ecog", y="meal.cal",points = "all" , hover_data=df.columns)
 st.plotly_chart(fig)
@@ -243,13 +262,31 @@ st.plotly_chart(fig)
 
 st.header("Difference of calories consumed groupped by age")
 
-fig = px.bar(df, x = "age",y = "meal.cal" )
-st.plotly_chart(fig)
+mean = df.groupby('age',as_index=False).mean()
+mean_dead = df_dead.groupby('age',as_index=False).mean()
+mean_alive = df_alive.groupby('age',as_index=False).mean()
 
-fig = px.bar(df_dead, x = "age",y = "meal.cal" )
-st.plotly_chart(fig)
 
-fig = px.bar(df_alive, x = "age",y = "meal.cal" )
+
+#fig = px.bar(mean, x = "age",y = "meal.cal" ,)
+#st.plotly_chart(fig)
+
+#fig = px.bar(mean_dead x = "age",y = "meal.cal" )
+#st.plotly_chart(fig)
+
+#fig = px.bar(mean_alive, x = "age",y = "meal.cal" )
+#st.plotly_chart(fig)
+
+fig = go.Figure()
+fig.add_trace(go.Bar(x=mean['age'],y=mean['meal.cal'],name='All data'))
+fig.add_trace(go.Bar(x=mean_dead['age'],y=mean_dead['meal.cal'],name='Dead by the end of the experiment'))
+fig.add_trace(go.Bar(x=mean_alive['age'],y=mean_alive['meal.cal'],name='Alive by the end of the experiment'))
+fig.update_layout(
+    yaxis_title='average calories per meal',
+    xaxis_title='Age',
+
+    boxmode='group' # group together boxes of the different traces for each value of x
+)
 st.plotly_chart(fig)
 
 #Falta o comparativo dos q tavam vivo no experimento
