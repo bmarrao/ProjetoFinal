@@ -96,7 +96,8 @@ st.subheader("Men and women distribution in the data")
 fig = go.Figure()
 fig.add_trace(
     go.Histogram(x=df['sex'],
-    name='All men and women')
+    name='All men and women'
+),
 )
 fig.add_trace(go.Histogram(x=df_dead['sex'],name='Dead by the end of the experiment')
 )
@@ -104,7 +105,11 @@ fig.add_trace(go.Histogram(x=df_dead['sex'],name='Dead by the end of the experim
 fig.add_trace(go.Histogram(x=df_alive['sex'],name='Alive by the end of the experiment')
             
 )
-st.plotly_chart(fig)
+fig.update_layout(barmode='overlay')
+
+fig.update_traces(opacity=0.75)
+
+st.plotly_chart(fig)    
 
 
 st.subheader("Age distribution across the data")
@@ -418,6 +423,7 @@ st.session_state['dic'] = df
 st.title("Survivor Analysis for lung cancer data")
 #st.sidebar.sucess("Select a page above")
 st.subheader("Survival Forests")
+
 lg_y = df_na[['status','time']].copy()
 
 lg_y["status"] = lg_y["status"].astype("bool") 
@@ -426,11 +432,32 @@ lg_y = lg_y.to_records(index=False)
 
 lg_x = df_na.drop(["status","time"],axis=1)
 
+
 random_state = 20
 
 X_train, X_test, y_train, y_test = train_test_split(
     lg_x, lg_y, test_size=0.05, random_state=random_state)
 
+st.text("Data used to train the Survival Forest")
+st.dataframe(y_train)
+#st.table(df)
+
+st.download_button(
+    label="Download all the data as CSV",
+    data=pd.DataFrame(y_train).to_csv().encode('utf-8'),
+    file_name='large_df.csv',
+    mime='text/csv',
+)
+
+st.dataframe(X_train)
+#st.table(df)
+
+st.download_button(
+    label="Download all the data as CSV",
+    data=X_train.to_csv().encode('utf-8'),
+    file_name='large_df.csv',
+    mime='text/csv',
+)
 rsf = RandomSurvivalForest(n_estimators=1000,
                            min_samples_split=10,
                            min_samples_leaf=15,
@@ -475,3 +502,24 @@ py_fig = tls.mpl_to_plotly(rsf2, resize=True)
 
 st.plotly_chart(py_fig)
 
+
+st.text("Data used to test the Survival Forest")
+st.dataframe(y_test)
+#st.table(df)
+
+st.download_button(
+    label="Download all the data as CSV",
+    data=pd.DataFrame(y_test).to_csv().encode('utf-8'),
+    file_name='large_df.csv',
+    mime='text/csv',
+)
+
+st.dataframe(X_test)
+#st.table(df)
+
+st.download_button(
+    label="Download all the data as CSV",
+    data=X_test.to_csv().encode('utf-8'),
+    file_name='large_df.csv',
+    mime='text/csv',
+)
