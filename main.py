@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from sksurv.ensemble import RandomSurvivalForest
 import plotly.graph_objects as go
 import numpy as np
+import plotly.figure_factory as ff
 
 #from st_pages import Page, show_pages, add_page_title,show_pages_from_config
 st.set_page_config(page_title = "Lung cancer data analysis" )
@@ -21,7 +22,6 @@ df = pd.read_csv(filename)
 df['status'] = df["status"]-1
 df['sex'] = df["sex"]-1
 df['wt.loss'] = df['wt.loss'] * 0.45359237
-
 
 df['sex'] = df['sex'].replace(0, 'Men')
 df['sex'] = df['sex'].replace(1, 'Women')
@@ -91,13 +91,13 @@ st.plotly_chart(fig)
 
 fig = go.Figure()
 
+hovertemplate='<b>Age</b>: %{customdata[0]}<br>' + '<b>Sex</b>: %{customdata[1]}<br>' + '<b>Status</b>: %{customdata[2]}<br>' +'<b>Weight Loss</b>: %{customdata[3]}<br>'  +'<b>Calories per Meal</b>: %{customdata[4]}<br>' + '<b>ph.ecog</b>: %{customdata[5]}<br>' + '<b>ph.karno</b>: %{customdata[6]}<br>'+'<b>pat.karno</b>: %{customdata[7]}<br>' 
 
 st.subheader("Men and women distribution in the data")
 fig = go.Figure()
 fig.add_trace(
     go.Histogram(x=df['sex'],
-    name='All men and women'
-),
+    name='All data'),
 )
 fig.add_trace(go.Histogram(x=df_dead['sex'],name='Dead by the end of the experiment')
 )
@@ -114,11 +114,23 @@ st.plotly_chart(fig)
 
 st.subheader("Age distribution across the data")
 
+hist_data = [df['age'].to_numpy(), df_dead['age'].to_numpy(), df_alive['age'].to_numpy()]
+
+group_labels = ['All data', 'Dead by the end of the experiment', 'Alive by the end of the experiment']
+colors = ['#393E46', '#2BCDC1', '#F66095']
+
+fig = ff.create_distplot(hist_data, group_labels,colors=colors,bin_size=5)
+fig.update_layout(
+    yaxis_title='Count',
+    xaxis_title = 'Age',
+)
+st.plotly_chart(fig)
+
 
 fig = go.Figure()
 fig.add_trace(
     go.Histogram(x=df['age'],
-    name='All men and women',customdata =customdata ,hovertemplate = hovertemplate ),
+    name='All data',customdata =customdata ,hovertemplate = hovertemplate),
 )
 fig.add_trace(go.Histogram(x=df_dead['age'],name='Dead by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
 )
@@ -130,16 +142,18 @@ fig.add_trace(go.Histogram(x=df_alive['age'],name='Alive by the end of the exper
 fig.update_layout(
     yaxis_title='Count',
     xaxis_title = 'Age',
+    barmode='overlay'
 )
+# Reduce opacity to see both histograms
+fig.update_traces(opacity=0.75)
 st.plotly_chart(fig)
-
 st.subheader("Medium age for men and woman across the data")
 
 
 fig = go.Figure()
 fig.add_trace(
     go.Box(x=df['sex'],y=df['age'],
-    name='All men and women'))
+    name='All data'))
                          
 
 fig.add_trace(go.Box(x=df_dead['sex'],y=df_dead['age'],name='Dead by the end of the experiment'))
@@ -164,7 +178,7 @@ st.subheader("Calories per meal across the data")
 fig = go.Figure()
 fig.add_trace(
     go.Histogram(x=df['meal.cal'],
-    name='All men and women',customdata =customdata ,hovertemplate = hovertemplate ),
+    name='All data',customdata =customdata ,hovertemplate = hovertemplate ),
 )
 fig.add_trace(go.Histogram(x=df_dead['meal.cal'],name='Dead by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
 )
@@ -225,7 +239,7 @@ st.subheader("Weight loss across the patients")
 fig = go.Figure()
 fig.add_trace(
     go.Histogram(x=df['wt.loss'],
-    name='All men and women',customdata =customdata ,hovertemplate = hovertemplate ),
+    name='All data',customdata =customdata ,hovertemplate = hovertemplate ),
 )
 fig.add_trace(go.Histogram(x=df_dead['wt.loss'],name='Dead by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
 )
@@ -248,7 +262,7 @@ st.plotly_chart(fig)
 fig = go.Figure()
 fig.add_trace(
     go.Box(x=df['ph.ecog'],y=df['meal.cal'],
-    name='All men and women'))
+    name='All data'))
 
 fig.add_trace(go.Box(x=df_dead['ph.ecog'],
                      y=df_dead['meal.cal'],
