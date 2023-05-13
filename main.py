@@ -431,8 +431,9 @@ df_na = df.copy()
 df_na.dropna(inplace=True)
 df_na = df_na.reset_index() 
 df_na["ph.ecog"] = df_na["ph.ecog"].astype("int64")
-
+df_na.pop("index")
 st.session_state['dic_noNa'] = df_na
+print(df_na)
 st.session_state['dic'] = df
 st.title("Survivor Analysis for lung cancer data")
 #st.sidebar.sucess("Select a page above")

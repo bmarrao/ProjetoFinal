@@ -67,20 +67,58 @@ rsf = RandomSurvivalForest(n_estimators=1000,
                            n_jobs=-1,
                            random_state=random_state)
 rsf.fit(lg_x, lg_y)
-
+train_x = pd.DataFrame.from_dict(arr)
+st.dataframe(train_x)
 
 
 if st.sidebar.button('Add to graph'):
     mpl_fig = plt.figure()
-    array = {'age' : num2 ,'inst': num1 ,'sex': num3 ,'ph.ecog' : num4 , 'ph.karno' : num5 , 'pat.karno': num6 ,
+    array = {'inst': num1,  'age' : num2  ,'sex': num3 ,'ph.ecog' : num4 , 'ph.karno' : num5 , 'pat.karno': num6 ,
              'meal.cal':num7,'wt.loss':num8}
     arr.append(array)
-    Train = pd.DataFrame.from_dict(arr)
+    train_x = pd.DataFrame.from_dict(arr)
+    #print(Train)
+    #train_x = Train.drop(["status","time"],axis=1)
+    st.session_state['random_forest']= arr
 
-    train_y = Train[['status','time']].copy()
-    train_y["status"] = train_y["status"].astype("bool") 
+    
+    st.dataframe(train_x)
 
-    train_y = train_y.to_records(index=False)
+    surv = rsf.predict_survival_function(train_x, return_array=True)
+    mpl_fig = plt.figure()
 
-    train_x = Train.drop(["status","time"],axis=1)
+    for i, s in enumerate(surv):
+        plt.step(rsf.event_times_, s, where="post", label=str(i))
+    plt.ylabel("Survival probability")
+    plt.xlabel("Time in days")
+    plt.legend()
+    plt.grid(True)
+
+    rsf2 = plt.gcf()
+
+    py_fig = tls.mpl_to_plotly(rsf2, resize=True)
+
+    st.plotly_chart(py_fig)
+
+    mpl_fig = plt.figure()
+
+
+    surv = rsf.predict_cumulative_hazard_function(train_x, return_array=True)
+
+    for i, s in enumerate(surv):
+        plt.step(rsf.event_times_, s, where="post", label=str(i))
+    plt.ylabel("Cumulative hazard")
+    plt.xlabel("Time in days")
+    plt.legend()
+    plt.grid(True)
+
+    rsf2 = plt.gcf()
+
+    py_fig = tls.mpl_to_plotly(rsf2, resize=True)
+
+    st.plotly_chart(py_fig)
+
+    #st.table(df)
+
+
 
