@@ -174,6 +174,9 @@ fig = px.box(df, color = "sex" ,x="sex", y="age", points="all",hover_data=df.col
 st.plotly_chart(fig)
 
 
+
+
+
 st.subheader("Calories per meal across the data")
 fig = go.Figure()
 fig.add_trace(
