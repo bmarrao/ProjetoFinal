@@ -19,6 +19,8 @@ st.header("Analysis of age impact in the time that a person survives")
 st.sidebar.title('Navigation')
 df = st.session_state['dic']
 df_na = st.session_state['dic_noNa']
+customdata = st.session_state['customdata']  
+hovertemplate = st.session_state['hovertemplate']
 
 num1 = st.sidebar.number_input('Idade inferior')
 num2 = st.sidebar.number_input('Idade superior')
@@ -76,6 +78,7 @@ if st.sidebar.button('Add to graph'):
 
     )
 
+    py_fig.update_traces(hovertemplate =hovertemplate, customdata= customdata)
     #kmf.plot_survival_function(ax = ax,at_risk_counts = True)
 
 
@@ -98,6 +101,13 @@ if st.button('Show age relation in cph model in a graph'):
     cph2 = plt.gcf()
 
     py_fig = tls.mpl_to_plotly(cph2, resize=True)
+    py_fig.update_layout(
+    yaxis_title='Survival Probabily',
+    xaxis_title='Time in days'
+
+    )
+
+    py_fig.update_traces(hovertemplate =hovertemplate, customdata= customdata)
 
     st.plotly_chart(py_fig)
 
