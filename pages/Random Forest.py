@@ -36,29 +36,8 @@ lg_y = lg_y.to_records(index=False)
 
 lg_x = df_na.drop(["status","time"],axis=1)
 
-
 random_state = 20
 
-st.text("Data used to train the Survival Forest")
-st.dataframe(lg_y)
-#st.table(df)
-
-st.download_button(
-    label="Download all the data as CSV",
-    data=pd.DataFrame(lg_y).to_csv().encode('utf-8'),
-    file_name='large_df.csv',
-    mime='text/csv',
-)
-
-st.dataframe(lg_x)
-#st.table(df)
-
-st.download_button(
-    label="Download all the data as CSV",
-    data=lg_x.to_csv().encode('utf-8'),
-    file_name='large_df.csv',
-    mime='text/csv',
-)
 rsf = RandomSurvivalForest(n_estimators=1000,
                            min_samples_split=10,
                            min_samples_leaf=15,
@@ -66,8 +45,6 @@ rsf = RandomSurvivalForest(n_estimators=1000,
                            random_state=random_state)
 rsf.fit(lg_x, lg_y)
 train_x = pd.DataFrame.from_dict(arr)
-st.dataframe(train_x)
-
 
 if st.sidebar.button('Add to graph'):
     mpl_fig = plt.figure()
@@ -124,6 +101,32 @@ if st.sidebar.button('Add to graph'):
     st.plotly_chart(py_fig)
 
     #st.table(df)
+
+st.text("Data used to train the Survival Forest")
+st.dataframe(lg_y)
+#st.table(df)
+
+st.download_button(
+    label="Download all the data as CSV",
+    data=pd.DataFrame(lg_y).to_csv().encode('utf-8'),
+    file_name='large_df.csv',
+    mime='text/csv',
+)
+
+st.dataframe(lg_x)
+#st.table(df)
+
+st.download_button(
+    label="Download all the data as CSV",
+    data=lg_x.to_csv().encode('utf-8'),
+    file_name='large_df.csv',
+    mime='text/csv',
+)
+
+st.dataframe(train_x)
+
+
+
 
 
 

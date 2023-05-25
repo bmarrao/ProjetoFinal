@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import streamlit as st
 import numpy as np
 from lifelines import CoxPHFitter
+import plotly.tools as tls 
 
 
 from sksurv.ensemble import RandomSurvivalForest
@@ -20,7 +21,7 @@ lg_y["status"] = lg_y["status"].astype("bool")
 
 lg_y = lg_y.to_records(index=False)
 
-lg_x = df_na.drop(["status","time"],axis=1)
+lg_x = df_na.drop(["status","time","meal.cal","pat.karno","wt.loss"],axis=1)
 
 random_state = 20
 
@@ -31,7 +32,6 @@ rsf = RandomSurvivalForest(n_estimators=1000,
                            random_state=random_state)
 rsf.fit(lg_x, lg_y)
 train_x = pd.DataFrame.from_dict(arr)
-st.dataframe(train_x)
 
 num1 = st.sidebar.number_input("Idade")
 num2 = st.sidebar.number_input("Sexo")
@@ -43,9 +43,6 @@ if st.sidebar.button('Add to graph'):
 
     arr.append(array)
     train_x = pd.DataFrame.from_dict(arr)
-
-    st.dataframe(train_x)
-
 
     surv = rsf.predict_survival_function(train_x, return_array=True)
     mpl_fig = plt.figure()
@@ -63,3 +60,4 @@ if st.sidebar.button('Add to graph'):
     )
 
     st.plotly_chart(py_fig)
+    st.dataframe(train_x)
