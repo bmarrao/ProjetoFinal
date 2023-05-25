@@ -39,17 +39,13 @@ dfna_dead = grouped_na.get_group('Dead by the end of the experiment')
 
 
 '''
-In this project we will be analyzing data from a study of patients with advanced lung cancer in a clinical trial of a new treatment
-inst: código da instituição\n
-time: Tempo de sobrevivˆencia em dias\n
-status: status de censura 0 = censurado, 1 = morto\n
-age: idade em anos\n
-sex: Male=0 Female=1\n
-ph.ecog: Pontuação de desempenho ECOG conforme avaliado pelo médico. 0 = assin-tomático, 1 = sintomático, mas completamente deambulat ́orio, 2 = acamado <50% do dia,3 = acamado >50% do dia, mas n ̃ao acamado, 4 = acamado\n
-ph.karno: pontuaçãode desempenho de Karnofsky (mau = 0-bom = 100) avaliado pelo médico \n
-pat.karno: Pontuação de desempenho de Karnofsky conforme avaliado pelo paciente\n
-meal.cal: Calorias consumidas nas refeicões\n
-wt.loss: Perda de peso nos  ́ultimos seis meses (kg)\n 
+In this project we will be analyzing data from a study of patients with advanced lung cancer in a clinical trial of a new treatment , the Data has the following atributtes
+inst: code of the instituion\n ; Time: time of survival in day ;status: censured = 0 and  dead = 1; Age : In years ; sex : Male = 0, Female = 1;
+ph.ecog: ECOG performance score as assessed by physician. 0 = asymptomatic, 1 = symptomatic but fully ambulatory, 2 = bedridden <50% of the day, 3 = bedridden >50% of the day but not bedridden, 4 = bedridden;
+ph.karno: Karnofsky performance score (poor = 0-good = 100) as assessed by physician;
+pat.karno:Karnofsky Performance Score as rated by the patient;
+meal.cal: Calories per meal;
+wt.loss: Weight loss in  (kg)
 '''
 
 grouped=df.groupby(df.status)

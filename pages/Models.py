@@ -37,3 +37,8 @@ st.text("There is a function to see all the coefficients of each variable to get
 
 results = proportional_hazard_test(cph,df_na,time_transform='rank')
 results.print_summary(decimals=3)
+
+st.subheader("Random Survival Forests")
+
+st.text("A random durvival forest is an estimator that fits a number of survival trees using samples of the dataset \n and uses averaging to predict more accurately and to prevent over-fitting")
+st.text("In each survival tree, the quality of a split is measured by the log-rank splitting rule that compares differents results of an event in various groups")
