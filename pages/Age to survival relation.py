@@ -88,7 +88,7 @@ if st.sidebar.button('Add to graph'):
 
 if st.button('Show age relation in cph model in a graph'):
     cph = CoxPHFitter()
-    cph.fit(df_na, duration_col = 'time', event_col = 'status',formula= "age + sex + ph.ecog + ph.karno")
+    cph.fit(df_na, duration_col = 'time', event_col = 'status')
 
     mpl_fig = plt.figure()
 

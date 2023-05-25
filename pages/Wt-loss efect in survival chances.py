@@ -7,7 +7,7 @@ from plotly.graph_objs import *
 
 from pylab import rcParams
 dic = {}
-st.header("Effect of weight loss in the last 6 months in survival chances")
+st.header("Effect of weight loss in survival chances")
 st.sidebar.title('Navigation')
 
 df = st.session_state['dic']
@@ -40,7 +40,7 @@ if st.sidebar.button('Add to graph'):
     for (n1,n2) in arr:
         ax = plt.subplot(111)
         if dic[f'({n1},{n2})']['time']:
-            kmf.fit(durations = pd.DataFrame(dic[f'({n1},{n2})']['time']), event_observed = pd.DataFrame(dic[f'({n1},{n2})']['status']),label=f"{num1}-{num2}")
+            kmf.fit(durations = pd.DataFrame(dic[f'({n1},{n2})']['time']), event_observed = pd.DataFrame(dic[f'({n1},{n2})']['status']),label=f"{n1}-{n2}")
             kmf.survival_function_.plot(ax = ax)
         else :
             st.info(f"There is no data for input {n1} - {n2}")

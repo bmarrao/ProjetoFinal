@@ -39,6 +39,7 @@ dfna_dead = grouped_na.get_group('Dead by the end of the experiment')
 
 
 '''
+In this project we will be analyzing data from a study of patients with advanced lung cancer in a clinical trial of a new treatment
 inst: código da instituição\n
 time: Tempo de sobrevivˆencia em dias\n
 status: status de censura 0 = censurado, 1 = morto\n

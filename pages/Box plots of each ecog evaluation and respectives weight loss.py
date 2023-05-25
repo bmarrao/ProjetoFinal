@@ -13,6 +13,7 @@ df_dead = st.session_state['dicdead']
 st.header("Box plots of each ecog evaluation and respectives weight loss")
 
 
+
 fig = go.Figure()
 
 fig.add_trace( go.Box(x=df["ph.ecog"], y=df["wt.loss"], name='All patients'))
