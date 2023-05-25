@@ -21,9 +21,7 @@ num5 = st.sidebar.number_input('Pontuacao de desempenho Karnofsky avaliado pelo 
 num6 = st.sidebar.number_input('Pontuacao de desempenho Karnofsky avaliado pelo paciente :')
 num7 = st.sidebar.number_input('Calorias consumidas nas ultimas refeicoes : ')
 num8 = st.sidebar.number_input('Perda de peso nos ultimos seis meses (em kilogramas ) : ')
-'''
-Deixar instituição e desempenho Karnofsky pelo paciente ?
-'''
+
 
 
 st.subheader("Survival Forests")
@@ -57,8 +55,6 @@ if st.sidebar.button('Add to graph'):
     st.session_state['random_forest']= arr
 
     
-    st.dataframe(train_x)
-
 
     surv = rsf.predict_survival_function(train_x, return_array=True)
     mpl_fig = plt.figure()
@@ -100,9 +96,11 @@ if st.sidebar.button('Add to graph'):
     )
     st.plotly_chart(py_fig)
 
+    st.dataframe(train_x)
+
     #st.table(df)
 
-st.text("Data used to train the Survival Forest")
+st.subheader("Data used to train the Survival Forest")
 st.dataframe(lg_y)
 #st.table(df)
 

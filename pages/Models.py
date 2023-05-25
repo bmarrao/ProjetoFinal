@@ -39,8 +39,8 @@ There is a function to see all the coefficients of each variable to get more\n i
 '''
 
 results = proportional_hazard_test(cph,df_na,time_transform='rank')
-results.print_summary(decimals=3)
-
+x = results.summary(decimals=3)
+st.dataframe(x)
 st.subheader("Random Survival Forests")
 '''
 A random durvival forest is an estimator that fits a number of survival trees using samples of the dataset \n and uses averaging to predict more accurately and to prevent over-fitting
