@@ -1,6 +1,3 @@
-'''Estimar o tempo de sobrevivência em pacientes com cancro do pulmão com base na
-sua idade, sexo, classificação ECOG e pontuação de Karnofsky'''
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
