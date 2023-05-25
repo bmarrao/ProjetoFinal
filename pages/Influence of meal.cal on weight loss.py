@@ -24,7 +24,7 @@ fig.add_trace(go.Scatter(x=df_na['meal.cal'], y=df_na['wt.loss'], mode = 'marker
 fig.add_trace(go.Scatter(x=dfna_dead['meal.cal'], y=dfna_dead['wt.loss'], mode = 'markers',name='Dead by the end of the experiment')
 )
 
-fig.add_trace(go.Scatter(x=dfna_alive['meal.cal'], y=dfna_alive['wt.loss']  ,mode = 'markers',name='Alive by the end of the experiment'))
+fig.add_trace(go.Scatter(x=dfna_alive['meal.cal'], y=dfna_alive['wt.loss']   ,mode = 'markers',name='Alive by the end of the experiment'))
 fig.update_layout(
     yaxis_title='Wt.Loss',
     xaxis_title='Meal.Cal',

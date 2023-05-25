@@ -7,35 +7,28 @@ import streamlit as st
 import numpy as np
 from lifelines import CoxPHFitter
 
-from sksurv.datasets import load_whas500
 from sksurv.linear_model import CoxPHSurvivalAnalysis
 
 df_na = st.session_state['dic_noNa']
 
+num1 = st.sidebar.number_input("Idade")
+num2 = st.sidebar.number_input("Sexo")
+num3 = st.sidebar.number_input("Pontuação de Karnofsky")
+num4 = st.sidebar.number_input("Classificação ECOG")
 
-estimator = CoxPHSurvivalAnalysis().fit(df_na['time'], df_na['status'])
+if st.sidebar.button('Add to graph'):
+    array = {'age' : num1  ,'sex': num2 ,'ph.ecog' : num4 , 'ph.karno' : num3}
 
-surv_funcs = estimator.predict_survival_function(df_na['time'].iloc[:10])
+    train_x = pd.DataFrame.from_dict(array)
 
-for fn in surv_funcs:
-    plt.step(fn.x, fn(fn.x), where="post")
+    st.dataframe(train_x)
 
-plt.ylim(0, 1)
-st.pyplot(plt)
+    estimator = CoxPHSurvivalAnalysis().fit(train_x, df_na['status'])
 
-# Usar random_forest
+    surv_funcs = estimator.predict_survival_function(df_na['time'].iloc[:10])
 
-df_na = st.session_state['dic_noNa']
+    for fn in surv_funcs:
+        plt.step(fn.x, fn(fn.x), where="post")
 
-cph = CoxPHFitter()
-cph.fit(df_na, duration_col = 'time', event_col = 'status', formula = "age + sex + ph.ecog + ph.karno")
-cph.print_summary()
-
-plt.subplots(figsize = (10, 6))
-
-#Exemplo para idade
-    
-cph.predict_survival_function(X = df_na)
-
-
-st.pyplot(plt)
+    plt.ylim(0, 1)
+    st.pyplot(plt)

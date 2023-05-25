@@ -8,9 +8,6 @@ import plotly.express as px
 from sklearn.model_selection import train_test_split
 from sksurv.ensemble import RandomSurvivalForest
 
-filename = './lung-cancer-data.csv'
-df = pd.read_csv(filename)
-
 st.header("Models used on the creation of the graphs, their explanations and their formulas")
 
 
@@ -25,3 +22,8 @@ st.text("it also assumes that the probability of survival is independent between
 
 st.subheader("Interpretation of Cox Model results")
 
+st.text("For example Wt.loss has a coefficent of -0.01. That means 1 unit of weigth loss will increase the baseline hazard by a factor of exp(-0.01) which equals to 0.99 or in other terms a 1 percent decrease")
+
+st.text("We can also plot the inffluence of each variable in term of the log(HR) to see what are the most damaging to the patient")
+
+st.text("There is a function to see all the coefficients of each variable to get more in depth analysis of them.")
