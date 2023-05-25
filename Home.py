@@ -291,5 +291,6 @@ df_na = df_na.reset_index()
 df_na["ph.ecog"] = df_na["ph.ecog"].astype("int64")
 df_na.pop("index")
 df_na = df_na.drop('inst', axis=1)
+print(df_na)
 st.session_state['dic_noNa'] = df_na
 

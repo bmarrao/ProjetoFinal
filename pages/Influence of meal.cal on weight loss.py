@@ -18,7 +18,7 @@ customdata = customdata = np.stack((df_na['age'], df_na['sex'],df_na['status'],d
 
 st.header("Influence of meal.cal on weight loss")
 
-
+'''
 fig = go.Figure()
 fig.add_trace(go.Scatter(x=df_na['meal.cal'], y=df_na['wt.loss'],customdata =customdata ,hovertemplate = hovertemplate , mode = 'markers',name='All Data')
 )
@@ -30,4 +30,8 @@ fig.update_layout(
     yaxis_title='Wt.Loss',
     xaxis_title='Meal.Cal',
 )
+'''
+
+fig = px.scatter(df, x="meal.cal", y="wt.loss")
+
 st.plotly_chart(fig)
