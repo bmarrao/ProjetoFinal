@@ -9,7 +9,7 @@ import numpy as np
 
 hovertemplate = st.session_state['hovertemplate']
 
-df_na = st.session_state['dic_noNa']
+df_na = st.session_state['dic1']
 grouped_na=df_na.groupby(df_na.status)
 dfna_alive = grouped_na.get_group(0)
 dfna_dead = grouped_na.get_group(1)
@@ -32,7 +32,7 @@ fig.update_layout(
 )
 '''
 
-fig = px.scatter(df_na, x="meal.cal", y="wt.loss", hover_data=df.columns)
+fig = px.scatter(df_na, x="meal.cal", y="wt.loss", hover_data=df_na.columns)
 fig.update_layout(
     yaxis_title='Wt.Loss',
     xaxis_title='Meal.Cal',
