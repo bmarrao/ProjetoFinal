@@ -36,7 +36,6 @@ df_na.pop("index")
 grouped_na=df_na.groupby(df_na.status)
 dfna_alive = grouped_na.get_group('Alive by the end of the experiment')
 dfna_dead = grouped_na.get_group('Dead by the end of the experiment')
-st.session_state['dic_noNa'] = df_na
 '''
 inst: código da instituição\n
 time: Tempo de sobrevivˆencia em dias\n
@@ -55,6 +54,12 @@ customdata = np.stack((df['age'], df['sex'],df['status'],df['wt.loss'],df['meal.
 df_alive = grouped.get_group('Alive by the end of the experiment')
 df_dead = grouped.get_group('Dead by the end of the experiment')
 hovertemplate='<b>Age</b>: %{customdata[0]}<br>' + '<b>Sex</b>: %{customdata[1]}<br>' + '<b>Status</b>: %{customdata[2]}<br>' +'<b>Weight Loss</b>: %{customdata[3]}<br>'  +'<b>Calories per Meal</b>: %{customdata[4]}<br>' + '<b>ph.ecog</b>: %{customdata[5]}<br>' + '<b>ph.karno</b>: %{customdata[6]}<br>'+'<b>pat.karno</b>: %{customdata[7]}<br>' 
+st.session_state['dic1'] = df 
+st.session_state['dicalive'] = df_alive
+st.session_state['dicdead'] = df_dead
+
+
+
 
 
 
@@ -159,32 +164,6 @@ fig.update_layout(
 # Reduce opacity to see both histograms
 fig.update_traces(opacity=0.75)
 st.plotly_chart(fig)
-st.subheader("Medium age for men and woman across the data")
-
-
-fig = go.Figure()
-fig.add_trace(
-    go.Box(x=df['sex'],y=df['age'],
-    name='All data'))
-                         
-
-fig.add_trace(go.Box(x=df_dead['sex'],y=df_dead['age'],name='Dead by the end of the experiment'))
-fig.add_trace(go.Box(x=df_alive['sex'],y=df_alive['age'],name='Alive by the end of the experiment'))
-            
-fig.update_layout(
-    yaxis_title='Age',
-    boxmode='group' # group together boxes of the different traces for each value of x
-)
-
-
-fig.update_traces(legendgroup='group')
-
-
-st.plotly_chart(fig)
-#Falta o comparativo dos q tavam vivo no experimento
-fig = px.box(df, color = "sex" ,x="sex", y="age", points="all",hover_data=df.columns)
-st.plotly_chart(fig)
-
 
 
 
@@ -306,31 +285,6 @@ fig.update_layout(
 fig.update_traces(opacity=0.75)
 st.plotly_chart(fig)
 
-
-st.subheader("Medium calories per meal for a ecog evaluation across the data")
-
-
-fig = px.box(df, x="ph.ecog", y="meal.cal",points = "all" , hover_data=df.columns)
-st.plotly_chart(fig)
-
-fig = go.Figure()
-fig.add_trace(
-    go.Box(x=df['ph.ecog'],y=df['meal.cal'],
-    name='All data'))
-
-fig.add_trace(go.Box(x=df_dead['ph.ecog'],
-                     y=df_dead['meal.cal'],
-                     text = df.values,
-                     name='Dead by the end of the experiment'))
-fig.add_trace(go.Box(x=df_alive['ph.ecog'],y=df_alive['meal.cal'],name='Alive by the end of the experiment'))
-            
-fig.update_layout(
-    yaxis_title='Meal.Cal',
-    xaxis_title='Ph.Ecog    ',
-
-    boxmode='group' # group together boxes of the different traces for each value of x
-)
-st.plotly_chart(fig)
 #############################################################################################
 st.header("Difference of calories consumed groupped by age")
 bins= [0,2,4,13,20,110]
