@@ -32,7 +32,7 @@ fig.update_layout(
 )
 '''
 
-fig = px.scatter(df_na, x="meal.cal", y="wt.loss")
+fig = px.scatter(df_na, x="meal.cal", y="wt.loss", hover_data=df.columns)
 fig.update_layout(
     yaxis_title='Wt.Loss',
     xaxis_title='Meal.Cal',
