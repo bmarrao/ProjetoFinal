@@ -32,6 +32,9 @@ fig.update_layout(
 )
 '''
 
-fig = px.scatter(df, x="meal.cal", y="wt.loss")
-
+fig = px.scatter(df_na, x="meal.cal", y="wt.loss")
+fig.update_layout(
+    yaxis_title='Wt.Loss',
+    xaxis_title='Meal.Cal',
+)
 st.plotly_chart(fig)
