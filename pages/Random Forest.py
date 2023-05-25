@@ -82,9 +82,9 @@ if st.sidebar.button('Add to graph'):
     
     st.dataframe(train_x)
 
+
     surv = rsf.predict_survival_function(train_x, return_array=True)
     mpl_fig = plt.figure()
-
     for i, s in enumerate(surv):
         plt.step(rsf.event_times_, s, where="post", label=str(i))
 

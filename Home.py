@@ -39,8 +39,12 @@ dfna_dead = grouped_na.get_group('Dead by the end of the experiment')
 
 
 '''
-In this project we will be analyzing data from a study of patients with advanced lung cancer in a clinical trial of a new treatment , the Data has the following atributtes
-inst: code of the instituion\n  Time: time of survival in day \nstatus: censured = 0 and  dead = 1\n Age : In years \n sex : Male = 0, Female = 1\n
+In this project we will be analyzing data from a study of patients with advanced lung cancer in a clinical trial of a new treatment , the Data has the following atributtes:\n
+inst: code of the instituion\n 
+ Time: time of survival in day \n
+ status: censured = 0 and  dead = 1\n
+  Age : In years \n 
+  sex : Male = 0, Female = 1\n
 ph.ecog: ECOG performance score as assessed by physician. 0 = asymptomatic, 1 = symptomatic but fully ambulatory, 2 = bedridden <50% of the day, 3 = bedridden >50% of the day but not bedridden, 4 = bedridden\n
 ph.karno: Karnofsky performance score (poor = 0-good = 100) as assessed by physician\n
 pat.karno:Karnofsky Performance Score as rated by the patient\n
