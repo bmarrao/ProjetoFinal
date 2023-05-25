@@ -131,9 +131,11 @@ colors = ['#393E46', '#2BCDC1', '#F66095']
 
 fig = ff.create_distplot(hist_data, group_labels,colors=colors,bin_size=5,show_rug = False)
 fig.update_layout(
-    yaxis_title='Percentage',
+    yaxis_title='Density',
     xaxis_title = 'Age',
 )
+fig.update_traces(hovertemplate =hovertemplate, customdata= customdata,
+                  selector=dict(type="histogram"))
 st.plotly_chart(fig)
 
 
@@ -197,7 +199,7 @@ colors = ['#393E46', '#2BCDC1', '#F66095']
 
 fig = ff.create_distplot(hist_data, group_labels,colors=colors,bin_size=150, show_rug=False)
 fig.update_layout(
-    yaxis_title='Percentage',
+    yaxis_title='Density',
     xaxis_title = 'Calories',
 )
 st.plotly_chart(fig)
@@ -205,18 +207,28 @@ st.plotly_chart(fig)
 fig = go.Figure()
 fig.add_trace(
     go.Histogram(x=df['meal.cal'],
-    name='All data',customdata =customdata ,hovertemplate = hovertemplate ),
+    name='All data',customdata =customdata ,hovertemplate = hovertemplate ,xbins=dict( # bins used for histogram
+        start=-10.0,
+        end=30.0,
+        size=10
+    ),),
+
 )
 fig.add_trace(go.Histogram(x=df_dead['meal.cal'],name='Dead by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate ,
 xbins=dict( # bins used for histogram
         start=-10.0,
         end=30.0,
-        size=150
+        size=10
     ),
 )
 )
 
-fig.add_trace(go.Histogram(x=df_alive['meal.cal'],name='Alive by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
+fig.add_trace(go.Histogram(x=df_alive['meal.cal'],name='Alive by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate,
+xbins=dict( # bins used for histogram
+        start=-10.0,
+        end=30.0,
+        size=10
+    ), )
 )
 fig.update_layout(
     yaxis_title='Count',
@@ -275,22 +287,6 @@ st.subheader("Weight loss across the patients")
 
 fig = go.Figure()
 fig.add_trace(
-    go.Histogram(x=df['wt.loss'],
-    name='All data',customdata =customdata ,hovertemplate = hovertemplate ),
-)
-fig.add_trace(go.Histogram(x=df_dead['wt.loss'],name='Dead by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
-)
-
-fig.add_trace(go.Histogram(x=df_alive['wt.loss'],name='Alive by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
-)
-fig.update_layout(
-    yaxis_title='Count',
-    xaxis_title = 'Weight Lost',
-)
-st.plotly_chart(fig)
-
-fig = go.Figure()
-fig.add_trace(
     go.Histogram(x=df['meal.cal'],
     name='All data',customdata =customdata ,hovertemplate = hovertemplate),
 )
@@ -336,30 +332,21 @@ fig.update_layout(
 )
 st.plotly_chart(fig)
 #############################################################################################
-
 st.header("Difference of calories consumed groupped by age")
-
-#mean = df.groupby('age',as_index=False).mean()
-mean = df.groupby(pd.cut(df['age'],[39,45,50,55,60,65,70,75,82]),as_index=False)
+bins= [0,2,4,13,20,110]
+labels = ["39-45","45-50","50-55","55-60","60-65","65-70","70-75","75-82"]
+#mean = df
+mean = df.groupby(pd.cut(df['age'], [39,45,50,55,60,65,70,75,82]),as_index=False).mean()
+mean["AgeGroup"] = labels
 mean_dead = df_dead.groupby(pd.cut(df_dead['age'],[39,45,50,55,60,65,70,75,82]),as_index=False).mean()
+mean_dead["AgeGroup"] = labels
 mean_alive = df_alive.groupby(pd.cut(df_alive['age'],[39,45,50,55,60,65,70,75,82]),as_index=False).mean()
-
-#pd.cut(df['store_size'], [0, 25, 50, 75, 100][39,45,50,55,60,65,70,75,82])
-
-
-#fig = px.bar(mean, x = "age",y = "meal.cal" ,)
-#st.plotly_chart(fig)
-
-#fig = px.bar(mean_dead x = "age",y = "meal.cal" )
-#st.plotly_chart(fig)
-
-#fig = px.bar(mean_alive, x = "age",y = "meal.cal" )
-#st.plotly_chart(fig)
+mean_alive["AgeGroup"] = labels
 
 fig = go.Figure()
-fig.add_trace(go.Bar(x=mean['age'],y=mean['meal.cal'].mean(),name='All data'))
-#fig.add_trace(go.Bar(x=mean_dead['age'],y=mean_dead['meal.cal'],name='Dead by the end of the experiment'))
-#fig.add_trace(go.Bar(x=mean_alive['age'],y=mean_alive['meal.cal'],name='Alive by the end of the experiment'))
+fig.add_trace(go.Bar(x=mean['AgeGroup'],y=mean['meal.cal'],name='All data'))
+fig.add_trace(go.Bar(x=mean_dead['AgeGroup'],y=mean_dead['meal.cal'],name='Dead by the end of the experiment'))
+fig.add_trace(go.Bar(x=mean_alive['AgeGroup'],y=mean_alive['meal.cal'],name='Alive by the end of the experiment'))
 fig.update_layout(
     yaxis_title='average calories per meal',
     xaxis_title='Age',
@@ -367,7 +354,6 @@ fig.update_layout(
     boxmode='group' # group together boxes of the different traces for each value of x
 )
 st.plotly_chart(fig)
-
 #Falta o comparativo dos q tavam vivo no experimento
 st.header("Box plots of each ecog evaluation and respectives weight loss")
 
@@ -397,32 +383,6 @@ st.plotly_chart(fig)
 
 ###########################################################################################################
 
-
-st.subheader("Influence of meal.cal on weight loss")
-'''All Data'''
-fig = px.bar(df, x='meal.cal', y='wt.loss', hover_data=df.columns)
-fig.update_layout(
-    yaxis=dict( # Here
-        range=[0, 60] # Here
-    )
-)
-st.plotly_chart(fig)
-'''Dead'''
-fig = px.bar(df_alive, x='meal.cal', y='wt.loss', hover_data=df_alive.columns)
-fig.update_layout(
-    yaxis=dict( # Here
-        range=[0, 60] # Here
-    )
-)
-st.plotly_chart(fig)
-'''Alive'''
-fig = px.bar(df_dead, x='meal.cal', y='wt.loss', hover_data=df_dead.columns)
-fig.update_layout(
-    yaxis=dict( # Here
-        range=[0, 60] # Here
-    )
-)
-st.plotly_chart(fig)
 
 fig = go.Figure()
 fig.add_trace(
@@ -463,11 +423,31 @@ fig.update_layout(
 )
 st.plotly_chart(fig)
 
-fig = px.pie(df, values='meal.cal', names='ph.karno', title='Medic Evaluation compared to calories consumed',hole = 0.4)
+labels = ['40','50','60','70','80','90','100']
+
+mean = df.groupby(pd.cut(df['ph.karno'],[30,40,50,60,70,80,90,100]),as_index=False).mean()
+mean["ph.karn"] = labels
+
+
+labels = ['40','50','60','70','80','90','100']
+
+mean = df.groupby(pd.cut(df['ph.karno'],[30,40,50,60,70,80,90,100]),as_index=False).mean()
+mean["ph.karn"] = labels
+
+fig = px.pie(mean, values='meal.cal', names='ph.karn', title='Medic Evaluation compared to calories consumed',hole = 0.4)
 fig.update_layout(legend_traceorder="normal")
 st.plotly_chart(fig)
 
-fig = px.pie(df, values='meal.cal', names='pat.karno', title='Patient Evaluation compared to calories consumed',hole = 0.4)
+
+
+labels = ['40','50','60','70','80','90','100']
+
+mean = df.groupby(pd.cut(df['pat.karno'],[30,40,50,60,70,80,90,100]),as_index=False).mean()
+mean["ph.karn"] = labels
+
+
+
+fig = px.pie(mean, values='meal.cal', names='ph.karn', title='Patient Evaluation compared to calories consumed',hole = 0.4)
 st.plotly_chart(fig)
 
 fig = px.box(df, x='ph.karno', y='pat.karno', points = "all", hover_data=df.columns, title='Difference from Patient to Medic')
@@ -499,6 +479,14 @@ st.session_state['pergunta9'] = []
 st.session_state['random_forest']= []
 
 st.session_state['dic'] = df
+
+df_na = df.copy()
+df_na.dropna(inplace=True)
+df_na = df_na.reset_index() 
+df_na["ph.ecog"] = df_na["ph.ecog"].astype("int64")
+df_na.pop("index")
+st.session_state['dic_noNa'] = df_na
+
 st.title("Survivor Analysis for lung cancer data")
 #st.sidebar.sucess("Select a page above")
 st.subheader("Survival Forests")
