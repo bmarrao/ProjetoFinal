@@ -11,9 +11,17 @@ from sksurv.ensemble import RandomSurvivalForest
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
 
+st.header("Models used on the creation of the graphs, their explanations and their formulas")
 
-st.header("Modelos usados na criação dos graficos , suas explicações e suas formulas")
 
-st.subheader("Estimador de Kaplan-Meier")
+st.subheader("Kaplan-Meier Model")
 
-st.text("É um modelo também conhecido como o estimador de limite de produto , usamos este modelo pois ele é capaz de calcular a probabilidade de sobrevivência para conjuntos de dados com falhas e suspensôes INFORMAÇÂO OBTIDA EM : https://support.minitab.com/pt-br/minitab/20/help-and-how-to/statistical-modeling/reliability/how-to/distribution-overview-plot-right-censoring/methods-and-formulas/nonparametric-methods-and-formulas/kaplan-meier-estimation/")
+st.text("The Kaplan-Meier approach, also called the product-limit approach,the model was used because it is capable of calculation the probability of survival for sets with missing information")
+
+st.subheader("Cox Proportional Hazard Model")
+
+st.text("The Cox Proportional Hazard Model includes covariates to calculate the log-hazard linear function and ,without using covariates, a population-level baseline hazard")
+st.text("it also assumes that the probability of survival is independent between each patient, the hazard and predictors are multiplicative and that the hazard ratio is constant")
+
+st.subheader("Interpretation of Cox Model results")
+

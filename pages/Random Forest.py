@@ -14,7 +14,6 @@ df_na = st.session_state['dic_noNa']
 
 arr = st.session_state['random_forest']
 
-num1 = st.sidebar.number_input('Instituição : ')
 num2 = st.sidebar.number_input('Age : ')
 num3 = st.sidebar.number_input('Sex(0 - homem, 1 - mulher) :')
 num4 = st.sidebar.number_input('Pontuação de desempenho ECOG - Avaliado pelo médico :')
@@ -72,7 +71,7 @@ st.dataframe(train_x)
 
 if st.sidebar.button('Add to graph'):
     mpl_fig = plt.figure()
-    array = {'inst': num1,  'age' : num2  ,'sex': num3 ,'ph.ecog' : num4 , 'ph.karno' : num5 , 'pat.karno': num6 ,
+    array = {'age' : num2  ,'sex': num3 ,'ph.ecog' : num4 , 'ph.karno' : num5 , 'pat.karno': num6 ,
              'meal.cal':num7,'wt.loss':num8}
     arr.append(array)
     train_x = pd.DataFrame.from_dict(arr)
