@@ -6,7 +6,6 @@ import plotly.tools as tls
 import plotly.express as px
 import plotly.graph_objects as go
 
-st.subheader("Medium calories per meal for a ecog evaluation across the data")
 df = st.session_state['dic1'] 
 df_alive = st.session_state['dicalive']
 df_dead = st.session_state['dicdead'] 

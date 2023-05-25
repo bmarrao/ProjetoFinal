@@ -28,14 +28,7 @@ df['sex'] = df['sex'].replace(1, 'Women')
 df['status'] = df['status'].replace(0, 'Alive by the end of the experiment')
 df['status'] = df['status'].replace(1, 'Dead by the end of the experiment')
 
-df_na = df.copy()
-df_na.dropna(inplace=True)
-df_na = df_na.reset_index() 
-df_na["ph.ecog"] = df_na["ph.ecog"].astype("int64")
-df_na.pop("index")
-grouped_na=df_na.groupby(df_na.status)
-dfna_alive = grouped_na.get_group('Alive by the end of the experiment')
-dfna_dead = grouped_na.get_group('Dead by the end of the experiment')
+
 '''
 inst: código da instituição\n
 time: Tempo de sobrevivˆencia em dias\n
@@ -57,6 +50,8 @@ hovertemplate='<b>Age</b>: %{customdata[0]}<br>' + '<b>Sex</b>: %{customdata[1]}
 st.session_state['dic1'] = df 
 st.session_state['dicalive'] = df_alive
 st.session_state['dicdead'] = df_dead
+st.session_state['customdata'] = customdata 
+st.session_state['hovertemplate'] = hovertemplate
 
 
 
@@ -309,26 +304,6 @@ fig.update_layout(
 )
 st.plotly_chart(fig)
 #Falta o comparativo dos q tavam vivo no experimento
-st.header("Box plots of each ecog evaluation and respectives weight loss")
-
-
-fig = go.Figure()
-
-fig.add_trace( go.Box(x=df["ph.ecog"], y=df["wt.loss"], name='All patients'))
-
-
-fig.add_trace( go.Box(x=df_alive["ph.ecog"], y=df_alive["wt.loss"] , name='Alive by the end of the experiment'))
-
-
-fig.add_trace( go.Box(x=df_dead["ph.ecog"], y=df_dead["wt.loss"] , name='Dead by the end of the experiment'))
-
-fig.update_layout(
-    yaxis_title='wt.loss',
-    xaxis_title='Ph.Ecog    ',
-
-    boxmode='group' # group together boxes of the different traces for each value of x
-)
-st.plotly_chart(fig)
 
 
 
@@ -336,46 +311,6 @@ st.plotly_chart(fig)
 
 
 ###########################################################################################################
-
-
-fig = go.Figure()
-fig.add_trace(
-    go.Histogram(x=df['meal.cal'],y=df['wt.loss'],
-    name='All data',customdata =customdata ,hovertemplate = hovertemplate),
-)
-fig.add_trace(go.Histogram(x=df_dead['meal.cal'],y=df_dead['wt.loss'],name='Dead by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
-)
-
-fig.add_trace(go.Histogram(x=df_alive['meal.cal'],y=df_alive['wt.loss'],name='Alive by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate )
-            
-)
-
-fig.update_layout(
-    yaxis_title='Weight Lost',
-    xaxis_title='Calories Consumed',
-    barmode='overlay',
-    boxmode='group', # group together boxes of the different traces for each value of x
-    yaxis=dict( # Here
-        range=[0, 60] # Here
-    )
-)
-# Reduce opacity to see both histograms
-fig.update_traces(opacity=0.75)
-st.plotly_chart(fig)
-
-
-fig = go.Figure()
-fig.add_trace(go.Scatter(x=df['meal.cal'], y=df['wt.loss'],customdata =customdata ,hovertemplate = hovertemplate , mode = 'markers',name='All Data')
-)
-fig.add_trace(go.Scatter(x=df_dead['meal.cal'], y=df_dead['wt.loss'],customdata =customdata ,hovertemplate = hovertemplate , mode = 'markers',name='Dead by the end of the experiment')
-)
-
-fig.add_trace(go.Scatter(x=df_alive['meal.cal'], y=df_alive['wt.loss'], customdata =customdata ,hovertemplate = hovertemplate ,mode = 'markers',name='Alive by the end of the experiment'))
-fig.update_layout(
-    yaxis_title='Wt.Loss',
-    xaxis_title='Meal.Cal',
-)
-st.plotly_chart(fig)
 
 labels = ['40','50','60','70','80','90','100']
 

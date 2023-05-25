@@ -88,14 +88,16 @@ if st.sidebar.button('Add to graph'):
 
     for i, s in enumerate(surv):
         plt.step(rsf.event_times_, s, where="post", label=str(i))
-    plt.ylabel("Survival probability")
-    plt.xlabel("Time in days")
-    plt.legend()
-    plt.grid(True)
 
     rsf2 = plt.gcf()
 
     py_fig = tls.mpl_to_plotly(rsf2, resize=True)
+
+    py_fig.update_layout(
+    yaxis_title='Survival Probabily',
+    xaxis_title='Time in days'
+
+    )
 
     st.plotly_chart(py_fig)
 
@@ -115,6 +117,11 @@ if st.sidebar.button('Add to graph'):
 
     py_fig = tls.mpl_to_plotly(rsf2, resize=True)
 
+    py_fig.update_layout(
+    yaxis_title='Cumulative hazards',
+    xaxis_title='Time in days'
+
+    )
     st.plotly_chart(py_fig)
 
     #st.table(df)
