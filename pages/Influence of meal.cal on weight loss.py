@@ -5,14 +5,16 @@ from lifelines import CoxPHFitter ,KaplanMeierFitter
 import plotly.tools as tls  
 import plotly.express as px
 import plotly.graph_objects as go
+import numpy as np
 
-customdata = st.session_state['customdata']  
 hovertemplate = st.session_state['hovertemplate']
 
 df_na = st.session_state['dic_noNa']
 grouped_na=df_na.groupby(df_na.status)
 dfna_alive = grouped_na.get_group(0)
 dfna_dead = grouped_na.get_group(1)
+
+customdata = customdata = np.stack((df_na['age'], df_na['sex'],df_na['status'],df_na['wt.loss'],df_na['meal.cal'],df_na['ph.ecog'],df_na['ph.karno'],df_na['pat.karno']), axis=-1)
 
 st.header("Influence of meal.cal on weight loss")
 

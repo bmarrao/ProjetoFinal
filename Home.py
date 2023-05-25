@@ -28,6 +28,15 @@ df['sex'] = df['sex'].replace(1, 'Women')
 df['status'] = df['status'].replace(0, 'Alive by the end of the experiment')
 df['status'] = df['status'].replace(1, 'Dead by the end of the experiment')
 
+df_na = df.copy()
+df_na.dropna(inplace=True)
+df_na = df_na.reset_index() 
+df_na["ph.ecog"] = df_na["ph.ecog"].astype("int64")
+df_na.pop("index")
+grouped_na=df_na.groupby(df_na.status)
+dfna_alive = grouped_na.get_group('Alive by the end of the experiment')
+dfna_dead = grouped_na.get_group('Dead by the end of the experiment')
+
 
 '''
 inst: código da instituição\n
@@ -178,16 +187,6 @@ fig.update_layout(
 )
 st.plotly_chart(fig)
 
-fig = go.Figure()
-fig.add_trace(
-    go.Histogram(x=df['meal.cal'],
-    name='All data',customdata =customdata ,hovertemplate = hovertemplate ,xbins=dict( # bins used for histogram
-        start=-10.0,
-        end=30.0,
-        size=10
-    ),),
-
-)
 fig.add_trace(go.Histogram(x=df_dead['meal.cal'],name='Dead by the end of the experiment',customdata =customdata ,hovertemplate = hovertemplate ,
 xbins=dict( # bins used for histogram
         start=-10.0,

@@ -78,7 +78,6 @@ if st.sidebar.button('Add to graph'):
 
     )
 
-    py_fig.update_traces(hovertemplate =hovertemplate, customdata= customdata)
     #kmf.plot_survival_function(ax = ax,at_risk_counts = True)
 
 
@@ -107,7 +106,6 @@ if st.button('Show age relation in cph model in a graph'):
 
     )
 
-    py_fig.update_traces(hovertemplate =hovertemplate, customdata= customdata)
 
     st.plotly_chart(py_fig)
 
