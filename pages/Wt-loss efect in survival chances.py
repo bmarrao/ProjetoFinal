@@ -57,6 +57,11 @@ if st.sidebar.button('Add to graph'):
 
     py_fig = tls.mpl_to_plotly(kmf2, resize=True)
 
+    py_fig.update_layout(
+    yaxis_title='Survival Probabily',
+    xaxis_title='Time in days'
+
+    )
     #kmf.plot_survival_function(ax = ax,at_risk_counts = True)
 
 

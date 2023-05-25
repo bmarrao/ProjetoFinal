@@ -7,6 +7,8 @@ import streamlit as st
 import numpy as np
 from lifelines import CoxPHFitter, KaplanMeierFitter
 
+from sksurv.linear_model import CoxPHSurvivalAnalysis
+
 
 # Usar random_forest
 

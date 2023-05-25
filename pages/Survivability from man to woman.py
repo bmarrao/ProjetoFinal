@@ -68,6 +68,11 @@ kmf2 = plt.gcf()
 
 py_fig = tls.mpl_to_plotly(kmf2, resize=True)
 
+py_fig.update_layout(
+    yaxis_title='Survival Probabily',
+    xaxis_title='Time in days'
+
+    )
 st.plotly_chart(py_fig)
 
 df.dropna(inplace=True)
@@ -86,5 +91,11 @@ cph.plot_partial_effects_on_outcome(covariates = 'sex',
 cph2 = plt.gcf()
 
 py_fig = tls.mpl_to_plotly(cph2, resize=True)
+
+py_fig.update_layout(
+    yaxis_title='Survival Probabily',
+    xaxis_title='Time in days'
+
+    )
 
 st.plotly_chart(py_fig)

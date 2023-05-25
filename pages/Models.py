@@ -11,29 +11,6 @@ from sksurv.ensemble import RandomSurvivalForest
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
 
-df['status'] = df["status"]-1
-df['sex'] = df["sex"]-1
-df['wt.loss'] = df['wt.loss'] * 0.45359237
-
-df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
-df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
-df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
-df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
-df.dropna(inplace=True)
-df["ph.ecog"] = df["ph.ecog"].astype("int64")
-df = df.reset_index() 
-
-st.title("Survivor Analysis for lung cancer data")
-
-st.subheader("Survival Forests")
-
-lg_y = df[['status','time']].copy()
-
-lg_y["status"] = lg_y["status"].astype("bool") 
-
-lg_y = lg_y.to_records(index=False)
-
-lg_x = df.drop(["status","time"],axis=1)
 
 st.header("Modelos usados na criação dos graficos , suas explicações e suas formulas")
 

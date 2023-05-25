@@ -279,67 +279,6 @@ fig.update_layout(
 fig.update_traces(opacity=0.75)
 st.plotly_chart(fig)
 
-#############################################################################################
-st.header("Difference of calories consumed groupped by age")
-bins= [0,2,4,13,20,110]
-labels = ["39-45","45-50","50-55","55-60","60-65","65-70","70-75","75-82"]
-#mean = df
-mean = df.groupby(pd.cut(df['age'], [39,45,50,55,60,65,70,75,82]),as_index=False).mean()
-mean["AgeGroup"] = labels
-mean_dead = df_dead.groupby(pd.cut(df_dead['age'],[39,45,50,55,60,65,70,75,82]),as_index=False).mean()
-mean_dead["AgeGroup"] = labels
-mean_alive = df_alive.groupby(pd.cut(df_alive['age'],[39,45,50,55,60,65,70,75,82]),as_index=False).mean()
-mean_alive["AgeGroup"] = labels
-
-fig = go.Figure()
-fig.add_trace(go.Bar(x=mean['AgeGroup'],y=mean['meal.cal'],name='All data'))
-fig.add_trace(go.Bar(x=mean_dead['AgeGroup'],y=mean_dead['meal.cal'],name='Dead by the end of the experiment'))
-fig.add_trace(go.Bar(x=mean_alive['AgeGroup'],y=mean_alive['meal.cal'],name='Alive by the end of the experiment'))
-fig.update_layout(
-    yaxis_title='average calories per meal',
-    xaxis_title='Age',
-
-    boxmode='group' # group together boxes of the different traces for each value of x
-)
-st.plotly_chart(fig)
-#Falta o comparativo dos q tavam vivo no experimento
-
-
-
-#Falta fazer alive e dead
-
-
-###########################################################################################################
-
-labels = ['40','50','60','70','80','90','100']
-
-mean = df.groupby(pd.cut(df['ph.karno'],[30,40,50,60,70,80,90,100]),as_index=False).mean()
-mean["ph.karn"] = labels
-
-
-labels = ['40','50','60','70','80','90','100']
-
-mean = df.groupby(pd.cut(df['ph.karno'],[30,40,50,60,70,80,90,100]),as_index=False).mean()
-mean["ph.karn"] = labels
-
-fig = px.pie(mean, values='meal.cal', names='ph.karn', title='Medic Evaluation compared to calories consumed',hole = 0.4)
-fig.update_layout(legend_traceorder="normal")
-st.plotly_chart(fig)
-
-
-
-labels = ['40','50','60','70','80','90','100']
-
-mean = df.groupby(pd.cut(df['pat.karno'],[30,40,50,60,70,80,90,100]),as_index=False).mean()
-mean["ph.karn"] = labels
-
-
-
-fig = px.pie(mean, values='meal.cal', names='ph.karn', title='Patient Evaluation compared to calories consumed',hole = 0.4)
-st.plotly_chart(fig)
-
-fig = px.box(df, x='ph.karno', y='pat.karno', points = "all", hover_data=df.columns, title='Difference from Patient to Medic')
-st.plotly_chart(fig)
 
 df['sex'] = df['sex'].replace('Men', 0)
 df['sex'] = df['sex'].replace('Women',1)

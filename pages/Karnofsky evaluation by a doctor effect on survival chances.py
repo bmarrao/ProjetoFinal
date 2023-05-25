@@ -69,6 +69,12 @@ if st.sidebar.button('Add to graph'):
 
     py_fig = tls.mpl_to_plotly(kmf2, resize=True)
 
+
+    py_fig.update_layout(
+    yaxis_title='Survival Probabily',
+    xaxis_title='Time in days'
+
+    )
     #kmf.plot_survival_function(ax = ax,at_risk_counts = True)
 
 
@@ -101,6 +107,12 @@ if st.button('Effect of Karnofsky evaluation on CPH model '):
     cph2 = plt.gcf()
 
     py_fig = tls.mpl_to_plotly(cph2, resize=True)
+
+    py_fig.update_layout(
+    yaxis_title='Survival Probabily',
+    xaxis_title='Time in days'
+
+    )
 
     st.plotly_chart(py_fig)
 
@@ -184,6 +196,7 @@ if st.button('Survival probability given a Karnofsky evaluation by a doctor '):
 
     st.bar_chart(graph1)
 
-    st.bar_chart(graph2)
+
+    st.bar_chart(graph2,x="")
 
 

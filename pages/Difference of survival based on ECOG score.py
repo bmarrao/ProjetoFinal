@@ -6,7 +6,7 @@ from lifelines import CoxPHFitter, KaplanMeierFitter
 import plotly.tools as tls 
 
 
-df = st.session_state['dic']
+df = st.session_state['dic_noNa']
 
 dataf = {}
 
@@ -54,15 +54,8 @@ st.plotly_chart(py_fig)
 
 
 if st.button('Show ecog score relation in cph model graph'):
-    df["ph.karno"].fillna(df["ph.karno"].mean(), inplace = True)
-    df["pat.karno"].fillna(df["pat.karno"].mean(), inplace = True)
-    df["meal.cal"].fillna(df["meal.cal"].mean(), inplace = True)
-    df["wt.loss"].fillna(df["wt.loss"].mean(), inplace = True)
-    df.dropna(inplace=True)
-    df["ph.ecog"] = df["ph.ecog"].astype("int64")
-    df = df.reset_index() 
     cph = CoxPHFitter()
-    cph.fit(df, duration_col = 'time', event_col = 'status',formula = "ph.ecog")
+    cph.fit(df, duration_col = 'time', event_col = 'status')
 
     #plt.subplots(figsize = (10, 6))
 

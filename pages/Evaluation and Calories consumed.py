@@ -1,3 +1,13 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import streamlit as st
+from lifelines import CoxPHFitter ,KaplanMeierFitter
+import plotly.tools as tls  
+import plotly.express as px
+import plotly.graph_objects as go
+
+st.subheader("Evaluation and Calories consumed")
+df = st.session_state['dic1'] 
 
 labels = ['40','50','60','70','80','90','100']
 
