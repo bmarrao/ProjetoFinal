@@ -12,9 +12,9 @@ import numpy as np
 import plotly.figure_factory as ff
 
 # Inicialization of the streamlit page, with its title
-st.set_page_config(page_title = "Lung cancer data analysis" )
+st.set_page_config(page_title = "Lung cancer trial data analysis" )
 
-st.title("Lung cancer data analysis.")
+st.title("Lung cancer trial data analysis.")
 
 
 filename = './lung-cancer-data.csv'
