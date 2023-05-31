@@ -8,6 +8,8 @@ from lifelines import CoxPHFitter,KaplanMeierFitter
 import plotly.tools as tls   
 from plotly.graph_objs import *
 
+# in this page we compare the survival chance and time of men and women
+
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
 
@@ -17,9 +19,8 @@ df.dropna(inplace=True)
 df["ph.ecog"] = df["ph.ecog"].astype("int64")
 df = df.reset_index() 
 df['status'] = df["status"]-1
-#df = st.session_state['dic']
 
-
+#creating the kaplan meier fitter
 kmf = KaplanMeierFitter()
 Ta1 = {'time':[]}
 Ta2 = {'time':[]}

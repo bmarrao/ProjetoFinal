@@ -47,6 +47,7 @@ dfna_dead = grouped_na.get_group('Dead by the end of the experiment')
 
 
 '''
+Project made by : Breno Fernando Guerra Marrão - A97768 , Tiago Passos Rodrigues - A96414 , Tales André Rovaris Machado - A96314\n
 In this project we will be analyzing data from a study of patients with advanced lung cancer in a clinical trial of a new treatment , the Data has the following atributtes:\n
 inst: code of the instituion\n 
 Time: time of survival in day \n
@@ -268,7 +269,7 @@ fig.add_trace( go.Histogram( x=df_alive["pat.karno"],name = 'Alive by the end of
 # Labeling the y and x axis and defining the mode of the bar graph in this instance overlay
 fig.update_layout(
     yaxis_title='count',
-    xaxis_title='Patient karno score',
+    xaxis_title='Patient Karnofsky score',
     barmode='overlay')
 
 fig.update_traces(opacity=0.75)
@@ -278,7 +279,7 @@ st.plotly_chart(fig)
 
 # Histogram of weight loss
 
-st.subheader("Weight loss across the patients")
+st.subheader("Calories per meal across the data")
 # Initiating a figure
 fig = go.Figure()
 # Adding a graph to the figure
@@ -300,12 +301,12 @@ fig.add_trace(go.Histogram(x=df_alive['meal.cal'],name='Alive by the end of the 
 
 fig.update_layout(
     yaxis_title='Count',
-    xaxis_title = 'Calories',
+    xaxis_title = 'Calories per meal',
     barmode='overlay'
 )
 # Altering the opacity so that we can obtain a better looking graph
 fig.update_traces(opacity=0.75)
-# Ploting the graph
+# Plotting the graph
 st.plotly_chart(fig)
 
 # Here we replace the annotation that we previously set for easier graph comprehension to numbers so that we can apply the data to models such as 

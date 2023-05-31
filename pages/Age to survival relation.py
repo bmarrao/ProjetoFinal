@@ -20,7 +20,7 @@ df_na = st.session_state['dic_noNa']
 num1 = st.sidebar.number_input('Lower Bound (min 38) :')
 num2 = st.sidebar.number_input('Upper Bound (max 82) :')
 array = (num1,num2)
-#Reading the data previously given by the user
+# Reading the data previously given by the user
 arr = st.session_state['pergunta1']
 
 # When the add to graph button is pressed we plot the data based on the values that were given to the program
@@ -51,9 +51,9 @@ if st.sidebar.button('Add to graph'):
     for (n1,n2) in arr:
         ax = plt.subplot(111)
         if dic[f'({n1},{n2})']['time']:
-            #fitting the data given by the user to the Kaplam Meier model
+            # Fitting the data given by the user to the Kaplam Meier model
             kmf.fit(durations = pd.DataFrame(dic[f'({n1},{n2})']['time']), event_observed = pd.DataFrame(dic[f'({n1},{n2})']['status']),label=f"{n1}-{n2}")
-            #Ploting
+            # Plotting
             kmf.survival_function_.plot(ax = ax)
         else :
             st.info(f"There is no data for input {n1} - {n2}")
@@ -82,7 +82,7 @@ if st.sidebar.button('Add to graph'):
     st.plotly_chart(py_fig)
 
 
-#in this second part we use the cph model to create a graph of the survival probability by age group for aech day passed
+# In this second part we use the cph model to create a graph of the survival probability by age group for each day passed
 
 if st.button('Show age relation in cph model in a graph'):
     cph = CoxPHFitter()

@@ -31,9 +31,9 @@ rsf.fit(lg_x, lg_y)
 train_x = pd.DataFrame.from_dict(arr)
 
 num1 = st.sidebar.number_input("Idade")
-num2 = st.sidebar.number_input("Sexo")
-num3 = st.sidebar.number_input("Pontuação de Karnofsky")
-num4 = st.sidebar.number_input("Classificação ECOG")
+num2 = st.sidebar.number_input('Sex(0 - homem, 1 - mulher) :')
+num3 = st.sidebar.number_input('Karnofsky evaluation by doctor (0-100) :')
+num4 = st.sidebar.number_input('ECOG (0-4):')
 
 if st.sidebar.button('Add to graph'):
     array = {'age' : num1  ,'sex': num2 ,'ph.ecog' : num4 , 'ph.karno' : num3}

@@ -12,8 +12,8 @@ st.sidebar.title('Navigation')
 
 df = st.session_state['dic']
 
-num1 = st.sidebar.number_input('Peso inferior ')
-num2 = st.sidebar.number_input('Peso superior ')
+num1 = st.sidebar.number_input('Lower bound weight (Kg) ')
+num2 = st.sidebar.number_input('Upper bound weight (Kg)')
 array = (num1,num2)
 arr = st.session_state['pergunta2']
 
