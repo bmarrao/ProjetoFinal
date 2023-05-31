@@ -1,5 +1,4 @@
-''' O consumo de calorias nas refeições afeta o tempo de sobrevivência em pacientes com
-cancro de pulmão? - 5'''
+''' Does calorie consumption affect the survival time in lung cancer patients?'''
 
 import pandas as pd
 import matplotlib.pyplot as plt

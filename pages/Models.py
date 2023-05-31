@@ -25,22 +25,14 @@ The Cox Proportional Hazard Model includes covariates to calculate\n the log-haz
 It also assumes that the probability of survival is independent\n between each patient, the hazard and predictors are multiplicative\n and that the hazard ratio is constant.
 '''
 st.subheader("Interpretation of Cox Model results")
-'''
-For example Wt.loss has a coefficent of -0.01.\n That means 1 unit of weigth loss will increase the baseline hazard by a \nfactor of exp(-0.01) which equals to 0.99 or in other terms a 1 percent decrease
 
-We can also plot the inffluence of each variable in term of the log(HR)\n to see what are the most damaging to the patient.
 '''
-
-mpl_fig = plt.figure()
-cph.plot()
-st.pyplot(mpl_fig)  
-'''
-There is a function to see all the coefficients of each variable to get more\n in depth analysis of them.
+The following table provids for each variable coefficients, exp(coef): also known as Hazard Ratio, confidence intervals, z and p-values. 
 '''
 
-#results = proportional_hazard_test(cph,df_na,time_transform='rank')
-#x = results.prisummary(decimals=3)
-#st.dataframe(x)
+results = cph.summary
+st.text(results)
+
 st.subheader("Random Survival Forests")
 '''
 A random durvival forest is an estimator that fits a number of survival trees using samples of the dataset \n and uses averaging to predict more accurately and to prevent over-fitting

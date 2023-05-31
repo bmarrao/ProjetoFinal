@@ -1,19 +1,16 @@
-'''Existe uma diferença significativa no tempo de sobrevivência entre homens e mulheres
-com cancro do pulmão? E após o controle de outras covariáveis, como idade, classificação ECOG ou pontuação de Karnofsky'''
+'''Is there a significant difference in survival time between men and women with lung cancer? 
+And after controlling other covariates such as age, ECOG performance status, or Karnofsky score?'''
 
 import pandas as pd
-import matplotlib.pyplot as plt                     ### COMO APLICAR OUTRAS VARIÁVEIS NO COXPH?
+import matplotlib.pyplot as plt                  
 import streamlit as st
 from lifelines import CoxPHFitter,KaplanMeierFitter
 import plotly.tools as tls   
 from plotly.graph_objs import *
 
-#ADICIONAR MAIS GRÁFICOS - BARCHART SIMPLES ?
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
-#print(df)
 
-#print(df.isnull().sum())
 
 
 df.dropna(inplace=True)

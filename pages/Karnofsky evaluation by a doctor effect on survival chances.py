@@ -1,33 +1,32 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import streamlit as st
-from lifelines import CoxPHFitter
-import plotly.tools as tls 
-
-df_na = st.session_state['dic_noNa']
-
-
-df = st.session_state['dic']
-
-import pandas as pd
-import matplotlib.pyplot as plt
-import streamlit as st
 from lifelines import CoxPHFitter, KaplanMeierFitter
 import plotly.tools as tls   
-from plotly.graph_objs import *
-
+import plotly.express as px
 from pylab import rcParams
+
+#in this page we created graphs to show the inffluence of the doctors karnofsky evaluation on the survival chances
+
+#we used the noNa dictionary to not have na values for the cph model
+df_na = st.session_state['dic_noNa']
+
+# and the normal dictionary with all values for the simple plotting
+df = st.session_state['dic']
+
+
+
 dic = {}
 
 
 st.header("Effect of Karnofsky evaluation by a doctor in survival time : ")
 st.sidebar.title('Navigation')
 
-df = st.session_state['dic']
-
-num1 = st.sidebar.number_input('Ph karno inferior :')
-num2 = st.sidebar.number_input('Ph karno superior : ')
+# here we created the button to receive the user inputs for the desired graph
+num1 = st.sidebar.number_input('Lower Bound ph karno (min 0)')
+num2 = st.sidebar.number_input('Upper Bound ph karno (max 3)')
 array = (num1,num2)
+# using the per
 arr = st.session_state['pergunta3']
 
 
@@ -52,7 +51,7 @@ if st.sidebar.button('Add to graph'):
     for (n1,n2) in arr:
         ax = plt.subplot(111)
         if dic[f'({n1},{n2})']['time']:
-            kmf.fit(durations = pd.DataFrame(dic[f'({n1},{n2})']['time']), event_observed = pd.DataFrame(dic[f'({n1},{n2})']['status']),label=f"{num1}-{num2}")
+            kmf.fit(durations = pd.DataFrame(dic[f'({n1},{n2})']['time']), event_observed = pd.DataFrame(dic[f'({n1},{n2})']['status']),label=f"{n1}-{n2}")
             kmf.survival_function_.plot(ax = ax)
         else :
             st.info(f"There is no data for input {n1} - {n2}")
@@ -182,7 +181,6 @@ if st.button('Survival probability given a Karnofsky evaluation by a doctor '):
             dict['died'][i] = (sum(dict['died'][i])  / len(dict['died'][i]))
             dict['alive'][i] = (sum(dict['alive'][i])  / len(dict['alive'][i]))
 
-
         else :
             remove.append(i)
 
@@ -194,9 +192,10 @@ if st.button('Survival probability given a Karnofsky evaluation by a doctor '):
     graph1 = pd.DataFrame.from_dict(dict,orient='index').transpose()
     graph2 = pd.DataFrame.from_dict(porcentagem,orient='index')
 
+    ''' Graph where x-axis is the Karnofsky coefficient and the y-axis how many the days in average a person survived '''
     st.bar_chart(graph1)
 
-
-    st.bar_chart(graph2,x="")
+    ''' Graph where x-axis is the Karnofsky coefficient and the y-axis the percentage of people that were alive by the end of the experiment '''
+    st.bar_chart(graph2)
 
 

@@ -6,6 +6,8 @@ import plotly.tools as tls
 import plotly.express as px
 import plotly.graph_objects as go
 
+# in this page we display a few boxplots to show the coorelation between patients ecog evaluation 
+
 df = st.session_state['dic1'] 
 df_alive = st.session_state['dicalive']
 df_dead = st.session_state['dicdead'] 
@@ -15,6 +17,9 @@ st.header("Box plots of each ecog evaluation and respectives weight loss")
 
 
 fig = go.Figure()
+
+# we created 3 boxplots groups to easier visualise the variyng coorelations between those who 
+# stayed alive by the end of the experiment and for those who didn't
 
 fig.add_trace( go.Box(x=df["ph.ecog"], y=df["wt.loss"], name='All patients'))
 
