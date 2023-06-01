@@ -27,6 +27,7 @@ arr = st.session_state['pergunta5']
 # When the add to graph button is pressed we plot the data based on the values that were given to the program
 if st.sidebar.button('Add to graph'):
     #Here we add the data given by the user do the session state variable
+    st.subheader("Kaplan-Maier Graph")
     arr.append(array)
     st.session_state['pergunta5']= arr
     #Initializing the Kaplan Meier model Fitter 
@@ -82,7 +83,7 @@ if st.sidebar.button('Add to graph'):
     st.plotly_chart(py_fig)
 
 # In this second part we use the cph model to create a graph of the survival probability by age group for each day passed
-if st.button('Show calories relation in cph model in a graph'):
+if st.button('Show calories relation in cox model in a graph'):
 
 
     cph = CoxPHFitter()
