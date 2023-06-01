@@ -28,8 +28,9 @@ for a in ecogs:
     dataf[a] = [Ta,Ea]
 # We add each ECOG score into it's own corresponding dictionary
 for index, row in df.iterrows():
-    dataf[row['ph.ecog']][0]['time'].append(row['time'])
-    dataf[row['ph.ecog']][1]['status'].append(row['status'])
+    if row["ph.ecog"] != 3:
+        dataf[row['ph.ecog']][0]['time'].append(row['time'])
+        dataf[row['ph.ecog']][1]['status'].append(row['status'])
 # Then we create the kaplanmeierfilter
 ax = plt.subplot()
 # Plotting the graph
