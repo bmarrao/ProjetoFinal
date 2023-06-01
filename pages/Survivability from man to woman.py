@@ -12,7 +12,7 @@ from plotly.graph_objs import *
 
 filename = './lung-cancer-data.csv'
 df = pd.read_csv(filename)
-
+st.title("Survivability from man to woman")
 
 
 df.dropna(inplace=True)
@@ -49,7 +49,6 @@ kmf = KaplanMeierFitter()
 kmf.fit(durations = Ta1, event_observed = Ea1,label="Homem")
 #plotting function
 kmf.survival_function_.plot(ax = ax)
-plt.title("Survival of different gender group")
 
 ax = plt.subplot(111)
 # kaplan meier fitter creation for women

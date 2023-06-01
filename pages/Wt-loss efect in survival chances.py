@@ -65,5 +65,4 @@ if st.sidebar.button('Add to graph'):
     )
     #kmf.plot_survival_function(ax = ax,at_risk_counts = True)
 
-    st.subheader("Cox Model Graph")
     st.plotly_chart(py_fig)
