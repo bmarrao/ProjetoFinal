@@ -17,6 +17,7 @@ dataf = {}
 
 ecogs = []
 
+st.header("Difference of survivability based on Ecog score")
 # We iterate on the values and add it into the variable if it's not present
 for index, row in df.iterrows():
     if row['ph.ecog'] not in ecogs and row['ph.ecog']!= 3:

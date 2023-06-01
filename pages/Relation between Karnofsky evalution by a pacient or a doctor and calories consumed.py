@@ -19,9 +19,6 @@ mean = df.groupby(pd.cut(df['ph.karno'],[30,40,50,60,70,80,90,100]),as_index=Fal
 mean["ph.karn"] = labels
 
 
-
-''' The caption on the side of the donut refers to the Medic Evaluation of the Karnofsky score for each patient, and in the donnut the percentage of the sum of the mean calories consumed by each group 
-'''
 #we create the donut graph and add it to the figure
 fig = px.pie(mean, values='meal.cal', names='ph.karn', title='Medic Evaluation compared to calories consumed',hole = 0.4)
 fig.update_traces(textposition='inside', textinfo='percent+label')
@@ -29,17 +26,19 @@ fig.update_traces(textposition='inside', textinfo='percent+label')
 st.plotly_chart(fig)
 
 
+''' The caption on the side of the donut refers to the Medic Evaluation of the Karnofsky score for each patient, and in the donnut the percentage of the sum of the mean calories consumed by each group 
+'''
 labels = ['40','50','60','70','80','90','100']
 #we use the pd.cut() and groupby() funtions to group each karnovsky score group given by the patient and calculate their means in calories consumed
 
 mean = df.groupby(pd.cut(df['pat.karno'],[30,40,50,60,70,80,90,100]),as_index=False).mean()
 mean["pat.karn"] = labels
 
-''' The caption on the side of the donut refers to the Patient Evaluation of the Karnofsky score , and in the donut
- the percentage of the sum of the mean calories consumed by each group 
-'''
 #we create the donut graph and add it to the figure
 fig = px.pie(mean, values='meal.cal', names='pat.karn', title='Patient Evaluation compared to calories consumed',hole = 0.4)
 fig.update_traces(textposition='inside', textinfo='percent+label')
 #plotting the graph
 st.plotly_chart(fig)
+''' The caption on the side of the donut refers to the Patient Evaluation of the Karnofsky score , and in the donut
+ the percentage of the sum of the mean calories consumed by each group 
+'''
