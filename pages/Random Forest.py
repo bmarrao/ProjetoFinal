@@ -27,7 +27,7 @@ num8 = st.sidebar.number_input('Weight loss (kg) : ')
 
 
 
-st.subheader("Survival Forests")
+st.subheader("Random Survival Forests")
 
 #Preparing the data for the random forest , dividing into two differente data sets the y and x
 lg_y = df_na[['status','time']].copy()

@@ -26,6 +26,7 @@ arr = st.session_state['pergunta1']
 # When the add to graph button is pressed we plot the data based on the values that were given to the program
 
 if st.sidebar.button('Add to graph'):
+    st.subheader("Kaplan-Maier Graph")
     #Here we add the data given by the user do the session state variable
     arr.append(array)
     st.session_state['pergunta1']= arr

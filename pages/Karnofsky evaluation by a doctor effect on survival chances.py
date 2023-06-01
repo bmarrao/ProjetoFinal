@@ -34,6 +34,8 @@ arr = st.session_state['pergunta3']
 if st.sidebar.button('Add to graph'):
     #Here we add the data given by the user do the session state variable
 
+    st.subheader("Kaplan-Maier Graph")
+
     arr.append(array)
     st.session_state['pergunta3']= arr
     kmf = KaplanMeierFitter()
@@ -94,7 +96,8 @@ if st.sidebar.button('Add to graph'):
    
 #in this second part we use the cph model to create a graph of the survival probability by karnofsky score for aech day passed
 
-if st.button('Effect of Karnofsky evaluation on CPH model '):
+if st.button('Effect of Karnofsky evaluation on Cox model '):
+    st.subheader("Cox Model Graph")
     #creating the model
     cph = CoxPHFitter()
     cph.fit(df_na, duration_col = 'time', event_col = 'status',formula= "ph.karno")

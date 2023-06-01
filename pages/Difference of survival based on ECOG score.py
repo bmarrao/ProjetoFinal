@@ -56,6 +56,8 @@ kmf.survival_function_.plot(ax = ax)
 #Receiving data from the figure
 figaux = plt.gcf()
 
+st.subheader("Kaplan-Maier Graph")
+
 #Turning that data into a plotly graph so that we can add interactivity 
 py_fig = tls.mpl_to_plotly(figaux,resize = True)
 py_fig.update_layout(
@@ -65,6 +67,8 @@ py_fig.update_layout(
     )
 # Plotting the graph
 st.plotly_chart(py_fig)
+
+st.subheader("Cox Model Graph")
 
 
 # We also used the Cox Proportional Hazard Model to show the impacts of the score on the survivability chance
